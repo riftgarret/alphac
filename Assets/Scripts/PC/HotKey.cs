@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HotKey : MonoBehaviour {
+public class HotKey {
 	public Skill skill {
 		get;
 		private set;

@@ -18,6 +18,10 @@ public class PCBattleEntity : BattleEntity {
 		this.listener.OnPCActionRequired(this);
 	}
 
+	public PCCharacter pcCharacter {
+		get { return (PCCharacter) character; }
+	}
+
 	public override bool isPC ()
 	{
 		return true;

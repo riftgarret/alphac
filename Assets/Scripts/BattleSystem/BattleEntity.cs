@@ -46,7 +46,8 @@ public abstract class BattleEntity {
 	public abstract void OnRequiresInput(TurnState state);
 
 	public void IncrementGameClock(float gameClockDelta) {
-	
+		// TODO, we can modify time if we have that buff here
+		turnState.IncrementGameClock(gameClockDelta);
 	}
 
 	public bool requireUserInput() {

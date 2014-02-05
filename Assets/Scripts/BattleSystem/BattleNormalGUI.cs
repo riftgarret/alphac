@@ -8,22 +8,22 @@ public class BattleNormalGUI : MonoBehaviour {
 	// overarching system that manages the battle system
 	private BattleManager manager;
 
-	// ALLY
-	private BattleEntity[] allyCharacters;
-
 	// Configuration of how to layout character portraits
-	public BattleCharacterConfig allyCharacterLayoutConfig;
+	public BattleCharacterConfig pcCharacterLayoutConfig;
+	public BattleSkillButtonConfig pcKeyLayoutConfig;
 
 	// ALLY Methods
 	// Character preferences that we get our customized skinning for boxes from
-	private AllyGUI[] allyGUIs;
+	private AllyGUI[] pcGUIs;
 
 	// Logic for laying out each character
-	private BattleCharacterLayout allyCharacterLayout;
+	private BattleCharacterLayout pcCharacterLayout;
+	private BattleSkillButtonsLayout skillButtonLayout;
 
 
 	void Awake() {
-		allyCharacterLayout = new BattleCharacterLayout();
+		pcCharacterLayout = new BattleCharacterLayout();
+		skillButtonLayout = new BattleSkillButtonsLayout();
 		manager = GetComponent<BattleManager>();
 
 	}
@@ -45,39 +45,33 @@ public class BattleNormalGUI : MonoBehaviour {
 	}
 
 	private void OnStartAlly() {
-		List<BattleEntity> entityList = new List<BattleEntity>();
-		foreach(BattleEntity entity in manager.battleEntities) {
-			if(entity.isPC()) {
-				entityList.Add(entity);
-			}
-		}
-		allyCharacters = (BattleEntity[])entityList.ToArray();
+		// todo get just ally from here
+		PCBattleEntity[] allyCharacters = manager.battleEntities;
 
 		// TODO figure out location formula for where characters are on screen, 
 		// for now lets just calculate based on 7 of this size appearing equal size		
-		float layoutWidth = allyCharacterLayoutConfig.layoutSize.width;
-		allyGUIs = new AllyGUI[allyCharacters.Length];
+		float layoutWidth = pcCharacterLayoutConfig.layoutSize.width;
+		pcGUIs = new AllyGUI[allyCharacters.Length];
 		
 		// initialize each character 
 		for(int characterIndex=0; characterIndex < allyCharacters.Length; characterIndex++) {
 			AllyGUI gui = new AllyGUI();
 			
 			gui.x = (Screen.width - (layoutWidth * 0.5f * (float)allyCharacters.Length)) / 2f + (layoutWidth * characterIndex);
-			gui.y = Screen.height - allyCharacterLayoutConfig.layoutSize.height;
+			gui.y = Screen.height - (pcCharacterLayoutConfig.layoutSize.height + pcKeyLayoutConfig.layoutSize.height);
 			gui.character = allyCharacters[characterIndex];
 			
-			allyGUIs[characterIndex] = gui;
+			pcGUIs[characterIndex] = gui;
 		}			
 	}
 	
 	private void OnGUIAlly() {
-		if(allyGUIs == null) {
+		if(pcGUIs == null) {
 			return;
 		}
 
-
-
-
+		DrawPCs();
+		DrawHotkeys();
 	}
 
 	/// <summary>
@@ -85,9 +79,9 @@ public class BattleNormalGUI : MonoBehaviour {
 	/// </summary>
 	private void DrawPCs() {
 		// draw each character
-		for(int i=0; i < allyGUIs.Length; i++) {
-			AllyGUI gui = allyGUIs[i];
-			allyCharacterLayout.DrawCharacter(gui.x, gui.y, allyCharacterLayoutConfig, gui.character);
+		for(int i=0; i < pcGUIs.Length; i++) {
+			AllyGUI gui = pcGUIs[i];
+			pcCharacterLayout.DrawCharacter(gui.x, gui.y, pcCharacterLayoutConfig, gui.character);
 		}
 	}
 
@@ -101,7 +95,7 @@ public class BattleNormalGUI : MonoBehaviour {
 			return;					
 		}
 
-
+		skillButtonLayout.DrawButtons(turnManager, pcKeyLayoutConfig);
 	}
 
 

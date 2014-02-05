@@ -22,7 +22,7 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		get;
 	}
 
-	public BattleEntity[] battleEntities {
+	public PCBattleEntity[] battleEntities {
 		private set;
 		get;
 	}
@@ -34,7 +34,7 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		PCCharacter[] chars = TempCreateCharacters();
 
 		// initialize entities for other methods in start
-		BattleEntity [] entities = new BattleEntity[chars.Length];
+		PCBattleEntity [] entities = new PCBattleEntity[chars.Length];
 		for(int i=0; i < entities.Length; i++) {
 			entities[i] = new PCBattleEntity(chars[i], this);
 		}
@@ -79,10 +79,10 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		pc3.maxHealth = 103;
 		pc3.curHealth = 103;
 
-		PCCharacter[] chars = new PCCharacter[1];
+		PCCharacter[] chars = new PCCharacter[3];
 		chars[0] = pc1;
-		//chars[1] = pc2;
-		//chars[2] = pc3;
+		chars[1] = pc2;
+		chars[2] = pc3;
 
 		return chars;
 	}
