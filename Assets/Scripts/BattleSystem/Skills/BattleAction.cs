@@ -7,6 +7,16 @@ public abstract class BattleAction {
 	public float timePrepare;
 	public float timeAction;
 	public float timeRecover;
+
+	/// <summary>
+	/// The type of the target.
+	/// </summary>
+	protected BattleTargetingType targetType;
+
+	/// <summary>
+	/// The target entity. This may be null if we are targeting a group.
+	/// </summary>
+	protected BattleEntity targetEntity;
 	
 	protected BattleAction(float prepare, float action, float recover) {
 		timePrepare = prepare;

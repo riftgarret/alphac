@@ -47,7 +47,6 @@ public class TurnState {
 	/// </summary>
 	/// <param name="phase">Phase.</param>
 	public void SetPhase(Phase newPhase) {
-		Phase oldPhase = this.phase;
 		turnClock = 0;
 		this.phase = newPhase;
 		switch(newPhase) {

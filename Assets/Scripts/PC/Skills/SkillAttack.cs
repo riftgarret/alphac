@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SkillAttack : Skill {
 
-	public SkillAttack() :base("ATK") {
+	public SkillAttack() :base("ATK", TargetingType.SINGLE, TargetStart.ENEMY) {
 	}
 
 	public override BattleAction CreateAction ()

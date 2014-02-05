@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
+public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NPCBattleEntity.INPCActionListener, IBattleTargetProvider {
 
 	public float unitOfTime = 1f;
 
@@ -11,18 +11,38 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 	/// <value><c>true</c> if active game time; otherwise, <c>false</c>.</value>
 	private bool activeGameTime {
 		get {
-			return !turnManager.isWaitingForInput;
+			return turnManager.decisionState == PCTurnManager.DecisionState.IDLE;
 		}
 	}
 
+	/// <summary>
+	/// The battle time queue.
+	/// </summary>
 	private BattleTimeQueue battleTimeQueue;
 
+	/// <summary>
+	/// Gets the turn manager.
+	/// </summary>
+	/// <value>The turn manager.</value>
 	public PCTurnManager turnManager {
 		private set;
 		get;
 	}
 
-	public PCBattleEntity[] battleEntities {
+	/// <summary>
+	/// Gets the pc battle entities.
+	/// </summary>
+	/// <value>The pc battle entities.</value>
+	public PCBattleEntity[] pcBattleEntities {
+		private set;
+		get;
+	}
+
+	/// <summary>
+	/// Gets the npc battle entities.
+	/// </summary>
+	/// <value>The npc battle entities.</value>
+	public NPCBattleEntity[] npcBattleEntities {
 		private set;
 		get;
 	}
@@ -31,15 +51,26 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		battleTimeQueue = new BattleTimeQueue(unitOfTime);
 		turnManager = new PCTurnManager(this);
 
-		PCCharacter[] chars = TempCreateCharacters();
-
 		// initialize entities for other methods in start
-		PCBattleEntity [] entities = new PCBattleEntity[chars.Length];
-		for(int i=0; i < entities.Length; i++) {
-			entities[i] = new PCBattleEntity(chars[i], this);
+		NPCCharacter[] npcChars = TempCreateNPCs();
+		PCCharacter[] pcChars = TempCreatePCs();
+
+		// combine 
+		BattleEntity[] allEntities = new BattleEntity[pcChars.Length + npcChars.Length];
+
+		pcBattleEntities = new PCBattleEntity[pcChars.Length];
+		for(int i=0; i < pcBattleEntities.Length; i++) {
+			pcBattleEntities[i] = new PCBattleEntity(pcChars[i], this);
+			allEntities[i] = pcBattleEntities[i];
 		}
-		battleTimeQueue.InitEntities(entities);
-		battleEntities = entities;
+
+		npcBattleEntities = new NPCBattleEntity[npcChars.Length];
+		for(int i=0; i < npcBattleEntities.Length; i++) {
+			npcBattleEntities[i] = new NPCBattleEntity(npcChars[i], this);
+			allEntities[pcChars.Length + i] = npcBattleEntities[i];
+		}		
+
+		battleTimeQueue.InitEntities(allEntities);
 	}
 
 	//private PriorityQueue
@@ -63,7 +94,7 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		battleTimeQueue.IncrementTimeDelta(Time.deltaTime);
 	}
 
-	private PCCharacter[] TempCreateCharacters() {
+	private PCCharacter[] TempCreatePCs() {
 		PCCharacter pc1 = new PCCharacter();
 		pc1.name = "Vaten";
 		pc1.maxHealth = 100;
@@ -87,8 +118,39 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener {
 		return chars;
 	}
 
+	private NPCCharacter[] TempCreateNPCs() {
+		NPCCharacter npc1 = new NPCCharacter();
+		npc1.name = "Kefka Palazzo";
+		npc1.maxHealth = 100;
+		npc1.curHealth = 90;
+		
+		NPCCharacter npc2 = new NPCCharacter();
+		npc2.name = "Emperor Gestahl";
+		npc2.maxHealth = 120;
+		npc2.curHealth = 30;
+
+		NPCCharacter[] chars = new NPCCharacter[2];
+		chars[0] = npc1;
+		chars[1] = npc2;
+		
+		return chars;
+	}
+
+	public BattleEntity[] GetTargets(bool isPCTargets) {
+		if(isPCTargets) {
+			return pcBattleEntities;
+		}
+		return npcBattleEntities;
+	}
+
+	// ActionListener callback
 	public void OnPCActionRequired(PCBattleEntity pc) {
 		turnManager.QueuePC(pc);
+	}
+
+	// NPC callabck
+	public void OnAIDecision(NPCBattleEntity npc) {
+		Debug.Log("TODO: AI decisions");
 	}
 
 	public void OnPCAction(PCBattleEntity entity, BattleAction action) {
