@@ -14,5 +14,5 @@ public abstract class Skill {
 	public readonly TargetStart initialTarget;
 
 	public readonly string skillName;
-	public abstract BattleAction CreateAction();
+	public abstract BattleAction CreateAction(BattleEntity origin);
 }

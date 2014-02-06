@@ -47,13 +47,16 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		get;
 	}
 
+	public EnemyParty enemyParty;
+	public PCParty pcParty;
+
 	void Awake() {
 		battleTimeQueue = new BattleTimeQueue(unitOfTime);
 		turnManager = new PCTurnManager(this);
 
 		// initialize entities for other methods in start
-		NPCCharacter[] npcChars = TempCreateNPCs();
-		PCCharacter[] pcChars = TempCreatePCs();
+		NPCCharacter[] npcChars = enemyParty.characters;
+		PCCharacter[] pcChars = pcParty.characters;
 
 		// combine 
 		BattleEntity[] allEntities = new BattleEntity[pcChars.Length + npcChars.Length];
@@ -92,48 +95,6 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		}
 
 		battleTimeQueue.IncrementTimeDelta(Time.deltaTime);
-	}
-
-	private PCCharacter[] TempCreatePCs() {
-		PCCharacter pc1 = new PCCharacter();
-		pc1.name = "Vaten";
-		pc1.maxHealth = 100;
-		pc1.curHealth = 90;
-
-		PCCharacter pc2 = new PCCharacter();
-		pc2.name = "Alphac";
-		pc2.maxHealth = 120;
-		pc2.curHealth = 30;
-
-		PCCharacter pc3 = new PCCharacter();
-		pc3.name = "Silmaria";
-		pc3.maxHealth = 103;
-		pc3.curHealth = 103;
-
-		PCCharacter[] chars = new PCCharacter[3];
-		chars[0] = pc1;
-		chars[1] = pc2;
-		chars[2] = pc3;
-
-		return chars;
-	}
-
-	private NPCCharacter[] TempCreateNPCs() {
-		NPCCharacter npc1 = new NPCCharacter();
-		npc1.name = "Kefka Palazzo";
-		npc1.maxHealth = 100;
-		npc1.curHealth = 90;
-		
-		NPCCharacter npc2 = new NPCCharacter();
-		npc2.name = "Emperor Gestahl";
-		npc2.maxHealth = 120;
-		npc2.curHealth = 30;
-
-		NPCCharacter[] chars = new NPCCharacter[2];
-		chars[0] = npc1;
-		chars[1] = npc2;
-		
-		return chars;
 	}
 
 	public BattleEntity[] GetTargets(bool isPCTargets) {

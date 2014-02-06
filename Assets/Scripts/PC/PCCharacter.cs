@@ -9,8 +9,23 @@
 //------------------------------------------------------------------------------
 using System;
 
+[System.Serializable]
 public class PCCharacter : Character
 {
+	public enum RowPosition {
+		FRONT,
+		MIDDLE,
+		BACK
+	}
+
+	/// <summary>
+	/// Gets or sets the row position.
+	/// </summary>
+	/// <value>The row position.</value>
+	public RowPosition rowPosition {
+		get;
+		set;
+	}
 	/// <summary>
 	/// Hotkeys the player has set up
 	/// </summary>

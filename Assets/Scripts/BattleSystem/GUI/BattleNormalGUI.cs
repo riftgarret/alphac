@@ -119,7 +119,7 @@ public class BattleNormalGUI : MonoBehaviour {
 	class AllyGUI {
 		public float x;
 		public float y;
-		public BattleEntity character;
+		public PCBattleEntity character;
 		//BattleChara
 	}
 }

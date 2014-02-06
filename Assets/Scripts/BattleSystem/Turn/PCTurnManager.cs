@@ -97,7 +97,8 @@ public class PCTurnManager {
 		}
 
 
-		manager.OnPCAction(turnQueue.Dequeue(), currentSelectedSkill.CreateAction());
+		PCBattleEntity entity = turnQueue.Dequeue();
+		manager.OnPCAction(entity, currentSelectedSkill.CreateAction(entity));
 		currentSelectedSkill = null;
 		decisionState = (turnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);
 	}
