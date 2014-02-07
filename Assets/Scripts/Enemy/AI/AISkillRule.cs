@@ -13,20 +13,112 @@ using System;
 [Serializable]
 public class AISkillRule
 {
+	/// <summary>
+	/// The m weight of the skill being used after all available skills are evaluated
+	/// </summary>
+	[SerializeField]
+	private float mWeight;
+
 	[SerializeField]
 	private CombatSkillConfig mSkill;
 
 	[SerializeField]
-	private Condition mCondition;
+	private ConditionTarget mConditionTarget;
 
 	[SerializeField]
-	private float mValue;
+	private ConditionResolveTarget mResolvedTarget;
 
+	[SerializeField]
+	private ConditionType mConditionType;
 
-	private enum Condition {
-		IS_LESS_THAN,
-		IS_GREATER_THAN
+	[SerializeField]
+	private ClassCondition mClassCondition;
+
+	[SerializeField]
+	private HitPointCondition mHitpointCondition;
+
+	[SerializeField]
+	private ResourceCondition mResourceCondition;
+
+	[SerializeField]
+	private RowCondition mRowCondition;
+
+	[SerializeField]
+	private StatusCondition mStatusCondition;
+
+	[SerializeField]
+	private PartyCondition mPartyCondition;
+
+	[SerializeField]
+	private float mConditionValue;
+	                                              
+
+	public enum ConditionType {
+		ANY,
+		CLASS,
+		ROW,
+		HP,
+		RES,
+		STATUS,
+		PARTY
 	}
+
+	public enum ConditionTarget {
+		SELF,
+		ENEMY,
+		PC
+	}
+
+	public enum ConditionResolveTarget {
+		TARGET,
+		SELF
+	}
+
+	public enum ClassCondition {
+		CLASS_FIGHTER,
+		CLASS_MAGE,
+		CLASS_ROGUE,
+		CLASS_SQUIRE
+	}
+
+	public enum HitPointCondition {
+		HP_GT,
+		HP_LT,
+		HP_HIGHEST,
+		HP_LOWEST,
+		HP_DEAD
+	}
+
+	public enum ResourceCondition {
+		RES_GT,
+		RES_LT,
+		RES_HIGHEST,
+		RES_LOWEST,
+		RES_EMPTY
+	}
+
+	public enum RowCondition {
+		FRONT_COUNT_GT,
+		FRONT_COUNT_LT,
+		MIDDLE_COUNT_GT,
+		MIDDLE_COUNT_LT,
+		BACK_COUNT_GT,
+		BACK_COUNT_LT
+	}
+
+	public enum StatusCondition {
+		DEBUFF_COUNT_GT,
+		DEBUFF_COUNT_LT,
+		BUFF_COUNT_GT,
+		BUFF_COUNT_LT,
+		SELF_BLIND,
+		SELF_HOARSE
+	}
+
+	public enum PartyCondition {
+		PARTY_COUNT_LT,
+		PARTY_COUNT_GT
+	}		
 }
 
 

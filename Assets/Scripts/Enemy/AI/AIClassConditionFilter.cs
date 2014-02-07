@@ -8,9 +8,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 
-public class EnemyCharacterConfig : CharacterConfig
+public class AIClassConditionFilter : IAIFilter
 {
-	public EnemySkillSetConfig skillRules;
+	// class condition to compare
+	private AISkillRule.ClassCondition mClassCondition;
+
+	public AIClassConditionFilter (AISkillRule.ClassCondition classCondition) 
+	{
+	}
+
+	public void FilterEntities (BattleEntity sourceEntity, HashSet<BattleEntity> entities)
+	{
+		return; // TODO implement 
+	}
 }
+
 

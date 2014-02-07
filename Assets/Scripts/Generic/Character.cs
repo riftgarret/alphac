@@ -9,11 +9,16 @@ using System;
 public abstract class Character  {
 	// current stats
 	public float curHP;
-	public float resource;
+	public float curResource;
 
 	//
 	public float maxHP {
 		get { return charClass.CalculateHitpoints(this); }
+	}
+
+	// TODO maybe add this later
+	public float maxResource {
+		get { return 100f; }
 	}
 
 	//  override enable to set current HP to max HP

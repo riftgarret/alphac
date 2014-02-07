@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 
-public class EnemyCharacterConfig : CharacterConfig
+public interface IAIFilter
 {
-	public EnemySkillSetConfig skillRules;
+	void FilterEntities(BattleEntity sourceEntity, HashSet<BattleEntity> entities);
 }
+
 

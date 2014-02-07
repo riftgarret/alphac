@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using UnityEngine;
 
-public class EnemyCharacterConfig : CharacterConfig
+public class EnemySkillSetConfig : ScriptableObject
 {
-	public EnemySkillSetConfig skillRules;
+	[SerializeField]
+	private AISkillRule [] mAISkillRules;
 }
-

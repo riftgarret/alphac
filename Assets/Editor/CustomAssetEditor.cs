@@ -30,7 +30,7 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	
 	public static void CreateEnemySkillSetSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemySkillSet>(), "EnemySkillSet");
+		CompleteAssetCreation(X.CreateInstance<EnemySkillSetConfig>(), "EnemySkillSet");
 	}
 	/*
 	[MenuItem("Assets/Create/Enemy/Enemy AI Rule")]	
