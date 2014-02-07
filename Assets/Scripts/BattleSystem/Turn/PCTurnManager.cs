@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,7 +26,7 @@ public class PCTurnManager {
 	/// Gets the current selected skill. Will be null if not selected
 	/// </summary>
 	/// <value>The current selected skill.</value>
-	public Skill currentSelectedSkill {
+	public CombatSkill currentSelectedSkill {
 		private set;
 		get;
 	}
@@ -76,7 +76,7 @@ public class PCTurnManager {
 	/// Set the action to the current top battle entity selected.
 	/// </summary>
 	/// <param name="action">Action.</param>
-	public void SelectSkill(Skill skill) {
+	public void SelectSkill(CombatSkill skill) {
 		if( turnQueue.Count == 0 ) {
 			// do nothing bad state
 			Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");
@@ -97,8 +97,9 @@ public class PCTurnManager {
 		}
 
 
-		PCBattleEntity entity = turnQueue.Dequeue();
-		manager.OnPCAction(entity, currentSelectedSkill.CreateAction(entity));
+		PCBattleEntity sourceEntity = turnQueue.Dequeue();
+		IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, target);
+		manager.OnPCAction(sourceEntity, action);
 		currentSelectedSkill = null;
 		decisionState = (turnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);
 	}

@@ -44,7 +44,7 @@ public class BattleTimeQueue {
 		}
 	}
 
-	public void SetAction(BattleEntity entity, BattleAction action) {
+	public void SetAction(BattleEntity entity, IBattleAction action) {
 		entity.turnState.SetAction(action);
 	}	
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -10,33 +10,50 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Character Class")]	
 	public static void CreateClassAsset() {		
-		CharacterClass asset = CharacterClass.CreateInstance<CharacterClass>();
-		CompleteAssetCreation(asset, "CharacterClass");
+		CompleteAssetCreation(X.CreateInstance<CharacterClassConfig>(), "CharacterClass");
 	}
 
 	[MenuItem("Assets/Create/Equipment/Weapon")]	
 	public static void CreateWeaponAsset() {		
-		Weapon asset = CharacterClass.CreateInstance<Weapon>();
-		CompleteAssetCreation(asset, "Weapon");
+		CompleteAssetCreation(X.CreateInstance<WeaponConfig>(), "Weapon");
 	}
 
-	[MenuItem("Assets/Create/NPC/Enemy Character")]	
+	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	
 	public static void CreateNPCAsset() {
-		NPCCharacter asset = NPCCharacter.CreateInstance<NPCCharacter>();
-		CompleteAssetCreation(asset, "NPC");
+		CompleteAssetCreation(X.CreateInstance<EnemyCharacterConfig>(), "EnemyConfig");
 	}	
 
-	[MenuItem("Assets/Create/NPC/Enemy Party")]	
+	[MenuItem("Assets/Create/Enemy/Enemy Party")]	
 	public static void CreateEnemyPartyAsset() {		
-		PCParty asset = CharacterClass.CreateInstance<PCParty>();
-		CompleteAssetCreation(asset, "Enemy Party");
+		CompleteAssetCreation(X.CreateInstance<EnemyParty>(), "Enemy Party");
 	}
 
-	[MenuItem("Assets/Create/Test/PC Character")]	
-	public static void CreateTestPCAsset() {
-		PCCharacter asset = NPCCharacter.CreateInstance<PCCharacter>();
-		CompleteAssetCreation(asset, "NPC");
+	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	
+	public static void CreateEnemySkillSetSetAsset() {
+		CompleteAssetCreation(X.CreateInstance<EnemySkillSet>(), "EnemySkillSet");
+	}
+	/*
+	[MenuItem("Assets/Create/Enemy/Enemy AI Rule")]	
+	public static void CreateEnemyAIRuleSetAsset() {
+		CompleteAssetCreation(X.CreateInstance<AISkillRule>(), "EnemyAIRule");
+	}
+	*/
+
+	[MenuItem("Assets/Create/Skill/Combat Skill Config")]	
+	public static void CreateCombatSkillAsset() {
+		CompleteAssetCreation(X.CreateInstance<CombatSkillConfig>(), "CombatSkill");
 	}	
+
+	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
+	public static void CreatePCSkillSetAsset() {
+		CompleteAssetCreation(X.CreateInstance<PCSkillSetConfig>(), "SkillSet");
+	}
+
+	[MenuItem("Assets/Create/Test/PC Character Config")]	
+	public static void CreateTestPCAsset() {
+		CompleteAssetCreation(X.CreateInstance<PCCharacterConfig>(), "NPC");
+	}	
+
 
 
 	private static void CompleteAssetCreation(ScriptableObject asset, string entityName) {
@@ -67,4 +84,6 @@ public class CustomAssetEditor {
 			projectWindow.SendEvent(e);
 		}
 	}
+
+	private class X : ScriptableObject{}
 }

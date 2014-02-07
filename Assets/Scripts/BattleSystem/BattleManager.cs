@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -55,8 +55,8 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		turnManager = new PCTurnManager(this);
 
 		// initialize entities for other methods in start
-		NPCCharacter[] npcChars = enemyParty.characters;
-		PCCharacter[] pcChars = pcParty.characters;
+		EnemyCharacter[] npcChars = enemyParty.CreateUniqueCharacters();
+		PCCharacter[] pcChars = pcParty.CreateUniqueCharacters();
 
 		// combine 
 		BattleEntity[] allEntities = new BattleEntity[pcChars.Length + npcChars.Length];
@@ -114,7 +114,8 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		Debug.Log("TODO: AI decisions");
 	}
 
-	public void OnPCAction(PCBattleEntity entity, BattleAction action) {
+	public void OnPCAction(PCBattleEntity entity, IBattleAction action) {
 		battleTimeQueue.SetAction(entity, action);
 	}
+	
 }

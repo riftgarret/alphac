@@ -18,29 +18,27 @@ public class PCCharacter : Character
 		BACK
 	}
 
+
+
 	/// <summary>
 	/// Gets or sets the row position.
 	/// </summary>
 	/// <value>The row position.</value>
-	public RowPosition rowPosition {
-		get;
-		set;
-	}
-	/// <summary>
-	/// Hotkeys the player has set up
-	/// </summary>
-	/// <value>The hotkeys.</value>
-	public HotKey[] hotkeys {
-		get;
-		private set;
-	}
+	public RowPosition rowPosition;
+
+	public PCSkillSet skillSet;
 
 	public PCCharacter ()
 	{
-		hotkeys = new HotKey[10];
+/*		hotkeys = new HotKey[10];
 		for(int i=0; i < hotkeys.Length; i++) {
 			hotkeys[i] = new HotKey(new SkillAttack());
 		}
-
+*/
+	}
+	
+	public PCCharacter(PCCharacterConfig config) : base(config) {
+		skillSet = new PCSkillSet();
+		config.skillsetConfig.InitSkills(skillSet);
 	}
 }

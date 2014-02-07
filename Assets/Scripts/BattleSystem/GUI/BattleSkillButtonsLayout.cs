@@ -4,7 +4,7 @@ using System.Collections;
 public class BattleSkillButtonsLayout {
 
 	public void DrawButtons(PCTurnManager turnManager, BattleSkillButtonConfig config) {
-		HotKey[] hotkeys = turnManager.currentEntity.pcCharacter.hotkeys;
+		HotKey[] hotkeys = turnManager.currentEntity.pcCharacter.skillSet.hotKeys;
 
 		float layoutWidth = config.layoutSize.width;
 		for(int hotkeyIndex=0; hotkeyIndex < hotkeys.Length; hotkeyIndex++) {
@@ -23,9 +23,9 @@ public class BattleSkillButtonsLayout {
 			Rect buttonRect = new Rect(0, 0, config.layoutSize.width, config.layoutSize.height);
 			GUI.Box(buttonRect, GUIContent.none);
 
-			if(hotkey.skill != null) {
-				if(GUI.Button(buttonRect, hotkey.skill.skillName)) {
-					Debug.Log("Something fun happened : " + hotkey.skill.skillName);
+			if(hotkey.skill != null && hotkey.skill is CombatSkill) {
+				if(GUI.Button(buttonRect, hotkey.skill.combatSkillConfig.displayName)) {
+					Debug.Log("Skill Picked : " + hotkey.skill.combatSkillConfig.displayName);
 					turnManager.SelectSkill(hotkey.skill);
 				}
 			}

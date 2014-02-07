@@ -15,7 +15,7 @@ public class TurnState {
 	// inner class to manage the turn state
 
 	private BattleEntity entity;
-	public BattleAction action;
+	public IBattleAction action;
 	public Phase phase;
 	public float turnClock;
 	public float turnComplete;
@@ -37,7 +37,7 @@ public class TurnState {
 	/// Sets the action. This will reset all variables to Prepare
 	/// </summary>
 	/// <param name="action">Action.</param>
-	public void SetAction(BattleAction action) {
+	public void SetAction(IBattleAction action) {
 		this.action = action;
 		SetPhase(Phase.PREPARE);
 	}

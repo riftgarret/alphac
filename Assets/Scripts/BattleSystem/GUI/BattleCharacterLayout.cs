@@ -9,7 +9,7 @@ public class BattleCharacterLayout {
 		GUI.BeginGroup(new Rect(x, y, config.layoutSize.width, config.layoutSize.height));
 		{	
 			// the box
-			GUI.Box(new Rect(0, 0, config.layoutSize.width, config.layoutSize.height), entity.character.name);
+			GUI.Box(new Rect(0, 0, config.layoutSize.width, config.layoutSize.height), entity.character.displayName);
 			
 			// the portrait
 			GUI.DrawTexture(config.portraitRect, config.portraitTexture, ScaleMode.ScaleAndCrop);
@@ -40,7 +40,7 @@ public class BattleCharacterLayout {
 			
 			// HP bar
 			if(GUIHelper.MouseIsOver(config.hitpointRect)) {
-				Debug.Log("hp texture");
+				//Debug.Log("hp texture");
 			}
 			GUI.DrawTexture(config.hitpointRect, config.hitPointProperties.highHPTexture, ScaleMode.StretchToFill);
 			

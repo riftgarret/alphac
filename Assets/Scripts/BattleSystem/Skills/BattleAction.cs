@@ -1,35 +1,29 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public abstract class BattleAction {		
+public abstract class BattleAction : IBattleAction {		
 
 	// time it takes to prepare, configured and set
-	public float timePrepare;
-	public float timeAction;
-	public float timeRecover;
+	public float timePrepare { get { return combatSkill.combatSkillConfig.timePrepare; } } 
+	public float timeAction { get { return combatSkill.combatSkillConfig.timeAction; } }  
+	public float timeRecover { get { return combatSkill.combatSkillConfig.timeRecover; } } 
 
-	/// <summary>
-	/// The type of the target.
-	/// </summary>
-	protected BattleTargetingType targetType;
-
+	protected readonly CombatSkill combatSkill;
+			
 	/// <summary>
 	/// The target entity. This may be null if we are targeting a group.
 	/// </summary>
-	protected BattleEntity targetEntity;
+	protected readonly SelectableTarget target;
+
+	protected readonly BattleEntity sourceEntity;
 	
-	protected BattleAction(float prepare, float action, float recover) {
-		timePrepare = prepare;
-		timeAction = prepare;
-		timeRecover = recover;
+	protected BattleAction(CombatSkill skill, BattleEntity sourceEntity, SelectableTarget target) {
+		this.combatSkill = skill;
+		this.sourceEntity = sourceEntity;
+		this.target = target;
 	}
 
-	/// <summary>
-	/// Important to note action clock should always be called even when the delta time has passed.
-	/// the action time threshold, it will be called one last time
-	/// </summary>
-	/// <param name="actionClock">Action clock.</param>
-	public abstract void DoAction(float actionClock);
+	public abstract void OnExecuteAction(float actionClock);
 
 	/// <summary>
 	/// To complete action, not useful in current stage.

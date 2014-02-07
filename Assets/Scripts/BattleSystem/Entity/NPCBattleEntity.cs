@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NPCBattleEntity : BattleEntity {
@@ -10,7 +10,7 @@ public class NPCBattleEntity : BattleEntity {
 	private INPCActionListener listener;
 	
 	// setup variables
-	public NPCBattleEntity(NPCCharacter character, INPCActionListener listener) : base(character) {
+	public NPCBattleEntity(EnemyCharacter character, INPCActionListener listener) : base(character) {
 		this.listener = listener;
 	}
 	
@@ -18,8 +18,8 @@ public class NPCBattleEntity : BattleEntity {
 		this.listener.OnAIDecision(this);
 	}
 	
-	public NPCCharacter pcCharacter {
-		get { return (NPCCharacter) character; }
+	public EnemyCharacter pcCharacter {
+		get { return (EnemyCharacter) character; }
 	}
 	
 	public override bool isPC ()

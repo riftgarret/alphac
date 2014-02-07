@@ -56,5 +56,13 @@ public abstract class BattleEntity {
 
 	public void OnExecuteTurn(TurnState state) {
 		// do action against character
+		state.action.OnExecuteAction(state.turnClock);
+	}
+
+	// TODO return DamageResults, or process results to print out
+	public void TakeDamage(Damage damage) {
+		// calculate resists
+		this.character.curHP -= damage.slashDamage;
+		Debug.Log("Damage: " + damage.slashDamage + " HP dropped to: " + this.character.curHP);
 	}
 }
