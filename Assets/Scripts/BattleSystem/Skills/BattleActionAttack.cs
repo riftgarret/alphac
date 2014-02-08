@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class BattleActionAttack : BattleAction {
 	
-	public BattleActionAttack(CombatSkill skill, BattleEntity source, SelectableTarget target) : base(skill, source, target) {
+	public BattleActionAttack(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
 
 	}
 
@@ -12,7 +12,9 @@ public class BattleActionAttack : BattleAction {
 		if(actionClock >= timeAction) {
 			Damage damage = new Damage();
 			damage.slashDamage = sourceEntity.character.physicalAttack;
-			target.targets[0].TakeDamage(damage);
+			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
+				entity.TakeDamage(damage, sourceEntity);
+			}
 		}	
 	}
 }

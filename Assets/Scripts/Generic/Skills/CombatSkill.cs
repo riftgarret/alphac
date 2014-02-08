@@ -11,6 +11,9 @@ using System;
 
 public class CombatSkill : Skill
 {
+	public CombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	}
+
 	public CombatSkillConfig combatSkillConfig {
 		get { return (CombatSkillConfig) mSkillConfig; } 
 	}

@@ -9,4 +9,6 @@ public interface IBattleTargetProvider {
 	/// <returns>The targets.</returns>
 	/// <param name="targetType">Target type.</param>
 	BattleEntity[] GetTargets(bool pcEntities);
+
+	BattleEntity[] GetAllTargets();
 }

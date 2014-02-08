@@ -9,22 +9,15 @@
 //------------------------------------------------------------------------------
 using System;
 
-public enum TargetingType {
-	SELF,
-	ALL,
+public enum ResolvedTargetEnum
+{
 	SINGLE,
-	ROW,
-	SELF_ROW
+	ENEMY_ALL,
+	ALLY_ALL,
+	ALLY_ROW_FRONT,
+	ALLY_ROW_MIDDLE,
+	ALLY_ROW_BACK,
+	SELF_ROW,
+	SELF
 }
 
-public enum TargetStart {
-	ENEMY,
-	SELF,
-	DEAD
-}
-
-public enum TargetFilter {
-	REQUIRE_ALIVE,
-	REQUIRE_DEAD,
-	REQUIRE_BLIND
-}

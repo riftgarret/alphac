@@ -10,12 +10,12 @@ public class BattleTargetingLayout
 	public void DrawTargets(PCTurnManager turnManager) {
 
 		// just paint in middle of screen for now
-		SelectableTargetList targetListObj = turnManager.currentTargetList;
-		int count = targetListObj.selectableTargets.Count;
+		SelectableTargetManager targetManager = turnManager.currentTargetManager;
+		int count = targetManager.targetList.Count;
 
 		float cursor = (Screen.width - (count * 50f) )/2f;
 		for(int i=0; i < count; i++) {
-			DrawTarget(cursor, 0, turnManager, targetListObj.selectableTargets[i]);
+			DrawTarget(cursor, 0, turnManager, targetManager.targetList[i]);
 			cursor += 50f;
 		}
 

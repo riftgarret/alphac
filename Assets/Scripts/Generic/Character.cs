@@ -80,8 +80,8 @@ public abstract class Character  {
 		level = other.level;
 		charClass = other.charClass;
 
-		mainHandWeapon = (WeaponConfig)mainHandWeapon;
-		offHandWeapon = (WeaponConfig)offHandWeapon;
+		mainHandWeapon = (WeaponConfig)other.mainHandWeapon;
+		offHandWeapon = (WeaponConfig)other.offHandWeapon;
 
 		curHP = maxHP;
 	}

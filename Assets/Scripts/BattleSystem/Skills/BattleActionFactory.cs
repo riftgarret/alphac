@@ -11,13 +11,13 @@ using System;
 
 public class BattleActionFactory
 {
-	public static BattleAction CreateBattleAction(CombatSkill fromSkill, BattleEntity origin, SelectableTarget target) {
+	public static BattleAction CreateBattleAction(CombatSkill fromSkill, BattleEntity origin, ITargetResolver targetResolver) {
 		switch(fromSkill.combatSkillConfig.combatSkillEnum) {
 		case CombatSkillActionEnum.BASIC_FIGHT:
 		case CombatSkillActionEnum.BOSS_ULTIMATE_ATTACK:
 		case CombatSkillActionEnum.ENEMY_GOBLIN_CHOCOLATE_BATMITZVAH:
 		case CombatSkillActionEnum.KNIGHT_BLAH:
-			return new BattleActionAttack(fromSkill, origin, target);
+			return new BattleActionAttack(fromSkill, origin, targetResolver);
 		}
 
 		throw new Exception("Unable to find skill: " + fromSkill.combatSkillConfig.displayName + " : " + fromSkill.combatSkillConfig.combatSkillEnum);

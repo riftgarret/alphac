@@ -17,16 +17,25 @@ public class AISkillRule
 	/// The m weight of the skill being used after all available skills are evaluated
 	/// </summary>
 	[SerializeField]
-	private float mWeight;
+	private float mWeight = 1f;
+	public float weight {
+		get { return mWeight; }
+	}
 
 	[SerializeField]
-	private CombatSkillConfig mSkill;
+	private CombatSkillConfig mSkill = null;
+	public CombatSkillConfig skill { 
+		get { return mSkill; }
+	}
 
 	[SerializeField]
 	private ConditionTarget mConditionTarget = ConditionTarget.PC;
 
 	[SerializeField]
-	private ConditionResolveTarget mResolvedTarget;
+	private ConditionResolveTarget mResolvedTarget = ConditionResolveTarget.TARGET;
+	public ConditionResolveTarget resolvedTarget {
+		get { return mResolvedTarget; }
+	}
 
 	[SerializeField]
 	private ConditionType mConditionType = ConditionType.ANY;
@@ -50,11 +59,7 @@ public class AISkillRule
 	private PartyCondition mPartyCondition = PartyCondition.PARTY_COUNT_GT;
 
 	[SerializeField]
-	private float mConditionValue = 0f;
-	                              
-	// fields lazy created at runtime
-	private IAIFilter mConditionFilter;
-	private IAIFilter mTargetFilter;
+	private float mConditionValue = 0f;	                              
 
 	public enum ConditionType {
 		ANY,
@@ -124,37 +129,37 @@ public class AISkillRule
 	}		
 
 
-	private void LazyInit() {
-		if(mConditionFilter == null) {
-			mTargetFilter = new AITargetFilter(mConditionTarget);
-
-			switch(mConditionType) {
-			case ConditionType.ANY:
-				mConditionFilter = new AIAcceptAllFilter();
-				break;
-			case ConditionType.CLASS:
-				mConditionFilter = new AIClassConditionFilter(mClassCondition);
-				break;
-			case ConditionType.HP:
-				mConditionFilter = new AIHipointConditionFilter(mHitpointCondition, mConditionValue);
-				break;
-			case ConditionType.PARTY:
-				mConditionFilter = new AIPartyConditionFilter(mPartyCondition, (int)mConditionValue);
-				break;
-			case ConditionType.RES:
-				mConditionFilter = new AIResourceConditionFilter(mResourceCondition, mConditionValue);
-				break;
-			case ConditionType.ROW:
-				mConditionFilter = new AIRowConditionFilter(mRowCondition, (int)mConditionValue);
-				break;
-			case ConditionType.STATUS:
-				mConditionFilter = new AIAcceptAllFilter();
-				break;
+	/// <summary>
+	/// Creates the condition filter. 
+	/// </summary>
+	/// <returns>The condition filter.</returns>
+	public IAIFilter CreateConditionFilter() {
+		switch(mConditionType) {
+		case ConditionType.ANY:
+			return new AIAcceptAllFilter();
+		case ConditionType.CLASS:
+			return new AIClassConditionFilter(mClassCondition);
+		case ConditionType.HP:
+			return new AIHipointConditionFilter(mHitpointCondition, mConditionValue);
+		case ConditionType.PARTY:
+			return new AIPartyConditionFilter(mPartyCondition, (int)mConditionValue);
+		case ConditionType.RES:
+			return new AIResourceConditionFilter(mResourceCondition, mConditionValue);
+		case ConditionType.ROW:
+			return new AIRowConditionFilter(mRowCondition, (int)mConditionValue);
+		case ConditionType.STATUS:
+			if(mStatusCondition == StatusCondition.BUFF_COUNT_GT) {
+				// TEMP to stop compiler warnings
 			}
+			return new AIAcceptAllFilter();
 		}
+		return null;
 	}
 
-	// TODO create a BattleAction after name has been refactored
+	public IAIFilter CreateTargetFilter() {
+		return new AITargetFilter(mConditionTarget);	
+	}
+	
 }
 
 

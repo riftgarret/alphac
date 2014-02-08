@@ -13,5 +13,8 @@ using UnityEngine;
 public class EnemySkillSetConfig : ScriptableObject
 {
 	[SerializeField]
-	private AISkillRule [] mAISkillRules;
+	private AISkillRule [] mAISkillRules = new AISkillRule[5];
+	public AISkillRule[] skillRules {
+		get { return mAISkillRules; }
+	}
 }

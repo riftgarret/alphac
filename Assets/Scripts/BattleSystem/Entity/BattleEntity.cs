@@ -60,9 +60,9 @@ public abstract class BattleEntity {
 	}
 
 	// TODO return DamageResults, or process results to print out
-	public void TakeDamage(Damage damage) {
+	public void TakeDamage(Damage damage, BattleEntity fromEntity) {
 		// calculate resists
 		this.character.curHP -= damage.slashDamage;
-		Debug.Log("Damage: " + damage.slashDamage + " HP dropped to: " + this.character.curHP);
+		Debug.Log(this.character.displayName + " took " + damage.slashDamage + " damage from " + fromEntity.character.displayName + " HP: " + this.character.curHP);
 	}
 }

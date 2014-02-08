@@ -14,7 +14,13 @@ public class EnemyCharacter : Character
 
 	public EnemyCharacter (){	}
 
-	public EnemyCharacter(EnemyCharacterConfig config) : base(config) {
-
+	private AISkillResolver mSkillResolver;
+	public AISkillResolver skillResolver {
+		get { return mSkillResolver; }
 	}
+
+	public EnemyCharacter(EnemyCharacterConfig config) : base(config) {
+		mSkillResolver = new AISkillResolver(config.skillRules);
+	}
+	
 }

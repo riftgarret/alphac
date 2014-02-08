@@ -35,7 +35,7 @@ public class PCTurnManager {
 	/// Gets the current target list.
 	/// </summary>
 	/// <value>The current target list.</value>
-	public SelectableTargetList currentTargetList {
+	public SelectableTargetManager currentTargetManager {
 		private set;
 		get;
 	}
@@ -84,7 +84,7 @@ public class PCTurnManager {
 		}
 
 		currentSelectedSkill = skill;
-		currentTargetList = SelectableTargetList.CreateAllowedTargets(turnQueue.Peek(), manager, skill);
+		currentTargetManager = SelectableTargetManager.CreateAllowedTargets(turnQueue.Peek(), manager.entityManager, skill);
 		decisionState = DecisionState.TARGET;
 	}
 	
@@ -98,7 +98,8 @@ public class PCTurnManager {
 
 
 		PCBattleEntity sourceEntity = turnQueue.Dequeue();
-		IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, target);
+		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(target, manager.entityManager);
+		IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, targetResolver);
 		manager.OnPCAction(sourceEntity, action);
 		currentSelectedSkill = null;
 		decisionState = (turnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);

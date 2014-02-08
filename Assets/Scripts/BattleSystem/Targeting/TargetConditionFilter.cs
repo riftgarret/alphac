@@ -9,15 +9,19 @@
 //------------------------------------------------------------------------------
 using System;
 
-public enum BattleTargetingType {
-	ENEMY_SINGLE,
-	ENEMY_ALL,
-	ALLY_SINGLE,
-	ALLY_ALL,
-	ALLY_ROW_FRONT,
-	ALLY_ROW_MIDDLE,
-	ALLY_ROW_BACK,
-	SELF
+public class TargetConditionFilter
+{
+	public static bool PassesFilter(BattleEntity entity, TargetFilter filter) {
+		switch(filter) {
+		case TargetFilter.REQUIRE_ALIVE:
+			return entity.character.curHP > 0;
+		case TargetFilter.REQUIRE_BLIND:
+			// TODO
+			return true;
+		case TargetFilter.REQUIRE_DEAD:
+			return entity.character.curHP <= 0;
+		}
+		return true;
+	}
 }
-
 

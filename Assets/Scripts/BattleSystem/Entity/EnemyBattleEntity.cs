@@ -1,24 +1,24 @@
 using UnityEngine;
 using System.Collections;
 
-public class NPCBattleEntity : BattleEntity {
+public class EnemyBattleEntity : BattleEntity {
 	
 	public interface INPCActionListener {
-		void OnAIDecision(NPCBattleEntity npc);
+		void OnAIDecisionRequired(EnemyBattleEntity npc);
 	}
 	
 	private INPCActionListener listener;
 	
 	// setup variables
-	public NPCBattleEntity(EnemyCharacter character, INPCActionListener listener) : base(character) {
+	public EnemyBattleEntity(EnemyCharacter character, INPCActionListener listener) : base(character) {
 		this.listener = listener;
 	}
 	
 	public override void OnRequiresInput (TurnState state) {
-		this.listener.OnAIDecision(this);
+		this.listener.OnAIDecisionRequired(this);
 	}
 	
-	public EnemyCharacter pcCharacter {
+	public EnemyCharacter enemyCharacter {
 		get { return (EnemyCharacter) character; }
 	}
 	

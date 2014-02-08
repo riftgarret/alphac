@@ -48,7 +48,7 @@ public class BattleNormalGUI : MonoBehaviour {
 
 	private void OnStartAlly() {
 		// todo get just ally from here
-		PCBattleEntity[] allyCharacters = manager.pcBattleEntities;
+		PCBattleEntity[] allyCharacters = manager.entityManager.pcEntities;
 
 		// TODO figure out location formula for where characters are on screen, 
 		// for now lets just calculate based on 7 of this size appearing equal size		

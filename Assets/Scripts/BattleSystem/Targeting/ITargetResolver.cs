@@ -8,23 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
-public enum TargetingType {
-	SELF,
-	ALL,
-	SINGLE,
-	ROW,
-	SELF_ROW
-}
 
-public enum TargetStart {
-	ENEMY,
-	SELF,
-	DEAD
-}
+public interface ITargetResolver 
+{
+	/// <summary>
+	/// Gets a value indicating whether this <see cref="ITargetResolver"/> is valid target.
+	/// </summary>
+	/// <value><c>true</c> if is valid target; otherwise, <c>false</c>.</value>
+	bool isValidTarget(CombatSkill skill);
 
-public enum TargetFilter {
-	REQUIRE_ALIVE,
-	REQUIRE_DEAD,
-	REQUIRE_BLIND
+	BattleEntity[] GetTargets(CombatSkill skill);
 }

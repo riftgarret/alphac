@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NPCBattleEntity.INPCActionListener, IBattleTargetProvider {
+public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, EnemyBattleEntity.INPCActionListener {
 
+	
 	public float unitOfTime = 1f;
 
 	/// <summary>
@@ -29,26 +30,16 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		get;
 	}
 
-	/// <summary>
-	/// Gets the pc battle entities.
-	/// </summary>
-	/// <value>The pc battle entities.</value>
-	public PCBattleEntity[] pcBattleEntities {
-		private set;
-		get;
-	}
-
-	/// <summary>
-	/// Gets the npc battle entities.
-	/// </summary>
-	/// <value>The npc battle entities.</value>
-	public NPCBattleEntity[] npcBattleEntities {
-		private set;
-		get;
+	// for managing positions and enemies
+	private BattleEntityManager mEntityManager;
+	public BattleEntityManager entityManager {
+		get { return mEntityManager; }
 	}
 
 	public EnemyParty enemyParty;
 	public PCParty pcParty;
+
+	private bool mOnBattleChangedFlag;
 
 	void Awake() {
 		battleTimeQueue = new BattleTimeQueue(unitOfTime);
@@ -58,22 +49,9 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		EnemyCharacter[] npcChars = enemyParty.CreateUniqueCharacters();
 		PCCharacter[] pcChars = pcParty.CreateUniqueCharacters();
 
-		// combine 
-		BattleEntity[] allEntities = new BattleEntity[pcChars.Length + npcChars.Length];
+		mEntityManager = new BattleEntityManager(this, pcChars, npcChars);				
 
-		pcBattleEntities = new PCBattleEntity[pcChars.Length];
-		for(int i=0; i < pcBattleEntities.Length; i++) {
-			pcBattleEntities[i] = new PCBattleEntity(pcChars[i], this);
-			allEntities[i] = pcBattleEntities[i];
-		}
-
-		npcBattleEntities = new NPCBattleEntity[npcChars.Length];
-		for(int i=0; i < npcBattleEntities.Length; i++) {
-			npcBattleEntities[i] = new NPCBattleEntity(npcChars[i], this);
-			allEntities[pcChars.Length + i] = npcBattleEntities[i];
-		}		
-
-		battleTimeQueue.InitEntities(allEntities);
+		battleTimeQueue.InitEntities(mEntityManager.allEntities);
 	}
 
 	//private PriorityQueue
@@ -97,25 +75,26 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, NP
 		battleTimeQueue.IncrementTimeDelta(Time.deltaTime);
 	}
 
-	public BattleEntity[] GetTargets(bool isPCTargets) {
-		if(isPCTargets) {
-			return pcBattleEntities;
-		}
-		return npcBattleEntities;
-	}
-
 	// ActionListener callback
 	public void OnPCActionRequired(PCBattleEntity pc) {
 		turnManager.QueuePC(pc);
 	}
 
 	// NPC callabck
-	public void OnAIDecision(NPCBattleEntity npc) {
-		Debug.Log("TODO: AI decisions");
+	public void OnAIDecisionRequired(EnemyBattleEntity npc) {
+		npc.enemyCharacter.skillResolver.ResolveAction(this, npc);
+	}
+
+	public void OnAIDecision(EnemyBattleEntity entity, IBattleAction action) {
+		battleTimeQueue.SetAction(entity, action);
 	}
 
 	public void OnPCAction(PCBattleEntity entity, IBattleAction action) {
 		battleTimeQueue.SetAction(entity, action);
+	}
+
+	public void OnBattleChanged(int eventType) {
+		// TODO, handle on battle changed
 	}
 	
 }

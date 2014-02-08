@@ -13,14 +13,14 @@ public abstract class BattleAction : IBattleAction {
 	/// <summary>
 	/// The target entity. This may be null if we are targeting a group.
 	/// </summary>
-	protected readonly SelectableTarget target;
+	protected readonly ITargetResolver targetResolver;
 
 	protected readonly BattleEntity sourceEntity;
 	
-	protected BattleAction(CombatSkill skill, BattleEntity sourceEntity, SelectableTarget target) {
+	protected BattleAction(CombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver) {
 		this.combatSkill = skill;
 		this.sourceEntity = sourceEntity;
-		this.target = target;
+		this.targetResolver = targetResolver;
 	}
 
 	public abstract void OnExecuteAction(float actionClock);
