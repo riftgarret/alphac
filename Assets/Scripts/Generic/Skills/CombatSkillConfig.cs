@@ -22,6 +22,10 @@ public class CombatSkillConfig : SkillConfig {
 	public CombatSkillActionEnum combatSkillEnum { get { return mCombatSkillEnum; } }
 
 	[SerializeField]
+	private OffensiveModifier [] mOffensiveModifiers;
+	public OffensiveModifier [] offensiveModifiers { get { return mOffensiveModifiers; } }
+
+	[SerializeField]
 	private float mTimePrepare = 1f;
 	public float timePrepare { get { return mTimePrepare; } }
 

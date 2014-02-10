@@ -29,7 +29,6 @@ public class CharacterConfig : ScriptableObject
 	public CharacterClassConfig charClass;
 	
 	// equipment
-	public WeaponConfig mainHandWeapon;
-	public WeaponConfig offHandWeapon;
+	public Weapon mainHandWeapon;
 }
 

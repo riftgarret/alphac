@@ -8,14 +8,14 @@ public abstract class BattleAction : IBattleAction {
 	public float timeAction { get { return combatSkill.combatSkillConfig.timeAction; } }  
 	public float timeRecover { get { return combatSkill.combatSkillConfig.timeRecover; } } 
 
-	protected readonly CombatSkill combatSkill;
+	public readonly CombatSkill combatSkill;
 			
 	/// <summary>
 	/// The target entity. This may be null if we are targeting a group.
 	/// </summary>
-	protected readonly ITargetResolver targetResolver;
+	public readonly ITargetResolver targetResolver;
 
-	protected readonly BattleEntity sourceEntity;
+	public readonly BattleEntity sourceEntity;
 	
 	protected BattleAction(CombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver) {
 		this.combatSkill = skill;

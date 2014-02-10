@@ -15,44 +15,10 @@ public class WeaponConfig : ScriptableObject
 {
 	public string weaponName;
 	public float baseDamage;
-	public float strModifier;
-	public float agiModifier;
-	public float dexModifier;
-	public float intModifier;
-	public float wisModifier;
-
+	public OffensiveModifier[] offensiveModifiers;
 	public DamageType dmgType;
 	public WeaponType weaponType;
 
 	public Texture2D icon;
-
-
-	public WeaponConfig(){}
-	// clone constructor
-	protected WeaponConfig(WeaponConfig other) {
-		weaponName = other.weaponName;
-		strModifier = other.strModifier;
-		agiModifier = other.agiModifier;
-		dexModifier = other.dexModifier;
-		intModifier = other.intModifier;
-		wisModifier = other.wisModifier;
-		dmgType = other.dmgType;
-		weaponType = other.weaponType;
-		icon = other.icon;
-	}
-
-	/// <summary>
-	/// Calculates the attack. based on modifiers and base damasge
-	/// </summary>
-	/// <returns>The attack.</returns>
-	/// <param name="character">Character.</param>
-	public float CalculateAttack(Character character) {
-		float atk = baseDamage;
-		atk += strModifier * character.strength;
-		atk += agiModifier * character.agility;
-		atk += dexModifier * character.dexerity;
-		atk += intModifier * character.inteligence;
-		atk += wisModifier * character.wisdom;
-		return atk;
-	}
+		
 }

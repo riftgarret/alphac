@@ -45,8 +45,8 @@ public abstract class Character  {
 	public CharacterClassConfig charClass;
 
 	// equipment
-	public WeaponConfig mainHandWeapon;
-	public WeaponConfig offHandWeapon;
+	public Weapon mainHandWeapon;
+
 
 	// armor, accessory
 	
@@ -80,11 +80,12 @@ public abstract class Character  {
 		level = other.level;
 		charClass = other.charClass;
 
-		mainHandWeapon = (WeaponConfig)other.mainHandWeapon;
-		offHandWeapon = (WeaponConfig)other.offHandWeapon;
+		mainHandWeapon = other.mainHandWeapon;
 
 		curHP = maxHP;
 	}
+
+
 
 	// TODO tune for balance for dual weild
 	public float physicalAttack {
@@ -92,9 +93,6 @@ public abstract class Character  {
 			float atk = 1;
 			if(mainHandWeapon != null) {
 				atk += mainHandWeapon.CalculateAttack(this);
-			}
-			if(offHandWeapon != null) {
-				atk += offHandWeapon.CalculateAttack(this);
 			}
 
 			return strength + atk;
@@ -124,5 +122,82 @@ public abstract class Character  {
 
 	public float critChance {
 		get { return luck; }
+	}
+
+	public float critDefense {
+		get { return luck + vitality / 2; }
+	}
+
+	/// <summary>
+	/// Gets the stat value.
+	/// </summary>
+	/// <returns>The stat.</returns>
+	/// <param name="stat">Stat.</param>
+	public float GetStat(StatType stat) {
+		switch(stat) {
+		case StatType.STR:
+			return strength;
+		case StatType.VIT:
+			return vitality;
+		case StatType.AGI:
+			return agility;
+		case StatType.DEX:
+			return dexerity;
+		case StatType.INT:
+			return inteligence;
+		case StatType.WIS:
+			return wisdom;
+		case StatType.LUCK:
+		default:
+			return luck;
+		}
+	}
+	
+	/// <summary>
+	/// Gets the stat. This will only return a value if the stat is of str, agil,..  luck, not the crit chance
+	/// </summary>
+	/// <returns>The stat.</returns>
+	/// <param name="statType">Stat type.</param>
+	public float GetNativeStat(OffensiveModifierType statType) {
+		switch(statType) {
+		case OffensiveModifierType.AGI_MOD:
+			return agility;
+		case OffensiveModifierType.DEX_MOD:
+			return dexerity;
+		case OffensiveModifierType.STR_MOD:
+			return strength;
+		case OffensiveModifierType.INT_MOD:
+			return inteligence;
+		case OffensiveModifierType.WIS_MOD:
+			return wisdom;
+		default:
+			return 0;
+		}
+	}
+
+	public float GetResist(DamageType dmg) {
+		switch(dmg) {
+		case DamageType.CRUSH:
+			// get crush armor stats
+			return (vitality / 2f);
+		case DamageType.PIERCE:
+			return (agility / 2f);
+		case DamageType.SLASH:
+			return (dexerity / 2f);
+		case DamageType.DARK:
+			return (luck / 2f);
+		case DamageType.LIGHT:
+			return (wisdom / 2f);
+		case DamageType.EARTH:
+			return (strength / 2f);
+		case DamageType.WIND:
+			return (agility / 2f);
+		case DamageType.FIRE:
+			return (vitality / 2f);
+		case DamageType.WATER:
+			return (wisdom / 2f);
+		default:
+			return 1;
+		}
 	}
 }
