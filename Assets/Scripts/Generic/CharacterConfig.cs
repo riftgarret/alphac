@@ -30,5 +30,9 @@ public class CharacterConfig : ScriptableObject
 	
 	// equipment
 	public Weapon mainHandWeapon;
+	public ArmorSlot armorTorso;
+	public ArmorSlot armorArms;
+	public ArmorSlot armorLegs;
+	public ArmorSlot armorHead;
 }
 

@@ -46,6 +46,10 @@ public abstract class Character  {
 
 	// equipment
 	public Weapon mainHandWeapon;
+	public ArmorSlot armorHelmet;
+	public ArmorSlot armorTorso;
+	public ArmorSlot armorLegs;
+	public ArmorSlot armorArms;
 
 
 	// armor, accessory
@@ -176,7 +180,13 @@ public abstract class Character  {
 	}
 
 	public float GetResist(DamageType dmg) {
-		switch(dmg) {
+		float armorResist = GetTotalArmorResists(dmg);
+		float classResist = GetClassArmorResists(dmg);
+		return armorResist + classResist;
+	}
+
+	private float GetClassArmorResists(DamageType type) {
+		switch(type) {
 		case DamageType.CRUSH:
 			// get crush armor stats
 			return (vitality / 2f);
@@ -199,5 +209,46 @@ public abstract class Character  {
 		default:
 			return 1;
 		}
+	}
+
+	/// <summary>
+	/// Gets the total armor resists. for the armor set
+	/// </summary>
+	/// <returns>The total armor resists.</returns>
+	/// <param name="type">Type.</param>
+	private float GetTotalArmorResists(DamageType type) {
+		float total = 0f;
+		total += GetArmorResist(type, armorArms);
+		total += GetArmorResist(type, armorHelmet);
+		total += GetArmorResist(type, armorTorso);
+		total += GetArmorResist(type, armorLegs);
+		return total;
+	}
+
+	private float GetArmorResist(DamageType type, ArmorSlot armor) {
+		if(armor == null) {
+			return 0f;
+		}
+		switch(type) {
+		case DamageType.CRUSH:
+			return armor.config.resists.crush;
+		case DamageType.PIERCE:
+			return armor.config.resists.pierce;
+		case DamageType.SLASH:
+			return armor.config.resists.slash;
+		case DamageType.DARK:
+			return armor.config.resists.dark;
+		case DamageType.LIGHT:
+			return armor.config.resists.light;
+		case DamageType.WIND:
+			return armor.config.resists.wind;
+		case DamageType.EARTH:
+			return armor.config.resists.earth;
+		case DamageType.FIRE:
+			return armor.config.resists.fire;
+		case DamageType.WATER:
+			return armor.config.resists.water;
+		}
+		return 0f;
 	}
 }

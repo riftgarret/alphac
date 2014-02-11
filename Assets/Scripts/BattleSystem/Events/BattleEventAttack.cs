@@ -11,43 +11,48 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class DamageEvent
+public class BattleEventAttack : IBattleEvent
 {
-	private const float CRIT_MULTIPLIER = 1.5f;
+	private const float CRIT_MULTIPLIER_LOW = 1.5f;
+	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
 
-	private BattleEntity srcEntity;
-	private BattleEntity destEntity;
+	private BattleEntity mSrcEntity;
+	private BattleEntity mDestEntity;
 
-	private List<DamageNode> damageNodes;
-	private bool isEvaded;
-	private bool isCrit;
+	private List<DamageNode> mDamageNodes;
+	private DamageType mDmgType;
+	private bool mIsEvaded;
+	private bool mIsCrit;
+	private float mTotalDamage;
 
-
-	public DamageEvent (BattleEntity srcEntity, BattleEntity destEntity, BattleAction action, OffensiveModifier [] skillModifiers)
+	public BattleEventAttack (BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] skillModifiers)
 	{
-		isEvaded = false;
-		isCrit = false;
+		this.mSrcEntity = src;
+		this.mDestEntity = dest;
+
+		mIsEvaded = false;
+		mIsCrit = false;
 
 		// should be done first to popualte into from auxilary methods
-		damageNodes = new List<DamageNode>();
+		mDamageNodes = new List<DamageNode>();
 
 		// get the main weapon to determine damage type
-		Character srcChar = srcEntity.character;	
-		Character destChar = destEntity.character;
+		Character srcChar = src.character;	
+		Character destChar = dest.character;
 
 		// check dodge before anything
-		float chanceToHit = srcChar.accuracy / (srcChar.accuracy / destChar.relfex);
+		float chanceToHit = srcChar.accuracy / (srcChar.accuracy + destChar.relfex);
 
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
 			// missed
-			isEvaded = true;
+			mIsEvaded = true;
 			return;
 		}
 
-
 		// Calculate damage
 		Weapon weapon = srcChar.mainHandWeapon;				
+		mDmgType = weapon.weaponConfig.dmgType;
 						
 		float dmg = weapon.weaponConfig.baseDamage;
 		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
@@ -60,7 +65,7 @@ public class DamageEvent
 
 		// calculate weapon damage node
 		float damageSum = rolledDmg;
-		foreach(DamageNode node in damageNodes) {
+		foreach(DamageNode node in mDamageNodes) {
 			damageSum += node.calculatedDamage;
 		}
 
@@ -68,13 +73,17 @@ public class DamageEvent
 		float critChance = srcChar.critChance / (srcChar.critChance / destChar.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
-			damageSum *= CRIT_MULTIPLIER; // crit
-			isCrit = true;
+			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
+			mIsCrit = true;
 		}
 
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack
-		destChar.GetResist(weapon.weaponConfig.dmgType);
+		float resistValue = destChar.GetResist(mDmgType);
+
+		// result damage should be same type of calculation
+		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
+		mTotalDamage = Mathf.Ceil(mTotalDamage);
 	}
 
 	/*
@@ -115,7 +124,7 @@ public class DamageEvent
 
 		/// create and add it to our list
 		DamageNode node = new DamageNode(initialDamage * moddedDmg, srcType);
-		damageNodes.Add(node);
+		mDamageNodes.Add(node);
 
 		return node;
 	}
@@ -130,6 +139,33 @@ public class DamageEvent
 		}
 	}
 
+	public BattleEntity srcEntity {
+		get {
+			return mSrcEntity;
+		}
+	}
+
+	public BattleEventType eventType {
+		get {
+			return BattleEventType.ATTACK;
+		}
+	}
+
+	public float totalDamage {
+		get {
+			return mTotalDamage;
+		}
+	}
+
+	public string eventText {
+		get {
+			if(mIsEvaded) {
+				return string.Format("{0} missed {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
+			}
+			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
+			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
+		}
+	}
 }
 
 

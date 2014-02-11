@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, EnemyBattleEntity.INPCActionListener {
+public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, EnemyBattleEntity.INPCActionListener, IBattleEventListener {
 
 	
 	public float unitOfTime = 1f;
@@ -30,6 +30,11 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 		get;
 	}
 
+	public BattleEventManager eventManager {
+		private set;
+		get;
+	}
+
 	// for managing positions and enemies
 	private BattleEntityManager mEntityManager;
 	public BattleEntityManager entityManager {
@@ -42,8 +47,10 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 	private bool mOnBattleChangedFlag;
 
 	void Awake() {
-		battleTimeQueue = new BattleTimeQueue(unitOfTime);
+		battleTimeQueue = new BattleTimeQueue(unitOfTime, this);
 		turnManager = new PCTurnManager(this);
+		eventManager = new BattleEventManager();
+		eventManager.battleEventListener = this;
 
 		// initialize entities for other methods in start
 		EnemyCharacter[] npcChars = enemyParty.CreateUniqueCharacters();
@@ -92,9 +99,11 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 	public void OnPCAction(PCBattleEntity entity, IBattleAction action) {
 		battleTimeQueue.SetAction(entity, action);
 	}
-
-	public void OnBattleChanged(int eventType) {
-		// TODO, handle on battle changed
-	}
 	
+	// battle event listener
+	public void OnBattleEvent (IBattleEvent e)
+	{
+		Debug.Log(e.eventText);
+		// TODO forward to combat log
+	}
 }

@@ -8,18 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IBattleAction
+public interface IBattleEventListener
 {
 	/// <summary>
-	/// Important to note action clock should always be called even when the delta time has passed.
-	/// the action time threshold, it will be called one last time
+	/// Raises the battle event event.
 	/// </summary>
-	/// <param name="actionClock">Action clock.</param>
-	void OnExecuteAction(float actionClock, BattleEventManager eventManager);
-
-	float timePrepare { get; }
-	float timeAction { get; }
-	float timeRecover { get; }
+	/// <param name="e">E.</param>
+	void OnBattleEvent(IBattleEvent e);
 }
-
 

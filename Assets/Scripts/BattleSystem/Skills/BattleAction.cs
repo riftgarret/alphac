@@ -23,7 +23,7 @@ public abstract class BattleAction : IBattleAction {
 		this.targetResolver = targetResolver;
 	}
 
-	public abstract void OnExecuteAction(float actionClock);
+	public abstract void OnExecuteAction(float actionClock, BattleEventManager eventManager);
 
 	/// <summary>
 	/// To complete action, not useful in current stage.

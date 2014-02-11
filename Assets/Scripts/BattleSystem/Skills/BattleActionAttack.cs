@@ -2,19 +2,19 @@ using UnityEngine;
 using System.Collections;
 
 public class BattleActionAttack : BattleAction {
-	
+	int mAttackCount = 0;
+
 	public BattleActionAttack(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
 
 	}
 
-	public override void OnExecuteAction (float actionClock)
+	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
 	{	
-		if(actionClock >= timeAction) {
-			Damage damage = new Damage();
-			damage.slashDamage = sourceEntity.character.physicalAttack;
+		if(actionClock >= timeAction && mAttackCount == 0) {
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				entity.TakeDamage(damage, sourceEntity);
+				eventManager.GenerateAttackEvent(sourceEntity, entity, this, null);
 			}
+			mAttackCount++;
 		}	
 	}
 }

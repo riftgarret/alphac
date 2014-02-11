@@ -22,7 +22,7 @@ public class CombatSkillConfig : SkillConfig {
 	public CombatSkillActionEnum combatSkillEnum { get { return mCombatSkillEnum; } }
 
 	[SerializeField]
-	private OffensiveModifier [] mOffensiveModifiers;
+	private OffensiveModifier [] mOffensiveModifiers = null;
 	public OffensiveModifier [] offensiveModifiers { get { return mOffensiveModifiers; } }
 
 	[SerializeField]

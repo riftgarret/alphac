@@ -45,24 +45,17 @@ public abstract class BattleEntity {
 	/// <param name="state">State.</param>
 	public abstract void OnRequiresInput(TurnState state);
 
-	public void IncrementGameClock(float gameClockDelta) {
+	public void IncrementGameClock(float gameClockDelta, BattleTimeQueue timeQueue) {
 		// TODO, we can modify time if we have that buff here
-		turnState.IncrementGameClock(gameClockDelta);
+		turnState.IncrementGameClock(gameClockDelta, timeQueue.manager);
 	}
 
 	public bool requireUserInput() {
 		return turnState.phase == TurnState.Phase.REQUIRES_INPUT;
 	}
 
-	public void OnExecuteTurn(TurnState state) {
+	public void OnExecuteTurn(TurnState state, BattleEventManager eventManager) {
 		// do action against character
-		state.action.OnExecuteAction(state.turnClock);
-	}
-
-	// TODO return DamageResults, or process results to print out
-	public void TakeDamage(Damage damage, BattleEntity fromEntity) {
-		// calculate resists
-		this.character.curHP -= damage.slashDamage;
-		Debug.Log(this.character.displayName + " took " + damage.slashDamage + " damage from " + fromEntity.character.displayName + " HP: " + this.character.curHP);
+		state.action.OnExecuteAction(state.turnClock, eventManager);
 	}
 }

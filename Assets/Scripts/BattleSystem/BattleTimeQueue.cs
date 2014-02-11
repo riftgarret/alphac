@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BattleTimeQueue {
-	private float unitOfTime;
-	private float inGameClock;
+	private float mUnitOfTime;
+	private float mInGameClock;
+	private BattleManager mManager;
+	public BattleManager manager {
+		get { return mManager; }
+	}
 
 	// unit queue
 	private BattleEntity [] unitArray;
 
 	// buff queues
 
-	public BattleTimeQueue(float unitOfTime) {
-		this.unitOfTime = unitOfTime;
-		inGameClock = 0f;
+	public BattleTimeQueue(float unitOfTime, BattleManager manager) {
+		this.mUnitOfTime = unitOfTime;
+		this.mManager = manager;
+		mInGameClock = 0f;
 	}
 
 	/// <summary>
@@ -36,11 +41,11 @@ public class BattleTimeQueue {
 	public void IncrementTimeDelta(float deltaTime) {
 		// reset input counter, we can see which players dont have commands
 
-		float gameClockTic = deltaTime * unitOfTime;
-		inGameClock += gameClockTic;
+		float gameClockTic = deltaTime * mUnitOfTime;
+		mInGameClock += gameClockTic;
 
 		foreach(BattleEntity unit in unitArray) {
-			unit.IncrementGameClock(gameClockTic);
+			unit.IncrementGameClock(gameClockTic, this);
 		}
 	}
 

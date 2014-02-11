@@ -9,22 +9,19 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class BattleCombatEvent
+public class ResistProperties
 {
-	private BattleEntity mSrcEntity;
-	private BattleEntity [] mDestEntities;
+	// physical
+	public float slash;
+	public float pierce;
+	public float crush;
 
-	public BattleCombatEvent (BattleEntity src, BattleEntity dest) : this(src, new BattleEntity[]{dest})
-	{
-	}
-
-	public BattleCombatEvent(BattleEntity src, BattleEntity[] dest) {
-		this.mSrcEntity = src;
-		this.mDestEntities = dest;
-	}
-
-	public void Execute() {
-
-	}
+	public float dark;
+	public float light;
+	public float wind;
+	public float earth;
+	public float fire;
+	public float water;
 }
+
 

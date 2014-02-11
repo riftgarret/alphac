@@ -12,24 +12,42 @@ using UnityEngine;
 
 public class BattleEventManager
 {
+	public IBattleEventListener battleEventListener {
+		get;
+		set;
+	}
+
 	public BattleEventManager ()
 	{
 	}
 
-	public void DoAttack(BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] modifiers) {
-		Character character = src.character;
 
-		Weapon weapon = character.mainHandWeapon;
+	/// <summary>
+	/// Does the attack. 
+	/// </summary>
+	/// <param name="src">Source.</param>
+	/// <param name="dest">Destination.</param>
+	/// <param name="action">Action.</param>
+	/// <param name="modifiers">Modifiers.</param>
+	public void GenerateAttackEvent(BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] modifiers) {
+		BattleEventAttack attackEvent = new BattleEventAttack(src, dest, action, modifiers);
+		ApplyDamage(attackEvent.totalDamage, dest);
+		NotifyEvent(attackEvent);
+	}
 
-
-
-		if(modifiers != null) {
-
+	/// <summary>
+	/// Notifies the event.
+	/// </summary>
+	/// <param name="battleEvent">Battle event.</param>
+	private void NotifyEvent(IBattleEvent battleEvent) {
+		if(battleEventListener != null) {
+			battleEventListener.OnBattleEvent(battleEvent);
 		}
+	}
 
-		float dmg = weapon.weaponConfig.baseDamage;
-		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
-
-
+	// calculate and apply damage state (see if they are dead or not)
+	private void ApplyDamage(float damage, BattleEntity destEntity) {
+		destEntity.character.curHP -= damage;
+		destEntity.character.curHP = Mathf.Max(destEntity.character.curHP, 0);
 	}
 }
