@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 2ae668b2cc4c0b84c8ab48ae061466a6
+=======
+guid: 2ded89069f191b54f9858bd9ed6cd59d
+>>>>>>> Added Manor Escape Modified FPS controlller instance
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName: {}
