@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BattleEventAttack : IBattleEvent
+public class BattleEventAttack : IBattleDamageEvent
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -143,6 +143,10 @@ public class BattleEventAttack : IBattleEvent
 		get {
 			return mSrcEntity;
 		}
+	}
+
+	public BattleEntity destEntity {
+		get { return mDestEntity; }
 	}
 
 	public BattleEventType eventType {

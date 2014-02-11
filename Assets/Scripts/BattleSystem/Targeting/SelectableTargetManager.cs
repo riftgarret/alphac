@@ -31,7 +31,7 @@ public class SelectableTargetManager {
 		FilterSkill(entitySet, skill);
 
 		// populate targets
-		if(origin.isPC()) {
+		if(origin.isPC) {
 			PopulateSelectableTargets(targetList, (PCBattleEntity) origin, entitySet, skill);
 		}
 		else {
@@ -165,7 +165,7 @@ public class SelectableTargetManager {
 		SelectableTarget rowTarget = new SelectableTarget(ROW_CURRENT_NAME, new List<BattleEntity>(), ResolvedTargetEnum.SELF_ROW);
 		PCCharacter.RowPosition rowPos = sourceEntity.pcCharacter.rowPosition;
 		foreach(BattleEntity entity in entitySet) {
-			if(entity.isPC() && ((PCBattleEntity)entity).pcCharacter.rowPosition == rowPos) {
+			if(entity.isPC && ((PCBattleEntity)entity).pcCharacter.rowPosition == rowPos) {
 				rowTarget.entities.Add(entity);
 			}
 		}
@@ -189,7 +189,7 @@ public class SelectableTargetManager {
 
 		// add each to appropriate list
 		foreach(BattleEntity entity in entitySet) {
-			if(entity.isPC()) {
+			if(entity.isPC) {
 				allyTarget.entities.Add(entity);
 			}
 			else {
@@ -220,7 +220,7 @@ public class SelectableTargetManager {
 
 		// populate the bins
 		foreach(BattleEntity entity in entitySet) {
-			if(entity.isPC()) {
+			if(entity.isPC) {
 				switch(((PCBattleEntity)entity).pcCharacter.rowPosition) {
 				case PCCharacter.RowPosition.FRONT:
 					frontRowTarget.entities.Add(entity);
