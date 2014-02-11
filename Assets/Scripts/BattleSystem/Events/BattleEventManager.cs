@@ -31,8 +31,7 @@ public class BattleEventManager
 	/// <param name="modifiers">Modifiers.</param>
 	public void GenerateAttackEvent(BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] modifiers) {
 		BattleEventAttack attackEvent = new BattleEventAttack(src, dest, action, modifiers);
-		ApplyDamage(attackEvent.totalDamage, dest);
-		NotifyEvent(attackEvent);
+		ApplyAndNotifyDamageEvent(attackEvent);
 	}
 
 	/// <summary>
@@ -46,8 +45,21 @@ public class BattleEventManager
 	}
 
 	// calculate and apply damage state (see if they are dead or not)
-	private void ApplyDamage(float damage, BattleEntity destEntity) {
-		destEntity.character.curHP -= damage;
-		destEntity.character.curHP = Mathf.Max(destEntity.character.curHP, 0);
-	}
+	private void ApplyAndNotifyDamageEvent(IBattleDamageEvent dmgEvent) {
+		BattleEntity destEntity = dmgEvent.destEntity;
+		if(destEntity.character.curHP <= 0) {
+			return; // character is dead, no need to add more death
+		}
+		destEntity.character.curHP -= dmgEvent.totalDamage;
+		// notify attack event
+		NotifyEvent(dmgEvent);
+
+		// if character died, notify death event
+		if(destEntity.character.curHP <= 0) {
+			destEntity.character.curHP = 0;
+			BattleEventDeath deathEvent = new BattleEventDeath(destEntity);
+			NotifyEvent(deathEvent);
+		}
+
+	}	
 }

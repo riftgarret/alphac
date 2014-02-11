@@ -22,8 +22,8 @@ public class PCBattleEntity : BattleEntity {
 		get { return (PCCharacter) character; }
 	}
 
-	public override bool isPC ()
+	public override bool isPC 
 	{
-		return true;
+		get { return true; }
 	}
 }

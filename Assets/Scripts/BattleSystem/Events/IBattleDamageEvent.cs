@@ -8,13 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public enum BattleEventType
+
+public interface IBattleDamageEvent : IBattleEvent
 {
-	ATTACK,
-	MAGIC,
-	ITEM,
-	MOVE,
-	DEATH
+	BattleEntity destEntity {
+		get;
+	}
+
+	float totalDamage {
+		get;
+	}
+
 }
 
 

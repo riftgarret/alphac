@@ -35,7 +35,9 @@ public abstract class BattleEntity {
 	/// Is this entity a PC
 	/// </summary>
 	/// <returns><c>true</c>, if P was ised, <c>false</c> otherwise.</returns>
-	public abstract bool isPC() ;
+	public abstract bool isPC {
+		get;
+	}
 
 	/// <summary>
 	/// Raises the requires input event. This should be managed by either a PC to get actions

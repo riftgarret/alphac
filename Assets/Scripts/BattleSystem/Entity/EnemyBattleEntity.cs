@@ -22,8 +22,10 @@ public class EnemyBattleEntity : BattleEntity {
 		get { return (EnemyCharacter) character; }
 	}
 	
-	public override bool isPC ()
+	public override bool isPC 
 	{
-		return false;
+		get {
+			return false;
+		}
 	}
 }
