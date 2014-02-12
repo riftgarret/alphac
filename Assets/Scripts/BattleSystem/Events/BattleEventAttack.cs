@@ -161,6 +161,18 @@ public class BattleEventAttack : IBattleDamageEvent
 		}
 	}
 
+	public bool isEvaded {
+		get {
+			return mIsEvaded;
+		}
+	}
+
+	public bool isCrit {
+		get {
+			return mIsCrit;
+		}
+	}
+
 	public string eventText {
 		get {
 			if(mIsEvaded) {

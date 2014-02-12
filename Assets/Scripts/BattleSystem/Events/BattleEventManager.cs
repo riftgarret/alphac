@@ -20,18 +20,43 @@ public class BattleEventManager
 	public BattleEventManager ()
 	{
 	}
-
+	
 
 	/// <summary>
-	/// Does the attack. 
+	/// Generates the attack event. If the attack hits, it will assign all dest status effects to dest battle entity, and others
+	/// to the src
 	/// </summary>
 	/// <param name="src">Source.</param>
 	/// <param name="dest">Destination.</param>
 	/// <param name="action">Action.</param>
 	/// <param name="modifiers">Modifiers.</param>
-	public void GenerateAttackEvent(BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] modifiers) {
-		BattleEventAttack attackEvent = new BattleEventAttack(src, dest, action, modifiers);
+	/// <param name="srcPhysicalStatusEffects">Source physical status effects.</param>
+	/// <param name="destPhysicalStatusEffects">Destination physical status effects.</param>
+	public void GenerateAttackEvent(BattleEntity src, BattleEntity dest, 
+	                                BattleAction action, 
+	                                BattleEventOptions options) {
+		BattleEventAttack attackEvent = new BattleEventAttack(src, dest, action, options.offensiveModifiers);
 		ApplyAndNotifyDamageEvent(attackEvent);
+
+		// check to see if we hit for any status effects
+		if(options.destStatusEffects != null && !attackEvent.isEvaded) {
+			foreach(IStatusEffect effect in options.destStatusEffects) {
+				dest.ApplyStatusEffect(effect);
+			}
+		}
+
+		// check to see if we hit for any status effects
+		if(options.srcStatusEffects != null && !attackEvent.isEvaded) {
+			foreach(IStatusEffect effect in options.srcStatusEffects) {
+				src.ApplyStatusEffect(effect);
+			}
+		}
+	}
+
+	public void GenerateMagicEvent(BattleEntity src, BattleEntity dest, 
+	                               BattleAction action, 
+	                               BattleEventOptions options) {
+
 	}
 
 	/// <summary>
@@ -61,5 +86,5 @@ public class BattleEventManager
 			NotifyEvent(deathEvent);
 		}
 
-	}	
+	}		
 }

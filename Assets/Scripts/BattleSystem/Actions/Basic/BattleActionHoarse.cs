@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class BattleActionAttack : BattleAction {
+public class BattleActionHoarse : BattleAction {
 	int mAttackCount = 0;
 
-	public BattleActionAttack(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
+	public BattleActionHoarse(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
 
 	}
 

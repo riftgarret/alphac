@@ -3,8 +3,6 @@ using System.Collections;
 
 public abstract class BattleEntity {
 
-
-
 	// turn phase
 	public TurnState turnState {
 		get;
@@ -20,8 +18,11 @@ public abstract class BattleEntity {
 		protected set;
 	}
 
+	private StatusEffectManager mStatusEffectManager;
+
 	// setup variables
 	public BattleEntity(Character character) {
+		mStatusEffectManager = new StatusEffectManager(this);
 		turnState = new TurnState(this);
 		this.character = character;
 	}
@@ -29,6 +30,10 @@ public abstract class BattleEntity {
 
 	public void InitializeBattlePhase() {
 		turnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
+	}
+
+	public void ApplyStatusEffect(IStatusEffect statusEffect) {
+		mStatusEffectManager.HandleAddStatus(statusEffect);
 	}
 
 	/// <summary>
@@ -50,6 +55,7 @@ public abstract class BattleEntity {
 	public void IncrementGameClock(float gameClockDelta, BattleTimeQueue timeQueue) {
 		// TODO, we can modify time if we have that buff here
 		turnState.IncrementGameClock(gameClockDelta, timeQueue.manager);
+		mStatusEffectManager.OnTimeIncrement(gameClockDelta);
 	}
 
 	public bool requireUserInput() {
