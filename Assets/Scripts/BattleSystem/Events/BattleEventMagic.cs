@@ -9,22 +9,177 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class BattleEventMagic
+public class BattleEventMagic : IBattleDamageEvent
 {
+	private const float CRIT_MULTIPLIER_LOW = 1.5f;
+	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
+	
 	private BattleEntity mSrcEntity;
-	private BattleEntity [] mDestEntities;
-
-	public BattleEventMagic (BattleEntity src, BattleEntity dest) : this(src, new BattleEntity[]{dest})
+	private BattleEntity mDestEntity;
+	
+	private List<DamageNode> mDamageNodes;
+	private DamageType mDmgType;
+	private bool mIsEvaded;
+	private bool mIsCrit;
+	private float mTotalDamage;
+	
+	public BattleEventMagic (BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] skillModifiers)
 	{
-	}
-
-	public BattleEventMagic(BattleEntity src, BattleEntity[] dest) {
 		this.mSrcEntity = src;
-		this.mDestEntities = dest;
+		this.mDestEntity = dest;
+		
+		mIsEvaded = false;
+		mIsCrit = false;
+		
+		// should be done first to popualte into from auxilary methods
+		mDamageNodes = new List<DamageNode>();
+		
+		// get the main weapon to determine damage type
+		Character srcChar = src.character;	
+		Character destChar = dest.character;
+		
+		// check dodge before anything
+		float chanceToHit = srcChar.accuracy / (srcChar.accuracy + destChar.relfex);
+		
+		// TODO add chanceToHit increase
+		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
+			// missed
+			mIsEvaded = true;
+			return;
+		}
+		
+		// Calculate damage
+		Weapon weapon = srcChar.mainHandWeapon;				
+		mDmgType = weapon.weaponConfig.dmgType;
+		
+		float dmg = weapon.weaponConfig.baseDamage;
+		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
+		
+		// we want to annotate the damage from each feature
+		CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.offensiveModifiers, srcChar);
+		//inscriptionDmgNode = null; // TODO
+		CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.combatSkill.combatSkillConfig.offensiveModifiers, srcChar);
+		// effectDmgNode = null; // TODO
+		
+		// calculate weapon damage node
+		float damageSum = rolledDmg;
+		foreach(DamageNode node in mDamageNodes) {
+			damageSum += node.calculatedDamage;
+		}
+		
+		// calculate crit chance
+		float critChance = srcChar.critChance / (srcChar.critChance / destChar.critDefense);
+		// TODO factor in other chances
+		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
+			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
+			mIsCrit = true;
+		}
+		
+		// now calculate damage reduction from opponent
+		// TODO override dmg type if special attack
+		float resistValue = destChar.GetResist(mDmgType);
+		
+		// result damage should be same type of calculation
+		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
+		mTotalDamage = Mathf.Ceil(mTotalDamage);
+	}
+	
+	/*
+	 * TOTAL_DMG,
+	CRIT_MOD,
+	CRIT_TOTAL,
+	ARMOR_IGNORE,
+	DODGE_IGNORE,
+	STR_MOD,
+	AGI_MOD,
+	DEX_MOD,
+	INT_MOD,
+	WIS_MOD
+	 */
+	
+	/// <summary>
+	/// Calculates the pre damage. this is so we can break out each group up
+	/// </summary>
+	/// <returns>The pre damage.</returns>
+	/// <param name="srcType">Source type.</param>
+	/// <param name="initialDamage">Initial damage.</param>
+	/// <param name="statModifiers">Stat modifiers.</param>
+	/// <param name="c">C.</param>
+	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, OffensiveModifier[] modifiers, Character c) {
+		// if no modifiers, lets return null to skip in  our log
+		if(modifiers == null) {
+			return null;
+		}
+		
+		float moddedDmg = 0;
+		foreach(OffensiveModifier mod in modifiers) {
+			moddedDmg += c.GetNativeStat(mod.type) * mod.modValue;
+		}
+		// if we are still 0, return null so we don't include it in our log
+		if(moddedDmg == 0) {
+			return null;
+		}
+		
+		/// create and add it to our list
+		DamageNode node = new DamageNode(initialDamage * moddedDmg, srcType);
+		mDamageNodes.Add(node);
+		
+		return node;
+	}
+	
+	public class DamageNode {
+		public readonly float calculatedDamage;
+		public readonly OffensiveSourceType srcType;
+		
+		public DamageNode(float dmg, OffensiveSourceType type) {
+			this.calculatedDamage = dmg;
+			this.srcType = type;
+		}
+	}
+	
+	public BattleEntity srcEntity {
+		get {
+			return mSrcEntity;
+		}
+	}
+	
+	public BattleEntity destEntity {
+		get { return mDestEntity; }
+	}
+	
+	public BattleEventType eventType {
+		get {
+			return BattleEventType.ATTACK;
+		}
+	}
+	
+	public float totalDamage {
+		get {
+			return mTotalDamage;
+		}
+	}
+	
+	public bool isEvaded {
+		get {
+			return mIsEvaded;
+		}
+	}
+	
+	public bool isCrit {
+		get {
+			return mIsCrit;
+		}
+	}
+	
+	public string eventText {
+		get {
+			if(mIsEvaded) {
+				return string.Format("{0} missed {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
+			}
+			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
+			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
+		}
 	}
 
-	public void Execute() {
-
-	}
 }
 
