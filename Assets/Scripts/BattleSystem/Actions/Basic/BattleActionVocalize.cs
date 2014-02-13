@@ -11,9 +11,10 @@ public class BattleActionVocalize : BattleAction {
 	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
+
 			IStatusEffect [] statusEffects = new IStatusEffect[]{new StatusEffectPrickedThroat(10, 9)};
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateAttackEvent(sourceEntity, entity, this, null, null, statusEffects);
+				eventManager.GenerateAttackEvent(sourceEntity, entity, this, null);
 			}
 			mAttackCount++;
 		}	

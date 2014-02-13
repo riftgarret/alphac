@@ -11,7 +11,7 @@ public class BattleActionThroatSlit : BattleAction {
 	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
-			BattleEventParameter options = BattleEventParameter.Builder()
+			BattleEventOptions options = BattleEventOptions.Builder()
 				.AddDestStatusEffect(new StatusEffectPrickedThroat(10,9))
 					.Build();
 
