@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BattleActionThroatSlit : BattleAction {
+public class BattleActionThroatSlit : BattleActionPhysical {
 	int mAttackCount = 0;
 
 	public BattleActionThroatSlit(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
@@ -16,7 +16,7 @@ public class BattleActionThroatSlit : BattleAction {
 					.Build();
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateAttackEvent(sourceEntity, entity, this, options);
+				eventManager.GeneratePhysicalEvent(sourceEntity, entity, this, options);
 			}
 			mAttackCount++;
 		}	

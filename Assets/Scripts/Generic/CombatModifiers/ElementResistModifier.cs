@@ -8,18 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
-[Serializable]
-public class WeaponConfig : ScriptableObject
+public class ElementResistModifier
 {
-	public string weaponName;
-	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
-
-	public Texture2D icon;
-		
+	public readonly ElementResistType type;
+	public readonly float modValue;
+	
+	public ElementResistModifier (ElementResistType modType, float modValue)
+	{
+		this.type = modType;
+		this.modValue = modValue;
+	}
 }

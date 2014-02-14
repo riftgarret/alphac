@@ -32,23 +32,29 @@ public class BattleEventManager
 	/// <param name="modifiers">Modifiers.</param>
 	/// <param name="srcPhysicalStatusEffects">Source physical status effects.</param>
 	/// <param name="destPhysicalStatusEffects">Destination physical status effects.</param>
-	public void GenerateAttackEvent(BattleEntity src, BattleEntity dest, 
-	                                BattleAction action, 
+	public void GeneratePhysicalEvent(BattleEntity src, BattleEntity dest, 
+	                                BattleActionPhysical action, 
 	                                BattleEventOptions options) {
-		BattleEventAttack attackEvent = new BattleEventAttack(src, dest, action, options.offensiveModifiers);
+		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action);
 		ApplyAndNotifyDamageEvent(attackEvent);
 
 		// check to see if we hit for any status effects
-		if(!attackEvent.isEvaded) {
-			ApplyEffects(options.destStatusEffects, dest);
-			ApplyEffects(options.srcStatusEffects, src);
-		}
+		//if(!attackEvent.isEvaded) {
+		//	ApplyEffects(options.destStatusEffects, dest);
+		//	ApplyEffects(options.srcStatusEffects, src);
+		//}
 	}
 
-	public void GenerateMagicAttackEvent(BattleEntity src, BattleEntity dest, 
-	                               BattleAction action, 
+	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
+	                               BattleActionMagical action, 
 	                               BattleEventOptions options) {
 
+	}
+
+	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 
+	                                 BattleActionPositive action, 
+	                                 BattleEventOptions options) {
+		
 	}
 
 	/// <summary>

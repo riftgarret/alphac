@@ -8,18 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
-
-[Serializable]
-public class WeaponConfig : ScriptableObject
+public class PositiveOffensiveModifier
 {
-	public string weaponName;
-	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
+	public readonly PositiveOffensiveModifierType type;
+	public readonly float modValue;
 
-	public Texture2D icon;
-		
+	public PositiveOffensiveModifier (PositiveOffensiveModifierType modType, float modValue)
+	{
+		this.type = modType;
+		this.modValue = modValue;
+	}
 }
+

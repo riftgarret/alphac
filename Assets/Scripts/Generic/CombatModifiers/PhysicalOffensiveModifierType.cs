@@ -9,16 +9,11 @@
 //------------------------------------------------------------------------------
 using System;
 
-public enum OffensiveModifierType
+public enum PhysicalOffensiveModifierType
 {
 	TOTAL_DMG,
 	CRIT_MOD,
 	CRIT_TOTAL,
 	ARMOR_IGNORE,
-	DODGE_IGNORE,
-	STR_MOD,
-	AGI_MOD,
-	DEX_MOD,
-	INT_MOD,
-	WIS_MOD
+	DODGE_IGNORE
 }

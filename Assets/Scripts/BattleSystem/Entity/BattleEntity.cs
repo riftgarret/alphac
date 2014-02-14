@@ -66,4 +66,122 @@ public abstract class BattleEntity {
 		// do action against character
 		state.action.OnExecuteAction(state.turnClock, eventManager);
 	}
+
+	
+	///////////////////
+	// proxy all character attributes / abilities so they can be adjusted by status effects
+	///////////////////////
+
+	// attributes
+	// current stats
+	public float curHP {
+		get { return this.character.curHP; }
+		set { this.character.curHP = value; }
+	}
+	public float curResource {
+		get { return this.character.curResource; }
+		set { this.character.curResource = value; }
+	}
+	
+	//
+	public float maxHP {
+		get { return this.character.maxHP; }
+	}
+
+	public float maxResource {
+		get { return this.character.maxResource; }
+	}
+	
+	// character name
+	public string displayName {
+		get { return this.character.displayName; }
+	}
+	
+	// stats
+	public float strength {
+		get { return this.character.strength; }
+	}
+
+	public float vitality {
+		get { return this.character.vitality; }
+	}
+
+	public float dexerity {
+		get { return this.character.dexerity; }
+	}
+
+	public float agility  {
+		get { return this.character.agility; }
+	}
+
+	public float inteligence {
+		get { return this.character.inteligence; }
+	}
+
+	public float wisdom {
+		get { return this.character.wisdom; }
+	}
+
+	public float luck {
+		get { return this.character.luck; }
+	}
+
+
+	// calculated attributes
+
+	public float physicalAttack {
+		get {
+			return this.character.physicalAttack;
+		}
+	}
+
+	public float magicAttack {
+		get { return this.character.magicAttack; }
+	}
+	
+	public float accuracy {
+		get {
+			return this.character.accuracy;
+		}
+	}
+	
+	public float relfex {
+		get {
+			return this.character.relfex;
+		}
+	}
+
+	public float critChance {
+		get { return this.character.critChance; }
+	}
+	
+	public float critDefense {
+		get { return this.character.critDefense; }
+	}
+
+	public float GetStat(StatType stat) {
+		return this.character.GetStat(stat);
+	}
+
+	public float GetResist(DamageType dmg) {
+		return this.character.GetResist(dmg);
+	}
+
+	public float GetResist(ElementResistType resistType) {
+		switch(resistType) {
+		case ElementResistType.DARK:
+			return GetResist(DamageType.DARK);
+		case ElementResistType.EARTH:
+			return GetResist(DamageType.EARTH);
+		case ElementResistType.FIRE:
+			return GetResist(DamageType.FIRE);
+		case ElementResistType.LIGHT:
+			return GetResist(DamageType.LIGHT);
+		case ElementResistType.WATER:
+			return GetResist(DamageType.WATER);
+		case ElementResistType.WIND:
+			return GetResist(DamageType.WIND);
+		}
+		return 0;
+	}
 }

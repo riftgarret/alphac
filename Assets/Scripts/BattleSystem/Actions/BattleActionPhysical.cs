@@ -9,19 +9,20 @@
 //------------------------------------------------------------------------------
 using System;
 
-public abstract class CombatSkill : Skill
+
+public abstract class BattleActionPhysical : BattleAction
 {
-	public CombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	public BattleActionPhysical(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
+
 	}
 
-	public CombatSkillConfig combatSkillConfig {
-		get { return (CombatSkillConfig) mSkillConfig; } 
+	public PhysicalCombatSkill physicalCombatSkill {
+		get { return (PhysicalCombatSkill) this.combatSkill; }
 	}
 
-	public StatModifier [] statModifiers {
-		get {
-			return combatSkillConfig.statModifiers;
-		}
+	public float this[PhysicalOffensiveModifierType type] {
+		get { return physicalCombatSkill[type]; }
 	}
 }
+
 

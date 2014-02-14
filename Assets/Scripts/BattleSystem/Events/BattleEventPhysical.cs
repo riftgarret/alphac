@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BattleEventAttack : IBattleDamageEvent
+public class BattleEventPhysical : IBattleDamageEvent
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -25,7 +25,7 @@ public class BattleEventAttack : IBattleDamageEvent
 	private bool mIsCrit;
 	private float mTotalDamage;
 
-	public BattleEventAttack (BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] skillModifiers)
+	public BattleEventPhysical (BattleEntity src, BattleEntity dest, BattleActionPhysical action)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
@@ -36,12 +36,8 @@ public class BattleEventAttack : IBattleDamageEvent
 		// should be done first to popualte into from auxilary methods
 		mDamageNodes = new List<DamageNode>();
 
-		// get the main weapon to determine damage type
-		Character srcChar = src.character;	
-		Character destChar = dest.character;
-
 		// check dodge before anything
-		float chanceToHit = srcChar.accuracy / (srcChar.accuracy + destChar.relfex);
+		float chanceToHit = src.accuracy / (src.accuracy + dest.relfex);
 
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
@@ -51,16 +47,16 @@ public class BattleEventAttack : IBattleDamageEvent
 		}
 
 		// Calculate damage
-		Weapon weapon = srcChar.mainHandWeapon;				
+		Weapon weapon = src.character.mainHandWeapon;				
 		mDmgType = weapon.weaponConfig.dmgType;
 						
 		float dmg = weapon.weaponConfig.baseDamage;
 		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
 
 		// we want to annotate the damage from each feature
-		CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.offensiveModifiers, srcChar);
+		CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.statModifiers, src);
 		//inscriptionDmgNode = null; // TODO
-		CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.combatSkill.combatSkillConfig.offensiveModifiers, srcChar);
+		CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.physicalCombatSkill.statModifiers, src);
 		// effectDmgNode = null; // TODO
 
 		// calculate weapon damage node
@@ -70,7 +66,7 @@ public class BattleEventAttack : IBattleDamageEvent
 		}
 
 		// calculate crit chance
-		float critChance = srcChar.critChance / (srcChar.critChance / destChar.critDefense);
+		float critChance = src.critChance / (src.critChance / dest.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
@@ -79,7 +75,7 @@ public class BattleEventAttack : IBattleDamageEvent
 
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack
-		float resistValue = destChar.GetResist(mDmgType);
+		float resistValue = dest.GetResist(mDmgType);
 
 		// result damage should be same type of calculation
 		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
@@ -107,16 +103,17 @@ public class BattleEventAttack : IBattleDamageEvent
 	/// <param name="initialDamage">Initial damage.</param>
 	/// <param name="statModifiers">Stat modifiers.</param>
 	/// <param name="c">C.</param>
-	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, OffensiveModifier[] modifiers, Character c) {
+	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, StatModifier[] modifiers, BattleEntity entity) {
 		// if no modifiers, lets return null to skip in  our log
 		if(modifiers == null) {
 			return null;
 		}
 
 		float moddedDmg = 0;
-		foreach(OffensiveModifier mod in modifiers) {
-			moddedDmg += c.GetNativeStat(mod.type) * mod.modValue;
+		foreach(StatModifier mod in modifiers) {
+			moddedDmg += entity.GetStat(mod.stat) * mod.mod;
 		}
+
 		// if we are still 0, return null so we don't include it in our log
 		if(moddedDmg == 0) {
 			return null;

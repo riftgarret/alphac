@@ -8,18 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
-[Serializable]
-public class WeaponConfig : ScriptableObject
+public enum ElementResistType
 {
-	public string weaponName;
-	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
-
-	public Texture2D icon;
-		
+	DARK,
+	LIGHT,
+	WIND,
+	EARTH,
+	FIRE,
+	WATER
 }
+
+

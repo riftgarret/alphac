@@ -8,18 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
-[Serializable]
-public class WeaponConfig : ScriptableObject
+public enum MagicalOffensiveModifierType
 {
-	public string weaponName;
-	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
-
-	public Texture2D icon;
-		
+	TOTAL_DMG,
+	CRIT_MOD,
+	CRIT_TOTAL,
+	RESIST_IGNORE
 }
