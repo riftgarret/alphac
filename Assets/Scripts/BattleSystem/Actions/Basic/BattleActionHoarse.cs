@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BattleActionHoarse : BattleAction {
+public class BattleActionHoarse : BattleActionMagical {
 	int mAttackCount = 0;
 
 	public BattleActionHoarse(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
@@ -12,7 +12,7 @@ public class BattleActionHoarse : BattleAction {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateAttackEvent(sourceEntity, entity, this, null);
+				eventManager.GenerateMagicalEvent(sourceEntity, entity, this, BattleEventOptions.EMPTY);
 			}
 			mAttackCount++;
 		}	

@@ -20,7 +20,7 @@ public class PCSkillSetConfig : ScriptableObject {
 		skillset.hotKeys = new HotKey[skills.Length];
 
 		for(int i=0; i < skills.Length; i++) {
-			skillset.skills[i] = new CombatSkill(skills[i].skill, skills[i].level);
+			skillset.skills[i] = skills[i].skill.CreateCombatSkill(skills[i].level);
 			skillset.hotKeys[i] = new HotKey();
 			if(skillset.skills[i].level > 0) {
 				skillset.hotKeys[i].skill = skillset.skills[i];

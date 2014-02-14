@@ -10,6 +10,8 @@
 using System;
 using UnityEngine;
 
+
+// TODO separate PhysicalWeapon from MagicalWeapon (for caster reasons)
 [Serializable]
 public class Weapon
 {
@@ -33,8 +35,8 @@ public class Weapon
 	public float CalculateAttack(Character character) {
 		float atk = mWeaponConfig.baseDamage;
 		if(mWeaponConfig.offensiveModifiers != null) {
-			foreach(OffensiveModifier stat in mWeaponConfig.offensiveModifiers) {
-				atk += character.GetNativeStat(stat.type) * stat.modValue;
+			foreach(StatModifier stat in mWeaponConfig.statModifiers) {
+				atk += character.GetStat(stat.stat) * stat.mod;
 			}
 		}
 		return atk;

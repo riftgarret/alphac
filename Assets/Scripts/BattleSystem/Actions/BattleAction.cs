@@ -34,4 +34,10 @@ public abstract class BattleAction : IBattleAction {
 			return timeAction + timePrepare + timeRecover;
 		}
 	}
+
+	public StatModifier [] statModifiers {
+		get {
+			return combatSkill.statModifiers;
+		}
+	}
 }

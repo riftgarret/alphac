@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BattleActionAttack : BattleAction {
+public class BattleActionAttack : BattleActionPhysical {
 	int mAttackCount = 0;
 
 	public BattleActionAttack(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
@@ -12,7 +12,7 @@ public class BattleActionAttack : BattleAction {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateAttackEvent(sourceEntity, entity, this, BattleEventOptions.EMPTY);
+				eventManager.GeneratePhysicalEvent(sourceEntity, entity, this, BattleEventOptions.EMPTY);
 			}
 			mAttackCount++;
 		}	

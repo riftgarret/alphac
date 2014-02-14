@@ -24,11 +24,6 @@ public class BattleEventOptions
 		get { return mSrcStatusEffects; }
 	}
 
-	private OffensiveModifier[] mOffensiveModifiers = null;
-	public OffensiveModifier[] offensiveModifiers {
-		get { return mOffensiveModifiers; }
-	}
-
 	private BattleEventOptions () {	}
 
 	/// <summary>
@@ -41,7 +36,6 @@ public class BattleEventOptions
 	public class OptionBuilder {
 		private List<IStatusEffect> mSrcEffects = null;
 		private List<IStatusEffect> mDestEffects = null;
-		private List<OffensiveModifier> mOffensiveModifiers = null;
 
 		public OptionBuilder AddSourceStatusEffect(IStatusEffect effect) {
 			if(mSrcEffects == null) {
@@ -59,14 +53,6 @@ public class BattleEventOptions
 			return this;
 		}
 
-		public OptionBuilder AddOffensiveModifier(OffensiveModifierType offensiveType, float modValue) {
-			if(mOffensiveModifiers == null) {
-				mOffensiveModifiers = new List<OffensiveModifier>();
-			}
-			mOffensiveModifiers.Add(new OffensiveModifier(offensiveType, modValue));
-			return this;
-		}
-
 		public BattleEventOptions Build() {
 			BattleEventOptions parameter = new BattleEventOptions();
 			if(mSrcEffects != null) {
@@ -75,10 +61,6 @@ public class BattleEventOptions
 
 			if(mDestEffects != null) {
 				parameter.mDestStatusEffects = mDestEffects.ToArray();
-			}
-
-			if(mOffensiveModifiers != null) {
-				parameter.mOffensiveModifiers = mOffensiveModifiers.ToArray();
 			}
 
 			return parameter;

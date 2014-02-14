@@ -115,7 +115,7 @@ public class AISkillResolver
 	private void LazyCheck(EnemySkillSetConfig skillSet) {
 		foreach(AISkillRule rule in skillSet.skillRules) {
 				AISkillComposite composite = new AISkillComposite();
-				composite.skill = new CombatSkill(rule.skill, 1); // temp lvl 1 skill, probably stay like that
+				composite.skill = rule.skill.CreateCombatSkill(1); // temp lvl 1 skill, probably stay like that
 				composite.skillRule = rule;
 				composite.conditionFilter = rule.CreateConditionFilter();
 				composite.targetFilter = rule.CreateTargetFilter();

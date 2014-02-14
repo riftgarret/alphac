@@ -156,28 +156,7 @@ public abstract class Character  {
 			return luck;
 		}
 	}
-	
-	/// <summary>
-	/// Gets the stat. This will only return a value if the stat is of str, agil,..  luck, not the crit chance
-	/// </summary>
-	/// <returns>The stat.</returns>
-	/// <param name="statType">Stat type.</param>
-	public float GetNativeStat(OffensiveModifierType statType) {
-		switch(statType) {
-		case OffensiveModifierType.AGI_MOD:
-			return agility;
-		case OffensiveModifierType.DEX_MOD:
-			return dexerity;
-		case OffensiveModifierType.STR_MOD:
-			return strength;
-		case OffensiveModifierType.INT_MOD:
-			return inteligence;
-		case OffensiveModifierType.WIS_MOD:
-			return wisdom;
-		default:
-			return 0;
-		}
-	}
+
 
 	public float GetResist(DamageType dmg) {
 		float armorResist = GetTotalArmorResists(dmg);

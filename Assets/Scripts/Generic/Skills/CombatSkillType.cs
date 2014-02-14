@@ -8,15 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public class OffensiveModifier
+public enum CombatSkillType
 {
-	public readonly OffensiveModifierType type;
-	public readonly float modValue;
-
-	public OffensiveModifier (OffensiveModifierType modType, float modValue)
-	{
-		this.type = modType;
-		this.modValue = modValue;
-	}
+	PHYSICAL,
+	MAGICAL,
+	POSITIVE
 }
 

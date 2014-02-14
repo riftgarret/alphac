@@ -9,19 +9,20 @@
 //------------------------------------------------------------------------------
 using System;
 
-public abstract class CombatSkill : Skill
+
+public abstract class BattleActionPositive : BattleAction
 {
-	public CombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	public BattleActionPositive(CombatSkill skill, BattleEntity source, ITargetResolver targetResolver) : base(skill, source, targetResolver) {
+
 	}
 
-	public CombatSkillConfig combatSkillConfig {
-		get { return (CombatSkillConfig) mSkillConfig; } 
+	public PositiveCombatSkill positiveCombatSkill {
+		get { return (PositiveCombatSkill) this.combatSkill; }
 	}
 
-	public StatModifier [] statModifiers {
-		get {
-			return combatSkillConfig.statModifiers;
-		}
+	public float this[PositiveOffensiveModifierType type] {
+		get { return positiveCombatSkill[type]; }
 	}
 }
+
 

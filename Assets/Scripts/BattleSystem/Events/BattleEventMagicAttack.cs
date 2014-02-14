@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleEventMagic : IBattleDamageEvent
+public class BattleEventMagicAttack : IBattleDamageEvent
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -20,15 +20,16 @@ public class BattleEventMagic : IBattleDamageEvent
 	private BattleEntity mDestEntity;
 	
 	private List<DamageNode> mDamageNodes;
-	private DamageType mDmgType;
+	private ElementResistModifier mResistModifier;
 	private bool mIsResisted;
 	private bool mIsCrit;
 	private float mTotalDamage;
 	
-	public BattleEventMagic (BattleEntity src, BattleEntity dest, BattleAction action, OffensiveModifier [] skillModifiers)
+	public BattleEventMagicAttack (BattleEntity src, BattleEntity dest, BattleActionMagical action, ElementResistModifier resistModifier, MagicalOffensiveModifier [] skillModifiers)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
+		this.mResistModifier = resistModifier;
 		
 		mIsResisted = false;
 		mIsCrit = false;
@@ -36,31 +37,25 @@ public class BattleEventMagic : IBattleDamageEvent
 		// should be done first to popualte into from auxilary methods
 		mDamageNodes = new List<DamageNode>();
 		
-		// get the main weapon to determine damage type
-		Character srcChar = src.character;	
-		Character destChar = dest.character;
-		
 		// check dodge before anything
-		float chanceToHit = srcChar.accuracy / (srcChar.accuracy + destChar.relfex);
+		float defResistValue = dest.GetResist(resistModifier.type);
+		float chanceToResist = src.magicAttack * resistModifier.modValue / (src.magicAttack * resistModifier.modValue + defResistValue);
 		
 		// TODO add chanceToHit increase
-		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
+		if(UnityEngine.Random.Range(0f, 1f) > chanceToResist) {
 			// missed
 			mIsResisted = true;
 			return;
 		}
 		
 		// Calculate damage
-		Weapon weapon = srcChar.mainHandWeapon;				
-		mDmgType = weapon.weaponConfig.dmgType;
-		
-		float dmg = weapon.weaponConfig.baseDamage;
+		float dmg = src.magicAttack;
 		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
 		
 		// we want to annotate the damage from each feature
-		CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.offensiveModifiers, srcChar);
+		//CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.offensiveModifiers, src);
 		//inscriptionDmgNode = null; // TODO
-		CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.combatSkill.combatSkillConfig.offensiveModifiers, srcChar);
+		//CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.combatSkill.combatSkillConfig.offensiveModifiers, src);
 		// effectDmgNode = null; // TODO
 		
 		// calculate weapon damage node
@@ -70,7 +65,7 @@ public class BattleEventMagic : IBattleDamageEvent
 		}
 		
 		// calculate crit chance
-		float critChance = srcChar.critChance / (srcChar.critChance / destChar.critDefense);
+		float critChance = src.critChance / (src.critChance / dest.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
@@ -79,10 +74,10 @@ public class BattleEventMagic : IBattleDamageEvent
 		
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack
-		float resistValue = destChar.GetResist(mDmgType);
+		//float resistValue = dest.GetResist(mDmgType);
 		
 		// result damage should be same type of calculation
-		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
+		//mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
 		mTotalDamage = Mathf.Ceil(mTotalDamage);
 	}
 	
@@ -107,15 +102,15 @@ public class BattleEventMagic : IBattleDamageEvent
 	/// <param name="initialDamage">Initial damage.</param>
 	/// <param name="statModifiers">Stat modifiers.</param>
 	/// <param name="c">C.</param>
-	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, OffensiveModifier[] modifiers, Character c) {
+/*	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, MagicalOffensiveModifier[] modifiers, BattleEntity entity) {
 		// if no modifiers, lets return null to skip in  our log
 		if(modifiers == null) {
 			return null;
 		}
 		
 		float moddedDmg = 0;
-		foreach(OffensiveModifier mod in modifiers) {
-			moddedDmg += c.GetNativeStat(mod.type) * mod.modValue;
+		foreach(PhysicalOffensiveModifier mod in modifiers) {
+			moddedDmg += entity.GetNativeStat(mod.type) * mod.modValue;
 		}
 		// if we are still 0, return null so we don't include it in our log
 		if(moddedDmg == 0) {
@@ -128,7 +123,7 @@ public class BattleEventMagic : IBattleDamageEvent
 		
 		return node;
 	}
-	
+*/	
 	public class DamageNode {
 		public readonly float calculatedDamage;
 		public readonly OffensiveSourceType srcType;
@@ -178,8 +173,9 @@ public class BattleEventMagic : IBattleDamageEvent
 			if(mIsResisted) {
 				return string.Format("{0} resisted {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
 			}
-			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
-			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
+			return "temp";
+			//string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
+			//return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
 		}
 	}
 

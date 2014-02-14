@@ -8,18 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
-[Serializable]
-public class WeaponConfig : ScriptableObject
+public class PositiveCombatSkill : CombatSkill
 {
-	public string weaponName;
-	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
+	public PositiveCombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	}
 
-	public Texture2D icon;
-		
+	public PositiveCombatSkillConfig positiveCombatSkillConfig {
+		get { return (PositiveCombatSkillConfig) mSkillConfig; } 
+	}
+
+	public float this[PositiveOffensiveModifierType type] {
+		get { return positiveCombatSkillConfig[type]; }
+	}
 }
+
