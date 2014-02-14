@@ -39,24 +39,29 @@ public class BattleEventManager
 		ApplyAndNotifyDamageEvent(attackEvent);
 
 		// check to see if we hit for any status effects
-		if(options.destStatusEffects != null && !attackEvent.isEvaded) {
-			foreach(IStatusEffect effect in options.destStatusEffects) {
-				dest.ApplyStatusEffect(effect);
-			}
-		}
-
-		// check to see if we hit for any status effects
-		if(options.srcStatusEffects != null && !attackEvent.isEvaded) {
-			foreach(IStatusEffect effect in options.srcStatusEffects) {
-				src.ApplyStatusEffect(effect);
-			}
+		if(!attackEvent.isEvaded) {
+			ApplyEffects(options.destStatusEffects, dest);
+			ApplyEffects(options.srcStatusEffects, src);
 		}
 	}
 
-	public void GenerateMagicEvent(BattleEntity src, BattleEntity dest, 
+	public void GenerateMagicAttackEvent(BattleEntity src, BattleEntity dest, 
 	                               BattleAction action, 
 	                               BattleEventOptions options) {
 
+	}
+
+	/// <summary>
+	/// Applies the effects.
+	/// </summary>
+	/// <param name="effects">Effects.</param>
+	/// <param name="targetEntity">Target entity.</param>
+	private void ApplyEffects(IStatusEffect [] effects, BattleEntity targetEntity) {
+		if(effects != null) {
+			foreach(IStatusEffect effect in effects) {
+				targetEntity.ApplyStatusEffect(effect);
+			}
+		}
 	}
 
 	/// <summary>

@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class BattleEventMagic : IBattleDamageEvent
 {
@@ -19,7 +21,7 @@ public class BattleEventMagic : IBattleDamageEvent
 	
 	private List<DamageNode> mDamageNodes;
 	private DamageType mDmgType;
-	private bool mIsEvaded;
+	private bool mIsResisted;
 	private bool mIsCrit;
 	private float mTotalDamage;
 	
@@ -28,7 +30,7 @@ public class BattleEventMagic : IBattleDamageEvent
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
 		
-		mIsEvaded = false;
+		mIsResisted = false;
 		mIsCrit = false;
 		
 		// should be done first to popualte into from auxilary methods
@@ -44,7 +46,7 @@ public class BattleEventMagic : IBattleDamageEvent
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
 			// missed
-			mIsEvaded = true;
+			mIsResisted = true;
 			return;
 		}
 		
@@ -159,9 +161,9 @@ public class BattleEventMagic : IBattleDamageEvent
 		}
 	}
 	
-	public bool isEvaded {
+	public bool isResisted {
 		get {
-			return mIsEvaded;
+			return mIsResisted;
 		}
 	}
 	
@@ -173,8 +175,8 @@ public class BattleEventMagic : IBattleDamageEvent
 	
 	public string eventText {
 		get {
-			if(mIsEvaded) {
-				return string.Format("{0} missed {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
+			if(mIsResisted) {
+				return string.Format("{0} resisted {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
 			}
 			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
 			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));

@@ -12,7 +12,7 @@ public class BattleActionAttack : BattleAction {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateAttackEvent(sourceEntity, entity, this, BattleEventParameter.EMPTY);
+				eventManager.GenerateAttackEvent(sourceEntity, entity, this, BattleEventOptions.EMPTY);
 			}
 			mAttackCount++;
 		}	
