@@ -36,7 +36,8 @@ public class BattleEventManager
 	                                BattleActionPhysical action, 
 	                                BattleEventOptions options) {
 		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action);
-		ApplyAndNotifyDamageEvent(attackEvent);
+		NotifyEvent (attackEvent);
+		PostDamageEvent(attackEvent);
 
 		// check to see if we hit for any status effects
 		//if(!attackEvent.isEvaded) {
@@ -47,8 +48,10 @@ public class BattleEventManager
 
 	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
 	                               BattleActionMagical action, 
-	                               BattleEventOptions options) {
-
+	                               BattleEventOptions options,
+	                                 ElementResistModifier resistModifier,
+	                                 MagicalOffensiveModifier [] offensiveModifiers) {
+		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, resistModifier, offensiveModifiers);
 	}
 
 	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 
@@ -81,15 +84,8 @@ public class BattleEventManager
 	}
 
 	// calculate and apply damage state (see if they are dead or not)
-	private void ApplyAndNotifyDamageEvent(IBattleDamageEvent dmgEvent) {
+	private void PostDamageEvent(IBattleDamageEvent dmgEvent) {
 		BattleEntity destEntity = dmgEvent.destEntity;
-		if(destEntity.character.curHP <= 0) {
-			return; // character is dead, no need to add more death
-		}
-		destEntity.character.curHP -= dmgEvent.totalDamage;
-		// notify attack event
-		NotifyEvent(dmgEvent);
-
 		// if character died, notify death event
 		if(destEntity.character.curHP <= 0) {
 			destEntity.character.curHP = 0;

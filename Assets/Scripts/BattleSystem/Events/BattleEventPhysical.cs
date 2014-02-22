@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BattleEventPhysical : IBattleDamageEvent
+public class BattleEventPhysical : AbstractBattleDamageEvent
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -66,7 +66,7 @@ public class BattleEventPhysical : IBattleDamageEvent
 		}
 
 		// calculate crit chance
-		float critChance = src.critChance / (src.critChance / dest.critDefense);
+		float critChance = src.critChance / (src.critChance + dest.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
@@ -136,23 +136,23 @@ public class BattleEventPhysical : IBattleDamageEvent
 		}
 	}
 
-	public BattleEntity srcEntity {
+	public override BattleEntity srcEntity {
 		get {
 			return mSrcEntity;
 		}
 	}
 
-	public BattleEntity destEntity {
+	public override BattleEntity destEntity {
 		get { return mDestEntity; }
 	}
 
-	public BattleEventType eventType {
+	public override BattleEventType eventType {
 		get {
 			return BattleEventType.ATTACK;
 		}
 	}
 
-	public float totalDamage {
+	public override float totalDamage {
 		get {
 			return mTotalDamage;
 		}
@@ -170,7 +170,7 @@ public class BattleEventPhysical : IBattleDamageEvent
 		}
 	}
 
-	public string eventText {
+	public override string eventText {
 		get {
 			if(mIsEvaded) {
 				return string.Format("{0} missed {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
@@ -178,6 +178,11 @@ public class BattleEventPhysical : IBattleDamageEvent
 			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
 			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
 		}
+	}
+
+	public override void Execute ()
+	{
+		ExecuteDamage ();
 	}
 }
 

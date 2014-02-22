@@ -8,14 +8,43 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public class BattleMoveEvent
+public class BattleMoveEvent : IBattleEvent
 {
 	// TODO flush out
-	PCCharacter.RowPosition srcRow;
-	PCCharacter.RowPosition destRow;
+	PCCharacter.RowPosition mSrcRow;
+	PCCharacter.RowPosition mDestRow;
 
-	public BattleMoveEvent ()
+	PCBattleEntity mSrcEntity;
+
+	public BattleMoveEvent (PCBattleEntity srcEntity, PCCharacter.RowPosition destRow) 
 	{
+		this.mSrcEntity = srcEntity;
+		this.mSrcRow = srcEntity.pcCharacter.rowPosition;
+		this.mDestRow = destRow;
+	}
+
+	public void Execute ()
+	{
+		// need to animate this?
+		mSrcEntity.pcCharacter.rowPosition = mDestRow;
+	}
+
+	public BattleEntity srcEntity {
+		get {
+			return srcEntity;
+		}
+	}
+
+	public BattleEventType eventType {
+		get {
+			return BattleEventType.MOVE;
+		}
+	}
+
+	public string eventText {
+		get {
+			return "TODO";
+		}
 	}
 }
 

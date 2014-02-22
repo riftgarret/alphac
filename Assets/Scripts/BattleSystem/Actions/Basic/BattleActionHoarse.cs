@@ -12,7 +12,12 @@ public class BattleActionHoarse : BattleActionMagical {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GenerateMagicalEvent(sourceEntity, entity, this, BattleEventOptions.EMPTY);
+				eventManager.GenerateMagicalEvent(sourceEntity, 
+				                                  entity, 
+				                                  this, 
+				                                  BattleEventOptions.EMPTY,
+				                                  new ElementResistModifier(ElementResistType.DARK, 1),
+				                                  null);
 			}
 			mAttackCount++;
 		}	

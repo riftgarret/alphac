@@ -35,4 +35,9 @@ public class BattleEventDeath : IBattleEvent
 			return string.Format("{0} has died.", mSrcEntity.character.displayName);
 		}
 	}
+
+	public void Execute ()
+	{
+		// perhaps invoke the battle log for this
+	}
 }

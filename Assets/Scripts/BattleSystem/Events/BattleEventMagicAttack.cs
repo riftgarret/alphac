@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleEventMagicAttack : IBattleDamageEvent
+public class BattleEventMagicAttack : AbstractBattleDamageEvent
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -65,7 +65,7 @@ public class BattleEventMagicAttack : IBattleDamageEvent
 		}
 		
 		// calculate crit chance
-		float critChance = src.critChance / (src.critChance / dest.critDefense);
+		float critChance = src.critChance / (src.critChance + dest.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
@@ -134,23 +134,23 @@ public class BattleEventMagicAttack : IBattleDamageEvent
 		}
 	}
 	
-	public BattleEntity srcEntity {
+	public override BattleEntity srcEntity {
 		get {
 			return mSrcEntity;
 		}
 	}
 	
-	public BattleEntity destEntity {
+	public override BattleEntity destEntity {
 		get { return mDestEntity; }
 	}
 	
-	public BattleEventType eventType {
+	public override BattleEventType eventType {
 		get {
 			return BattleEventType.ATTACK;
 		}
 	}
 	
-	public float totalDamage {
+	public override float totalDamage {
 		get {
 			return mTotalDamage;
 		}
@@ -168,7 +168,7 @@ public class BattleEventMagicAttack : IBattleDamageEvent
 		}
 	}
 	
-	public string eventText {
+	public override string eventText {
 		get {
 			if(mIsResisted) {
 				return string.Format("{0} resisted {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
@@ -179,5 +179,9 @@ public class BattleEventMagicAttack : IBattleDamageEvent
 		}
 	}
 
+	public override void Execute ()
+	{
+		ExecuteDamage ();
+	}
 }
 

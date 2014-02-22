@@ -18,8 +18,11 @@ public interface IBattleEvent
 		get;
 	}
 
+	// TODO remove event text and have it handled within execute
 	string  eventText {
 		get;
 	}
+
+	void Execute();
 }
 
