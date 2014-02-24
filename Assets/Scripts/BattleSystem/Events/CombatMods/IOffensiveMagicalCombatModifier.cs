@@ -9,14 +9,30 @@
 //------------------------------------------------------------------------------
 using System;
 
-public enum ElementResistType
+public interface IOffensivePhysicalCombatModifier : IOffensiveGeneralCombatModifier
 {
-	DARK,
-	LIGHT,
-	WIND,
-	EARTH,
-	FIRE,
-	WATER
-}
+	float powerPhysicalAdd {
+		get;
+	}
+	
+	float powerPhysicalMultiply {
+		get;
+	}
 
+	float armorIgnoreAdd {
+		get;
+	}
+
+	float armorIgnoreMultiply {
+		get;
+	}
+
+	float dodgeIgnoreAdd {
+		get;
+	}
+
+	float dodgeIgnoreMultiply {
+		get;
+	}
+}
 
