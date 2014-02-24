@@ -8,13 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace AssemblyCSharp
+public class GeneralOffensiveModifier
 {
-		public class GeneralOffensiveModifier
-		{
-				public GeneralOffensiveModifier ()
-				{
-				}
-		}
+	public readonly GeneralOffensiveModifierType type;
+	public readonly float modValue;
+	
+	public GeneralOffensiveModifier (GeneralOffensiveModifierType modType, float modValue)
+	{
+		this.type = modType;
+		this.modValue = modValue;
+	}
 }
 

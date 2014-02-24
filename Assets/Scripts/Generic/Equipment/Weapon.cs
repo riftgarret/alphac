@@ -34,7 +34,7 @@ public class Weapon
 	/// <param name="character">Character.</param>
 	public float CalculateAttack(Character character) {
 		float atk = mWeaponConfig.baseDamage;
-		if(mWeaponConfig.offensiveModifiers != null) {
+		if(mWeaponConfig.physicalModifiers != null) {
 			foreach(StatModifier stat in mWeaponConfig.statModifiers) {
 				atk += character.GetStat(stat.stat) * stat.mod;
 			}

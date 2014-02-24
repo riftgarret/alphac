@@ -33,9 +33,11 @@ public class BattleEventManager
 	/// <param name="srcPhysicalStatusEffects">Source physical status effects.</param>
 	/// <param name="destPhysicalStatusEffects">Destination physical status effects.</param>
 	public void GeneratePhysicalEvent(BattleEntity src, BattleEntity dest, 
-	                                BattleActionPhysical action, 
-	                                BattleEventOptions options) {
-		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action);
+	                                BattleActionPhysical action,                                   	
+	                                BattleEventStatusEffects options,
+	                                DamageTypeModifier damageTypeModifier,
+	                                IOffensivePhysicalCombatNode physicalCombatNode) {
+		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageTypeModifier, physicalCombatNode);
 		NotifyEvent (attackEvent);
 		PostDamageEvent(attackEvent);
 
@@ -48,15 +50,15 @@ public class BattleEventManager
 
 	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
 	                               BattleActionMagical action, 
-	                               BattleEventOptions options,
-	                                 ElementResistModifier resistModifier,
+	                               BattleEventStatusEffects options,
+	                                 DamageTypeModifier damageTypeModifier,
 	                                 MagicalOffensiveModifier [] offensiveModifiers) {
-		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, resistModifier, offensiveModifiers);
+		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageTypeModifier, offensiveModifiers);
 	}
 
 	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 
 	                                 BattleActionPositive action, 
-	                                 BattleEventOptions options) {
+	                                 BattleEventStatusEffects options) {
 		
 	}
 

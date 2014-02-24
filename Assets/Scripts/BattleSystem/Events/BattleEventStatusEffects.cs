@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 
-public class BattleEventOptions
+public class BattleEventStatusEffects
 {
-	public static readonly BattleEventOptions EMPTY = new BattleEventOptions();
+	public static readonly BattleEventStatusEffects EMPTY = new BattleEventStatusEffects();
 
 	private IStatusEffect[] mDestStatusEffects = null;
 	public IStatusEffect[] destStatusEffects {
@@ -24,20 +24,20 @@ public class BattleEventOptions
 		get { return mSrcStatusEffects; }
 	}
 
-	private BattleEventOptions () {	}
+	private BattleEventStatusEffects () {	}
 
 	/// <summary>
 	/// Builder this instance.
 	/// </summary>
-	public static OptionBuilder Builder() {
-		return new OptionBuilder();
+	public static StatusEffectBuilder Builder() {
+		return new StatusEffectBuilder();
 	}
 
-	public class OptionBuilder {
+	public class StatusEffectBuilder {
 		private List<IStatusEffect> mSrcEffects = null;
 		private List<IStatusEffect> mDestEffects = null;
 
-		public OptionBuilder AddSourceStatusEffect(IStatusEffect effect) {
+		public StatusEffectBuilder AddSourceStatusEffect(IStatusEffect effect) {
 			if(mSrcEffects == null) {
 				mSrcEffects = new List<IStatusEffect>();
 			}
@@ -45,7 +45,7 @@ public class BattleEventOptions
 			return this;
 		}
 
-		public OptionBuilder AddDestStatusEffect(IStatusEffect effect) {
+		public StatusEffectBuilder AddDestStatusEffect(IStatusEffect effect) {
 			if(mDestEffects == null) {
 				mDestEffects = new List<IStatusEffect>();
 			}
@@ -53,8 +53,8 @@ public class BattleEventOptions
 			return this;
 		}
 
-		public BattleEventOptions Build() {
-			BattleEventOptions parameter = new BattleEventOptions();
+		public BattleEventStatusEffects Build() {
+			BattleEventStatusEffects parameter = new BattleEventStatusEffects();
 			if(mSrcEffects != null) {
 				parameter.mSrcStatusEffects = mSrcEffects.ToArray();
 			}

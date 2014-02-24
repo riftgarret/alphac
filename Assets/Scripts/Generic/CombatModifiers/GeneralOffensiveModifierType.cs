@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace AssemblyCSharp
+public enum GeneralOffensiveModifierType
 {
-		public enum GeneralOffensiveModifierType
-		{
-		}
+	TOTAL_DMG_ADD,
+	TOTAL_DMG_MULTIPLY,
+	CRIT_CHANCE_ADD,
+	CRIT_CHANCE_MULTIPLY,
 }
 

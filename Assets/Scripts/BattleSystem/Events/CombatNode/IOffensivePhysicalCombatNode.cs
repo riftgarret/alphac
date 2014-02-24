@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public interface IOffensivePhysicalCombatModifier : IOffensiveGeneralCombatModifier
+public interface IOffensivePhysicalCombatNode : IOffensiveGeneralCombatNode
 {
 	float powerPhysicalAdd {
 		get;
@@ -32,6 +32,14 @@ public interface IOffensivePhysicalCombatModifier : IOffensiveGeneralCombatModif
 	}
 
 	float dodgeIgnoreMultiply {
+		get;
+	}
+
+	float accuracyAdd {
+		get;
+	}
+
+	float accuracyMultiply {
 		get;
 	}
 }

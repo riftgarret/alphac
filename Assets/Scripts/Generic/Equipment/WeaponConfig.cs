@@ -15,7 +15,8 @@ public class WeaponConfig : ScriptableObject
 {
 	public string weaponName;
 	public float baseDamage;
-	public PhysicalOffensiveModifier[] offensiveModifiers; // todo move this to physical weapon mod
+	public GeneralOffensiveModifier[] generalModifiers; // todo move this to physical weapon mod
+	public PhysicalOffensiveModifier[] physicalModifiers; // todo move this to physical weapon mod
 	public StatModifier [] statModifiers;
 	public DamageType dmgType;
 	public WeaponType weaponType;

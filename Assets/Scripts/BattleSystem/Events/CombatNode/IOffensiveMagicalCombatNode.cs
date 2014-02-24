@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public interface IOffensiveMagicalCombatModifier : IOffensiveGeneralCombatModifier
+public interface IOffensiveMagicalCombatNode : IOffensiveGeneralCombatNode
 {
 	float powerMagicalAdd {
 		get;

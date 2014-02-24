@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class ConfigurableCombatNode : IOffensiveMagicalCombatModifier, IOffensivePhysicalCombatModifier
+public class ConfigurableCombatNode : IOffensiveMagicalCombatNode, IOffensivePhysicalCombatNode
 {
 
 
@@ -23,6 +23,7 @@ public class ConfigurableCombatNode : IOffensiveMagicalCombatModifier, IOffensiv
 		critChanceAdd = 0f;
 		armorIgnoreAdd = 0f;
 		dodgeIgnoreAdd = 0f;
+		accuracyAdd = 0f;
 		
 		powerPhysicalMultiply = 1f;
 		powerMagicalMultiply = 1f;
@@ -31,6 +32,7 @@ public class ConfigurableCombatNode : IOffensiveMagicalCombatModifier, IOffensiv
 		critChanceMultiply = 1f;
 		armorIgnoreMultiply = 1f;
 		dodgeIgnoreMultiply = 1f;
+		accuracyMultiply = 1f;
 
 		statSTRAdd = 0f;
 		statVITAdd = 0f;
@@ -79,27 +81,27 @@ public class ConfigurableCombatNode : IOffensiveMagicalCombatModifier, IOffensiv
 		// parse out general
 		if(modifiers != null) {
 			foreach(StatModifier mod in modifiers) {
-				switch(mod.type) {
+				switch(mod.stat) {
 				case StatType.STR:
-					this.statSTRMultiply = mod.modValue;
+					this.statSTRMultiply = mod.mod;
 					break;				
 				case StatType.VIT:
-					this.statVITMultiply = mod.modValue;
+					this.statVITMultiply = mod.mod;
 					break;
 				case StatType.DEX:
-					this.statDEXMultiply = mod.modValue;
+					this.statDEXMultiply = mod.mod;
 					break;
 				case StatType.AGI:
-					this.statAGIMultiply = mod.modValue;
+					this.statAGIMultiply = mod.mod;
 					break;
 				case StatType.INT:
-					this.statINTMultiply = mod.modValue;
+					this.statINTMultiply = mod.mod;
 					break;
 				case StatType.WIS:
-					this.statWISMultiply = mod.modValue;
+					this.statWISMultiply = mod.mod;
 					break;
 				case StatType.LUCK:
-					this.statLUCKMultiply = mod.modValue;
+					this.statLUCKMultiply = mod.mod;
 					break;
 				}
 			}
@@ -291,6 +293,16 @@ public class ConfigurableCombatNode : IOffensiveMagicalCombatModifier, IOffensiv
 	}
 
 	public float statLUCKAdd {
+		protected set;
+		get;
+	}
+
+	public float accuracyAdd {
+		protected set;
+		get;
+	}
+
+	public float accuracyMultiply {
 		protected set;
 		get;
 	}

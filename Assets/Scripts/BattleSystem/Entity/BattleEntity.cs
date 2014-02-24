@@ -167,21 +167,12 @@ public abstract class BattleEntity {
 		return this.character.GetResist(dmg);
 	}
 
-	public float GetResist(ElementResistType resistType) {
-		switch(resistType) {
-		case ElementResistType.DARK:
-			return GetResist(DamageType.DARK);
-		case ElementResistType.EARTH:
-			return GetResist(DamageType.EARTH);
-		case ElementResistType.FIRE:
-			return GetResist(DamageType.FIRE);
-		case ElementResistType.LIGHT:
-			return GetResist(DamageType.LIGHT);
-		case ElementResistType.WATER:
-			return GetResist(DamageType.WATER);
-		case ElementResistType.WIND:
-			return GetResist(DamageType.WIND);
-		}
-		return 0;
+	public DamageTypeModifier GetWeaponDamageTypeModifier(int weaponIndex) {
+		// maybe not use weapon index?
+		return new DamageTypeModifier(character.mainHandWeapon.weaponConfig.dmgType, 1); // TODO
+	}
+
+	public float GetBaseDamage(int weaponIndex) {
+		return character.mainHandWeapon.weaponConfig.baseDamage;
 	}
 }

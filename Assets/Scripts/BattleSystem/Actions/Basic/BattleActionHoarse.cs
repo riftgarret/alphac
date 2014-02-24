@@ -15,8 +15,8 @@ public class BattleActionHoarse : BattleActionMagical {
 				eventManager.GenerateMagicalEvent(sourceEntity, 
 				                                  entity, 
 				                                  this, 
-				                                  BattleEventOptions.EMPTY,
-				                                  new ElementResistModifier(ElementResistType.DARK, 1),
+				                                  BattleEventStatusEffects.EMPTY,
+				                                  new DamageTypeModifier(DamageType.DARK, 1),
 				                                  null);
 			}
 			mAttackCount++;

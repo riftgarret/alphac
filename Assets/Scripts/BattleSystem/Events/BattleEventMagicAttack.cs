@@ -20,12 +20,12 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 	private BattleEntity mDestEntity;
 	
 	private List<DamageNode> mDamageNodes;
-	private ElementResistModifier mResistModifier;
+	private DamageTypeModifier mResistModifier;
 	private bool mIsResisted;
 	private bool mIsCrit;
 	private float mTotalDamage;
 	
-	public BattleEventMagicAttack (BattleEntity src, BattleEntity dest, BattleActionMagical action, ElementResistModifier resistModifier, MagicalOffensiveModifier [] skillModifiers)
+	public BattleEventMagicAttack (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageTypeModifier resistModifier, MagicalOffensiveModifier [] skillModifiers)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;

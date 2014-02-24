@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IOffensiveGeneralCombatModifier
+public interface IOffensiveGeneralCombatNode
 {
 	float totalDamageAdd {
 		get;

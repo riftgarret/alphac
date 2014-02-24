@@ -10,19 +10,19 @@
 using System;
 using System.Collections.Generic;
 
-public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOffensiveMagicalCombatModifier
+public class CompositeCombatModifierNode : IOffensivePhysicalCombatNode, IOffensiveMagicalCombatNode
 {
-	private List<IOffensivePhysicalCombatModifier> children;
+	private List<IOffensivePhysicalCombatNode> children;
 
 	public CompositeCombatModifierNode ()
 	{
-		children = new List<IOffensivePhysicalCombatModifier>();
+		children = new List<IOffensivePhysicalCombatNode>();
 	}
 
 	public float powerPhysicalAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.powerPhysicalAdd;
 			}
 			return total;
@@ -32,8 +32,68 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float powerPhysicalMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.powerPhysicalMultiply;
+			}
+			return total;
+		}
+	}
+
+	public float powerMagicalAdd {
+		get {
+			float total = 0;
+			foreach(IOffensivePhysicalCombatNode mod in children) {
+				total += mod.powerPhysicalAdd;
+			}
+			return total;
+		}
+	}
+
+	public float powerMagicalMultiply {
+		get {
+			float total = 1;
+			foreach(IOffensivePhysicalCombatNode mod in children) {
+				total *= mod.powerPhysicalMultiply;
+			}
+			return total;
+		}
+	}
+
+	public float resistIgnoreAdd {
+		get {
+			float total = 0;
+			foreach(IOffensiveMagicalCombatNode mod in children) {
+				total += mod.resistIgnoreAdd;
+			}
+			return total;
+		}
+	}
+
+	public float resistIgnoreMultiply {
+		get {			
+			float total = 1;
+			foreach(IOffensiveMagicalCombatNode mod in children) {
+				total *= mod.resistIgnoreMultiply;
+			}
+			return total;
+		}
+	}
+	
+	public float accuracyAdd {
+		get {
+			float total = 0;
+			foreach(IOffensivePhysicalCombatNode mod in children) {
+				total += mod.accuracyAdd;
+			}
+			return total;
+		}
+	}
+	
+	public float accuracyMultiply {
+		get {
+			float total = 1;
+			foreach(IOffensivePhysicalCombatNode mod in children) {
+				total *= mod.accuracyMultiply;
 			}
 			return total;
 		}
@@ -42,7 +102,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float totalDamageAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.totalDamageAdd;
 			}
 			return total;
@@ -52,7 +112,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float totalDamageMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.totalDamageMultiply;
 			}
 			return total;
@@ -62,7 +122,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float critChanceAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.critChanceAdd;
 			}
 			return total;
@@ -72,7 +132,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float critChanceMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.critChanceMultiply;
 			}
 			return total;
@@ -82,7 +142,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float armorIgnoreAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.armorIgnoreAdd;
 			}
 			return total;
@@ -92,7 +152,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float armorIgnoreMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.armorIgnoreMultiply;
 			}
 			return total;
@@ -102,7 +162,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float dodgeIgnoreAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.dodgeIgnoreAdd;
 			}
 			return total;
@@ -112,7 +172,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float dodgeIgnoreMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.dodgeIgnoreMultiply;
 			}
 			return total;
@@ -121,7 +181,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statSTRMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statSTRMultiply;
 			}
 			return total;
@@ -131,7 +191,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statVITMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statVITMultiply;
 			}
 			return total;
@@ -141,7 +201,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statDEXMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statDEXMultiply;
 			}
 			return total;
@@ -151,7 +211,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statAGIMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statAGIMultiply;
 			}
 			return total;
@@ -161,7 +221,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statINTMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statINTMultiply;
 			}
 			return total;
@@ -171,7 +231,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statWISMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statWISMultiply;
 			}
 			return total;
@@ -181,7 +241,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statLUCKMultiply {
 		get {
 			float total = 1;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total *= mod.statLUCKMultiply;
 			}
 			return total;
@@ -191,7 +251,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statSTRAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statSTRAdd;
 			}
 			return total;
@@ -201,7 +261,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statVITAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statVITAdd;
 			}
 			return total;
@@ -211,7 +271,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statDEXAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statDEXAdd;
 			}
 			return total;
@@ -221,7 +281,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statAGIAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statAGIAdd;
 			}
 			return total;
@@ -231,7 +291,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statINTAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statINTAdd;
 			}
 			return total;
@@ -241,7 +301,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statWISAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statWISAdd;
 			}
 			return total;
@@ -251,7 +311,7 @@ public class CompositeCombatModifierNode : IOffensivePhysicalCombatModifier, IOf
 	public float statLUCKAdd {
 		get {
 			float total = 0;
-			foreach(IOffensivePhysicalCombatModifier mod in children) {
+			foreach(IOffensivePhysicalCombatNode mod in children) {
 				total += mod.statLUCKAdd;
 			}
 			return total;

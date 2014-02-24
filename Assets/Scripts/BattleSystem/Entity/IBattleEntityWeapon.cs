@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public interface IWeaponStats
+public interface IBattleEntityWeapon
 {
 	float baseDamage {
 		get;
@@ -19,7 +19,7 @@ public interface IWeaponStats
 		get; // todo move this to physical weapon mod
 	}
 
-	StatModifier statModifiers {
+	StatModifier [] statModifiers {
 		get;
 	}
 

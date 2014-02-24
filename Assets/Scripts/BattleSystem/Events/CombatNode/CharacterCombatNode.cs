@@ -8,13 +8,197 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace AssemblyCSharp
+
+public class CharacterCombatNode : IOffensiveMagicalCombatNode, IOffensivePhysicalCombatNode
 {
-		public class CharacterCombatNode
-		{
-				public CharacterCombatNode ()
-				{
-				}
+	private const float NULL_ADD = 0f;
+	private const float NULL_MULTIPLY = 1f;
+
+	public CharacterCombatNode (Character c)
+	{
+		accuracyAdd = c.accuracy;
+		critChanceAdd = c.critChance;
+		statSTRAdd = c.strength;
+		statVITAdd = c.vitality;
+		statDEXAdd = c.dexerity;
+		statAGIAdd = c.agility;
+		statINTAdd = c.inteligence;
+		statWISAdd = c.wisdom;
+		statLUCKAdd = c.luck;
+	}
+	
+	public float accuracyAdd {
+		private set;
+		get;
+	}
+	
+	public float critChanceAdd {
+		private set;
+		get;
+	}
+	
+	public float statSTRAdd {
+		private set;
+		get;
+	}
+	
+	public float statVITAdd {
+		private set;
+		get;
+	}
+	
+	public float statDEXAdd {
+		private set;
+		get;
+	}
+	
+	public float statAGIAdd {
+		private set;
+		get;
+	}
+	
+	public float statINTAdd {
+		private set;
+		get;
+	}
+	
+	public float statWISAdd {
+		private set;
+		get;
+	}
+	
+	public float statLUCKAdd {
+		private set;
+		get;
+	}
+
+	public float powerMagicalAdd {
+		get {
+			// TODO
+			return NULL_ADD;
 		}
+	}
+
+	public float powerMagicalMultiply {
+		get {
+			// TODO
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float resistIgnoreAdd {
+		get {
+			return NULL_ADD;
+		}
+	}
+
+	public float resistIgnoreMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float powerPhysicalAdd {
+		get {
+			// TODO
+			return NULL_ADD;
+		}
+	}
+
+	public float powerPhysicalMultiply {
+		get {
+			// TODO
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float armorIgnoreAdd {
+		get {
+			return NULL_ADD;
+		}
+	}
+
+	public float armorIgnoreMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float dodgeIgnoreAdd {
+		get {
+			return NULL_ADD;
+		}
+	}
+
+	public float dodgeIgnoreMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float accuracyMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}	
+	public float totalDamageAdd {
+		get {
+			return NULL_ADD;
+		}
+	}
+
+	public float totalDamageMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float critChanceMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statSTRMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statVITMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statDEXMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statAGIMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statINTMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statWISMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
+
+	public float statLUCKMultiply {
+		get {
+			return NULL_MULTIPLY;
+		}
+	}
 }
 

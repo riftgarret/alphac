@@ -25,7 +25,11 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 	private bool mIsCrit;
 	private float mTotalDamage;
 
-	public BattleEventPhysical (BattleEntity src, BattleEntity dest, BattleActionPhysical action)
+	public BattleEventPhysical (BattleEntity src, 
+	                            BattleEntity dest, 
+	                            BattleActionPhysical action, 
+	                            DamageTypeModifier damageTypeModifier, 
+	                            IOffensivePhysicalCombatNode combatNode)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
@@ -37,7 +41,8 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 		mDamageNodes = new List<DamageNode>();
 
 		// check dodge before anything
-		float chanceToHit = src.accuracy / (src.accuracy + dest.relfex);
+		float srcChanceToHit = combatNode.accuracyAdd * combatNode.accuracyMultiply;
+		float chanceToHit = srcChanceToHit / (srcChanceToHit + dest.relfex);
 
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
@@ -47,26 +52,29 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 		}
 
 		// Calculate damage
-		Weapon weapon = src.character.mainHandWeapon;				
-		mDmgType = weapon.weaponConfig.dmgType;
+		mDmgType = damageTypeModifier.type;
 						
-		float dmg = weapon.weaponConfig.baseDamage;
+		// TODO set base damage in damage node or use total damage
+		float dmg = combatNode.totalDamageAdd;
+		dmg *= combatNode.totalDamageMultiply;
+
 		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
 
-		// we want to annotate the damage from each feature
-		CalculatePreDamage(OffensiveSourceType.WEAPON, rolledDmg, weapon.weaponConfig.statModifiers, src);
-		//inscriptionDmgNode = null; // TODO
-		CalculatePreDamage(OffensiveSourceType.SKILL, rolledDmg, action.physicalCombatSkill.statModifiers, src);
-		// effectDmgNode = null; // TODO
-
-		// calculate weapon damage node
 		float damageSum = rolledDmg;
-		foreach(DamageNode node in mDamageNodes) {
-			damageSum += node.calculatedDamage;
-		}
+		// calculate stat modifiers
+
+		// not very straight forward here but the stat Add will be the default stat, and the multiply will be the modifier
+		damageSum += combatNode.statSTRAdd * combatNode.statSTRMultiply;
+		damageSum += combatNode.statVITAdd * combatNode.statVITMultiply;
+		damageSum += combatNode.statDEXAdd * combatNode.statDEXMultiply;
+		damageSum += combatNode.statAGIAdd * combatNode.statAGIMultiply;
+		damageSum += combatNode.statINTAdd * combatNode.statINTMultiply;
+		damageSum += combatNode.statWISAdd * combatNode.statWISMultiply;
+		damageSum += combatNode.statLUCKAdd * combatNode.statLUCKMultiply;
 
 		// calculate crit chance
-		float critChance = src.critChance / (src.critChance + dest.critDefense);
+		float srcCritChance = combatNode.critChanceAdd * combatNode.critChanceMultiply;
+		float critChance = srcCritChance / (srcCritChance + dest.critDefense);
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
