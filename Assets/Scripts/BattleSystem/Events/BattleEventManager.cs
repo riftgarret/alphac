@@ -35,9 +35,9 @@ public class BattleEventManager
 	public void GeneratePhysicalEvent(BattleEntity src, BattleEntity dest, 
 	                                BattleActionPhysical action,                                   	
 	                                BattleEventStatusEffects options,
-	                                DamageTypeModifier damageTypeModifier,
+	                                DamageType damageType,
 	                                IOffensivePhysicalCombatNode physicalCombatNode) {
-		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageTypeModifier, physicalCombatNode);
+		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageType, physicalCombatNode);
 		NotifyEvent (attackEvent);
 		PostDamageEvent(attackEvent);
 
@@ -51,9 +51,11 @@ public class BattleEventManager
 	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
 	                               BattleActionMagical action, 
 	                               BattleEventStatusEffects options,
-	                                 DamageTypeModifier damageTypeModifier,
-	                                 MagicalOffensiveModifier [] offensiveModifiers) {
-		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageTypeModifier, offensiveModifiers);
+	                                 DamageType damageType,
+	                                 IOffensiveMagicalCombatNode magicalCombatNode) {
+		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageType, magicalCombatNode);
+		NotifyEvent(magicEvent);
+		PostDamageEvent(magicEvent);
 	}
 
 	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 

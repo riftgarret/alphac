@@ -19,7 +19,6 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
 
-	private List<DamageNode> mDamageNodes;
 	private DamageType mDmgType;
 	private bool mIsEvaded;
 	private bool mIsCrit;
@@ -28,7 +27,7 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 	public BattleEventPhysical (BattleEntity src, 
 	                            BattleEntity dest, 
 	                            BattleActionPhysical action, 
-	                            DamageTypeModifier damageTypeModifier, 
+	                            DamageType damageType, 
 	                            IOffensivePhysicalCombatNode combatNode)
 	{
 		this.mSrcEntity = src;
@@ -36,9 +35,7 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 
 		mIsEvaded = false;
 		mIsCrit = false;
-
-		// should be done first to popualte into from auxilary methods
-		mDamageNodes = new List<DamageNode>();
+		mDmgType = damageType;
 
 		// check dodge before anything
 		float srcChanceToHit = combatNode.accuracyAdd * combatNode.accuracyMultiply;
@@ -51,9 +48,6 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 			return;
 		}
 
-		// Calculate damage
-		mDmgType = damageTypeModifier.type;
-						
 		// TODO set base damage in damage node or use total damage
 		float dmg = combatNode.totalDamageAdd;
 		dmg *= combatNode.totalDamageMultiply;
@@ -89,61 +83,7 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
 		mTotalDamage = Mathf.Ceil(mTotalDamage);
 	}
-
-	/*
-	 * TOTAL_DMG,
-	CRIT_MOD,
-	CRIT_TOTAL,
-	ARMOR_IGNORE,
-	DODGE_IGNORE,
-	STR_MOD,
-	AGI_MOD,
-	DEX_MOD,
-	INT_MOD,
-	WIS_MOD
-	 */
-
-	/// <summary>
-	/// Calculates the pre damage. this is so we can break out each group up
-	/// </summary>
-	/// <returns>The pre damage.</returns>
-	/// <param name="srcType">Source type.</param>
-	/// <param name="initialDamage">Initial damage.</param>
-	/// <param name="statModifiers">Stat modifiers.</param>
-	/// <param name="c">C.</param>
-	private DamageNode CalculatePreDamage(OffensiveSourceType srcType, float initialDamage, StatModifier[] modifiers, BattleEntity entity) {
-		// if no modifiers, lets return null to skip in  our log
-		if(modifiers == null) {
-			return null;
-		}
-
-		float moddedDmg = 0;
-		foreach(StatModifier mod in modifiers) {
-			moddedDmg += entity.GetStat(mod.stat) * mod.mod;
-		}
-
-		// if we are still 0, return null so we don't include it in our log
-		if(moddedDmg == 0) {
-			return null;
-		}
-
-		/// create and add it to our list
-		DamageNode node = new DamageNode(initialDamage * moddedDmg, srcType);
-		mDamageNodes.Add(node);
-
-		return node;
-	}
-
-	public class DamageNode {
-		public readonly float calculatedDamage;
-		public readonly OffensiveSourceType srcType;
-
-		public DamageNode(float dmg, OffensiveSourceType type) {
-			this.calculatedDamage = dmg;
-			this.srcType = type;
-		}
-	}
-
+	
 	public override BattleEntity srcEntity {
 		get {
 			return mSrcEntity;

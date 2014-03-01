@@ -16,7 +16,7 @@ public class BattleActionHoarse : BattleActionMagical {
 				                                  entity, 
 				                                  this, 
 				                                  BattleEventStatusEffects.EMPTY,
-				                                  new DamageTypeModifier(DamageType.DARK, 1),
+				                                  DamageType.DARK,
 				                                  null);
 			}
 			mAttackCount++;

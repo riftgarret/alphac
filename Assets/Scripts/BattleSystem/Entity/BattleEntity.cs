@@ -167,9 +167,8 @@ public abstract class BattleEntity {
 		return this.character.GetResist(dmg);
 	}
 
-	public DamageTypeModifier GetWeaponDamageTypeModifier(int weaponIndex) {
-		// maybe not use weapon index?
-		return new DamageTypeModifier(character.mainHandWeapon.weaponConfig.dmgType, 1); // TODO
+	public DamageType GetWeaponDamageType(int weaponIndex) {
+		return character.mainHandWeapon.weaponConfig.dmgType; // TODO
 	}
 
 	public float GetBaseDamage(int weaponIndex) {

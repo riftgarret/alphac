@@ -14,10 +14,10 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 			BattleEventStatusEffects options = BattleEventStatusEffects.Builder()
 				.AddDestStatusEffect(new StatusEffectPrickedThroat(10,9))
 					.Build();
-			DamageTypeModifier damageTypeModifier = sourceEntity.GetWeaponDamageTypeModifier(0);
+			DamageType damageType = sourceEntity.GetWeaponDamageType(0);
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GeneratePhysicalEvent(sourceEntity, entity,  this, options, damageTypeModifier, null);
+				eventManager.GeneratePhysicalEvent(sourceEntity, entity,  this, options, damageType, null);
 			}
 			mAttackCount++;
 		}	
