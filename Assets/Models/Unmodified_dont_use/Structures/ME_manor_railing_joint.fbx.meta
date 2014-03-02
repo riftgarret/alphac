@@ -1,20 +1,20 @@
 fileFormatVersion: 2
-guid: 5267b16ff42413044a6c4c34237e2932
+guid: bbce04a871d9c2f418aac2c650a7daec
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: Collision
-    100002: //RootNode
-    100004: Stairs
-    400000: Collision
-    400002: //RootNode
-    400004: Stairs
-    2300000: Collision
-    2300002: Stairs
-    3300000: Collision
-    3300002: Stairs
-    4300000: Collision
-    4300002: Stairs
+    100000: //RootNode
+    100002: Rail_000
+    100004: Rail_joint_collision
+    400000: //RootNode
+    400002: Rail_000
+    400004: Rail_joint_collision
+    2300000: Rail_000
+    2300002: Rail_joint_collision
+    3300000: Rail_000
+    3300002: Rail_joint_collision
+    4300000: Rail_joint_collision
+    4300002: Rail_000
     7400000: Default Take
     9500000: //RootNode
   materials:

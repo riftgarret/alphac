@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f9f0069eda677ac4b82f6a9cfb9d1da9
+guid: 403ec4d40bbae9b43931ed8a3be7ef92
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -7,7 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Post
+    4300000: Rail_002
     7400000: Default Take
     9500000: //RootNode
   materials:
