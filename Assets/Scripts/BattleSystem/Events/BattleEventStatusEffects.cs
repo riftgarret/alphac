@@ -13,17 +13,12 @@ using System.Collections.Generic;
 public class BattleEventStatusEffects
 {
 	public static readonly BattleEventStatusEffects EMPTY = new BattleEventStatusEffects();
-
-	private IStatusEffect[] mDestStatusEffects = null;
-	public IStatusEffect[] destStatusEffects {
-		get { return mDestStatusEffects; }
+	
+	public StatusEffectEvent[] statusEffectEvents {
+				get;
+				private set;
 	}
-
-	private IStatusEffect[] mSrcStatusEffects = null;
-	public IStatusEffect[] srcStatusEffects {
-		get { return mSrcStatusEffects; }
-	}
-
+	
 	private BattleEventStatusEffects () {	}
 
 	/// <summary>
@@ -34,36 +29,22 @@ public class BattleEventStatusEffects
 	}
 
 	public class StatusEffectBuilder {
-		private List<IStatusEffect> mSrcEffects = null;
-		private List<IStatusEffect> mDestEffects = null;
+		private List<StatusEffectEvent> statusEffectEvents = null;
 
-		public StatusEffectBuilder AddSourceStatusEffect(IStatusEffect effect) {
-			if(mSrcEffects == null) {
-				mSrcEffects = new List<IStatusEffect>();
+		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, StatusEffectEvent.StatusEffectRule rule) {
+			if(statusEffectEvents == null) {
+				statusEffectEvents = new List<StatusEffectEvent>();
 			}
-			mSrcEffects.Add(effect);
-			return this;
-		}
-
-		public StatusEffectBuilder AddDestStatusEffect(IStatusEffect effect) {
-			if(mDestEffects == null) {
-				mDestEffects = new List<IStatusEffect>();
-			}
-			mDestEffects.Add(effect);
+			statusEffectEvents.Add(new StatusEffectEvent(effect, target, rule));
 			return this;
 		}
 
 		public BattleEventStatusEffects Build() {
-			BattleEventStatusEffects parameter = new BattleEventStatusEffects();
-			if(mSrcEffects != null) {
-				parameter.mSrcStatusEffects = mSrcEffects.ToArray();
+			BattleEventStatusEffects ret = new BattleEventStatusEffects();
+			if(statusEffectEvents != null) {
+				ret.statusEffectEvents = statusEffectEvents.ToArray();
 			}
-
-			if(mDestEffects != null) {
-				parameter.mDestStatusEffects = mDestEffects.ToArray();
-			}
-
-			return parameter;
+			return ret;
 		}
 	}
 }

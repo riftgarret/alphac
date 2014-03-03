@@ -67,6 +67,16 @@ public abstract class BattleEntity {
 		state.action.OnExecuteAction(state.turnClock, eventManager);
 	}
 
+	/// <summary>
+	/// Generates the composite combat node. This will contain everything minus the skill combat node
+	/// </summary>
+	/// <returns>The composite combat node.</returns>
+	public CompositeCombatModifierNode GenerateCompositeCombatNode() {
+		CompositeCombatModifierNode compositeNode = new CompositeCombatModifierNode ();
+
+	}
+
+
 	
 	///////////////////
 	// proxy all character attributes / abilities so they can be adjusted by status effects

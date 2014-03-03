@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class CharacterCombatNode : IOffensiveMagicalCombatNode, IOffensivePhysicalCombatNode
+public class CharacterCombatNode : IOffensiveCombatNode
 {
 	private const float NULL_ADD = 0f;
 	private const float NULL_MULTIPLY = 1f;

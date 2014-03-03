@@ -22,5 +22,4 @@ public class WeaponConfig : ScriptableObject
 	public WeaponType weaponType;
 
 	public Texture2D icon;
-		
 }

@@ -11,11 +11,16 @@ public class BattleActionHoarse : BattleActionMagical {
 	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
-			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
+
+			foreach(BattleEntity targetEntity in targetResolver.GetTargets(combatSkill)) {
+				// create status effect for hoarse
+				BattleEventStatusEffects effects = BattleEventStatusEffects.Builder()
+					.AddStatusEffect(new StatusEffectHoarse(1, 1), targetEntity, StatusEffectEvent.StatusEffectRule.ON_HIT)
+					.Build();
 				eventManager.GenerateMagicalEvent(sourceEntity, 
-				                                  entity, 
+				                                  targetEntity, 
 				                                  this, 
-				                                  BattleEventStatusEffects.EMPTY,
+				                                  effects,
 				                                  DamageType.DARK,
 				                                  null);
 			}

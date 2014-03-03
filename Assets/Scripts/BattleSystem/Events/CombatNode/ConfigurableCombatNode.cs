@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class ConfigurableCombatNode : IOffensiveMagicalCombatNode, IOffensivePhysicalCombatNode
+public class ConfigurableCombatNode : IOffensiveCombatNode
 {
 
 

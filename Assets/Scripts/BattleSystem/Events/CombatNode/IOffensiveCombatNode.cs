@@ -8,8 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IOffensiveGeneralCombatNode
+public interface IOffensiveCombatNode
 {
+	// GENERAL COMBAT EFFECTS
 	float totalDamageAdd {
 		get;
 	}
@@ -81,6 +82,61 @@ public interface IOffensiveGeneralCombatNode
 	float statLUCKMultiply {
 		get;
 	}
+	/////// END GENERAL STATS
+
+	// MAGIC ONLY
+
+	float powerMagicalAdd {
+		get;
+	}
+	
+	float powerMagicalMultiply {
+		get;
+	}
+	
+	float resistIgnoreAdd {
+		get;
+	}
+	
+	float resistIgnoreMultiply {
+		get;
+	}
+	// END MAGIC
+
+
+	// PHYSICAL ONLY
+	float powerPhysicalAdd {
+		get;
+	}
+	
+	float powerPhysicalMultiply {
+		get;
+	}
+	
+	float armorIgnoreAdd {
+		get;
+	}
+	
+	float armorIgnoreMultiply {
+		get;
+	}
+	
+	float dodgeIgnoreAdd {
+		get;
+	}
+	
+	float dodgeIgnoreMultiply {
+		get;
+	}
+	
+	float accuracyAdd {
+		get;
+	}
+	
+	float accuracyMultiply {
+		get;
+	}
+	// END PHYSICAL
 }
 
 

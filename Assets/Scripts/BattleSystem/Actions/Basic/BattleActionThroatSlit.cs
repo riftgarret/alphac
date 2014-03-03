@@ -11,12 +11,13 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
-			BattleEventStatusEffects options = BattleEventStatusEffects.Builder()
-				.AddDestStatusEffect(new StatusEffectPrickedThroat(10,9))
-					.Build();
+
 			DamageType damageType = sourceEntity.GetWeaponDamageType(0);
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
+				BattleEventStatusEffects options = BattleEventStatusEffects.Builder()
+					.AddStatusEffect(new StatusEffectPrickedThroat(10,9), entity, StatusEffectEvent.StatusEffectRule.ON_HIT)
+						.Build();
 				eventManager.GeneratePhysicalEvent(sourceEntity, entity,  this, options, damageType, null);
 			}
 			mAttackCount++;

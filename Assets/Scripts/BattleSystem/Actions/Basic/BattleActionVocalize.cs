@@ -12,8 +12,10 @@ public class BattleActionVocalize : BattleActionPositive {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
-			IStatusEffect [] statusEffects = new IStatusEffect[]{new StatusEffectPrickedThroat(10, 9)};
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
+				BattleEventStatusEffects options = BattleEventStatusEffects.Builder()
+					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, StatusEffectEvent.StatusEffectRule.ALWAYS )
+						.Build();
 				eventManager.GeneratePositiveEvent(sourceEntity, entity, this, null);
 			}
 			mAttackCount++;
