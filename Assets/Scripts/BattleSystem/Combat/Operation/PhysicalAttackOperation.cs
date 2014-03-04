@@ -13,16 +13,12 @@ using System.Collections.Generic;
 
 public class PhysicalAttackOperation : AbstractCombatOperation
 {
-	private const float CRIT_MULTIPLIER_LOW = 1.5f;
-	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
+	private const float CRIT_MULTIPLIER_LOW = 0.5f;
+	private const float CRIT_MULTIPLIER_HIGH = 0.8f;
 
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
-
-	private DamageType mDmgType;
-	private bool mIsEvaded;
-	private bool mIsCrit;
-	private float mTotalDamage;
+	private DamageType mDamageType;
 
 	public PhysicalAttackOperation (BattleEntity src, 
 	                            BattleEntity dest, 
@@ -31,24 +27,20 @@ public class PhysicalAttackOperation : AbstractCombatOperation
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
-
-		mIsEvaded = false;
-		mIsCrit = false;
-		mDmgType = damageType;
+		mDamageType = damageType;
 	}
 	
-	public override void Execute (CombatResolver srcResolver, CombatResolver destResolver)
+	public override IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver)
 	{
 		// check dodge before anything
 		float srcChanceToHit = srcResolver.GetAccuracy ();
-		float reflex = destResolver.GetResist();
+		float reflex = destResolver.GetReflex();
 		float chanceToHit = srcChanceToHit / (srcChanceToHit + reflex); 
 		
 		// TODO add chanceToHit increase
+		// if we missed
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
-			// missed
-			mIsEvaded = true;
-			return;
+			return new DodgeEvent(mSrcEntity, mDestEntity);
 		}
 		
 		// TODO set base damage in damage node or use total damage
@@ -61,21 +53,26 @@ public class PhysicalAttackOperation : AbstractCombatOperation
 		float srcCritChance = srcResolver.GetCritChance();
 		float critDefense = destResolver.GetCritDefense();
 		float critChance = srcCritChance / (srcCritChance + critDefense); 
+		float critDamage = 0f;
 		// TODO factor in other chances
+		// Note: crit damage will not be resisted then
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
-			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
-			mIsCrit = true;
+			critDamage = Mathf.Ceil(UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH)); // crit
 		}
 		
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack
-		float resistValue = destResolver.GetResist(mDmgType);
+		float resistValue = destResolver.GetResist(mDamageType);
 		
 		// result damage should be same type of calculation
-		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
-		mTotalDamage = Mathf.Ceil(mTotalDamage);
+		damageSum = damageSum * damageSum / (damageSum + resistValue);
+		damageSum = Mathf.Ceil(damageSum);
 
-		ExecuteDamage (mTotalDamage);
+		float totalDamage = damageSum + critDamage;
+		ExecuteDamage (totalDamage, mDestEntity);
+
+		return new DamageEvent (mSrcEntity, mDestEntity, damageSum, critDamage, mDamageType);
+
 	}
 }
 

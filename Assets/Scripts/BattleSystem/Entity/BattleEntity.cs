@@ -63,9 +63,9 @@ public abstract class BattleEntity {
 	/// <param name="state">State.</param>
 	public abstract void OnRequiresInput(TurnState state);
 
-	public void IncrementGameClock(float gameClockDelta, BattleTimeQueue timeQueue) {
+	public void IncrementGameClock(float gameClockDelta) {
 		// TODO, we can modify time if we have that buff here
-		turnState.IncrementGameClock(gameClockDelta, timeQueue.manager);
+		turnState.IncrementGameClock(gameClockDelta);
 		mStatusEffectManager.OnTimeIncrement(gameClockDelta);
 	}
 
@@ -73,9 +73,9 @@ public abstract class BattleEntity {
 		return turnState.phase == TurnState.Phase.REQUIRES_INPUT;
 	}
 
-	public void OnExecuteTurn(TurnState state, BattleEventManager eventManager) {
+	public void OnExecuteTurn(TurnState state) {
 		// do action against character
-		state.action.OnExecuteAction(state.turnClock, eventManager);
+		state.action.OnExecuteAction(state.turnClock);
 	}
 
 

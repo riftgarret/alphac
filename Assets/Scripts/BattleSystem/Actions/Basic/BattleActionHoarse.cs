@@ -8,7 +8,7 @@ public class BattleActionHoarse : BattleActionMagical {
 
 	}
 
-	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
+	public override void OnExecuteAction (float actionClock)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
@@ -21,7 +21,7 @@ public class BattleActionHoarse : BattleActionMagical {
 
 				// combat node should just be character, skill
 
-				eventManager.GenerateMagicalEvent(sourceEntity, 
+				BattleSystem.combatExecutor.ExecuteMagicalAttack(sourceEntity, 
 				                                  targetEntity, 
 				                                  this, 
 				                                  effects,

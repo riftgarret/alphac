@@ -10,11 +10,7 @@
 using System;
 public interface ICombatOperation
 {
-	/// <summary>
-	/// Execute the specified srcResolver and destResolver.
-	/// </summary>
-	/// <param name="srcResolver">Source resolver.</param>
-	/// <param name="destResolver">Destination resolver.</param>
-	void Execute(CombatResolver srcResolver, CombatResolver destResolver);
+
+	IBattleEvent Execute(CombatResolver srcResolver, CombatResolver destResolver);
 }
 

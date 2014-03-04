@@ -42,11 +42,6 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 		get;
 	}
 
-	public BattleEventManager eventManager {
-		private set;
-		get;
-	}
-
 	// for managing positions and enemies
 	private BattleEntityManager mEntityManager;
 	public BattleEntityManager entityManager {
@@ -59,10 +54,13 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 	private bool mOnBattleChangedFlag;
 
 	void Awake() {
-		mBattleTimeQueue = new BattleTimeQueue(unitOfTime, this);
+		// first create our battle system for other components to initialize
+		BattleSystem.Instance ().Init (this);
+		BattleSystem.eventManager.battleEventListener = this;
+
+		mBattleTimeQueue = new BattleTimeQueue(unitOfTime);
 		turnManager = new PCTurnManager(this);
-		eventManager = new BattleEventManager();
-		eventManager.battleEventListener = this;
+
 		mGameState = GameState.ACTIVE; // eventualyl this will be INTRO
 
 		// initialize entities for other methods in start

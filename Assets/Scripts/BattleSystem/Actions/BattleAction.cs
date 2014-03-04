@@ -23,7 +23,7 @@ public abstract class BattleAction : IBattleAction {
 		this.targetResolver = targetResolver;
 	}
 
-	public abstract void OnExecuteAction(float actionClock, BattleEventManager eventManager);
+	public abstract void OnExecuteAction(float actionClock);
 
 	/// <summary>
 	/// Gets the type of the weapon damage. Because its a popular used method for sending battle events

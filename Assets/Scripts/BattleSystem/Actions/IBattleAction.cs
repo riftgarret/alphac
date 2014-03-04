@@ -15,7 +15,7 @@ public interface IBattleAction
 	/// the action time threshold, it will be called one last time
 	/// </summary>
 	/// <param name="actionClock">Action clock.</param>
-	void OnExecuteAction(float actionClock, BattleEventManager eventManager);
+	void OnExecuteAction(float actionClock);
 
 	float timePrepare { get; }
 	float timeAction { get; }

@@ -8,14 +8,14 @@ public class BattleActionAttack : BattleActionPhysical {
 
 	}
 
-	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
+	public override void OnExecuteAction (float actionClock)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 			DamageType damageType = GetWeaponDamageType(0);
 
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GeneratePhysicalEvent(sourceEntity, entity, this, CombatStatusEffectList.EMPTY, damageType, null);
+				BattleSystem.combatExecutor.ExecutePhysicalAttack(sourceEntity, entity, this, CombatStatusEffectList.EMPTY, damageType, null);
 			}
 			mAttackCount++;
 		}	

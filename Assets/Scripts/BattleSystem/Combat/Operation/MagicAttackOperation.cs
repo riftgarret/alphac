@@ -13,32 +13,21 @@ using UnityEngine;
 
 public class MagicAttackOperation : AbstractCombatOperation
 {
-	private const float CRIT_MULTIPLIER_LOW = 1.5f;
-	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
+	private const float CRIT_MULTIPLIER_LOW = 0.5f;
+	private const float CRIT_MULTIPLIER_HIGH = 0.8f;
 	
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
-
 	private DamageType mDamageType;
-	private bool mHasDamage;
-	private bool mIsResisted;
-	private bool mIsCrit;
-	private float mTotalDamage;
-	
+
 	public MagicAttackOperation (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageType damageType, CombatResolver offensiveResolver)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
 		this.mDamageType = damageType;
-		
-		mIsResisted = false;
-		mIsCrit = false;
-
-
-
 	}
 
-	public override void Execute (CombatResolver srcResolver, CombatResolver destResolver)
+	public override IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver)
 	{
 		// check dodge before anything
 		float resistValue = destResolver.GetResist(mDamageType); 
@@ -48,15 +37,16 @@ public class MagicAttackOperation : AbstractCombatOperation
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToResist) {
 			// missed
-			mIsResisted = true;
-			return;
+			return new ResistEvent(mSrcEntity, mDestEntity);
 		}
 		
 		float dmg = srcResolver.GetMagicalDamage();
+
+		// TODO: 
+		// Move 
 		
 		if(dmg == 0) {
-			mHasDamage = false;
-			return; // no reason to do additional calculations, no damage applied
+			return new NonDamageEvent(mSrcEntity, mDestEntity); // no reason to do additional calculations, no damage applied
 		}
 		
 		// Calculate damage
@@ -66,10 +56,12 @@ public class MagicAttackOperation : AbstractCombatOperation
 		float srcCritChance = srcResolver.GetCritChance ();
 		float destCritDefense = destResolver.GetCritDefense ();
 		float critChance = srcCritChance / (srcCritChance + destCritDefense); 
+
+		float critDamage = 0f;
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
-			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
-			mIsCrit = true;
+			// lets separate crit damage from normal for sake of event
+			critDamage = Mathf.Ceil(UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH)); // crit
 		}
 		
 		
@@ -78,10 +70,14 @@ public class MagicAttackOperation : AbstractCombatOperation
 
 		
 		// result damage should be same type of calculation
-		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
-		mTotalDamage = Mathf.Ceil(mTotalDamage);
+		damageSum = damageSum * damageSum / (damageSum + resistValue);
+		damageSum = Mathf.Ceil(damageSum);
 
-		ExecuteDamage (mTotalDamage);
+		float totalDamage = damageSum + critDamage;
+
+		ExecuteDamage (totalDamage, mDestEntity);
+		// return damage event
+		return new DamageEvent(mSrcEntity, mDestEntity, damageSum, critDamage, mDamageType);
 	}
 }
 

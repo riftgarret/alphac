@@ -8,7 +8,7 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 
 	}
 
-	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
+	public override void OnExecuteAction (float actionClock)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
@@ -18,7 +18,7 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 				CombatStatusEffectList options = CombatStatusEffectList.Builder()
 					.AddStatusEffect(new StatusEffectPrickedThroat(10,9), entity, CombatStatusEffect.StatusEffectRule.ON_HIT)
 						.Build();
-				eventManager.GeneratePhysicalEvent(sourceEntity, entity,  this, options, damageType, null);
+				BattleSystem.combatExecutor.ExecutePhysicalAttack(sourceEntity, entity,  this, options, damageType, null);
 			}
 			mAttackCount++;
 		}	

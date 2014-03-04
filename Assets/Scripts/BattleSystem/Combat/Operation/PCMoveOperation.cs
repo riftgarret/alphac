@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public class BattleMoveEvent : IBattleEvent
+public class PCMoveOperation
 {
 	// TODO flush out
 	PCCharacter.RowPosition mSrcRow;
@@ -16,7 +16,7 @@ public class BattleMoveEvent : IBattleEvent
 
 	PCBattleEntity mSrcEntity;
 
-	public BattleMoveEvent (PCBattleEntity srcEntity, PCCharacter.RowPosition destRow) 
+	public PCMoveOperation (PCBattleEntity srcEntity, PCCharacter.RowPosition destRow) 
 	{
 		this.mSrcEntity = srcEntity;
 		this.mSrcRow = srcEntity.pcCharacter.rowPosition;
@@ -38,12 +38,6 @@ public class BattleMoveEvent : IBattleEvent
 	public BattleEventType eventType {
 		get {
 			return BattleEventType.MOVE;
-		}
-	}
-
-	public string eventText {
-		get {
-			return "TODO";
 		}
 	}
 }

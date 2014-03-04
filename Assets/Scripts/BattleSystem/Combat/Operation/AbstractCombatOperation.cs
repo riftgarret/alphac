@@ -26,6 +26,6 @@ public abstract class AbstractCombatOperation : ICombatOperation
 		destEntity.character.curHP -= damage;
 	}
 
-	public abstract void Execute (CombatResolver srcResolver, CombatResolver destResolver);
+	public abstract IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver);
 }
 

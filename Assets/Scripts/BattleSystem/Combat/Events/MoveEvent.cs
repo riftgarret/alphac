@@ -8,36 +8,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-
-public class BattleEventDeath : IBattleEvent
+public class MoveEvent : IBattleEvent
 {
-	private BattleEntity mSrcEntity;
+	PCCharacter.RowPosition mSrcRow;
+	PCCharacter.RowPosition mDestRow;
 
-	public BattleEventDeath (BattleEntity entity)
+	PCBattleEntity mSrcEntity;
+
+	public MoveEvent (PCBattleEntity srcEntity, PCCharacter.RowPosition srcRow, PCCharacter.RowPosition destRow) 
 	{
-		mSrcEntity = entity;
+		this.mSrcEntity = srcEntity;
+		this.mSrcRow = srcRow;
+		this.mDestRow = destRow;
 	}
 
 	public BattleEntity srcEntity {
 		get {
-			return mSrcEntity;
+			return srcEntity;
 		}
 	}
 
 	public BattleEventType eventType {
 		get {
-			return BattleEventType.DEATH;
+			return BattleEventType.MOVE;
 		}
 	}
 
-	public string eventText {
-		get {
-			return string.Format("{0} has died.", mSrcEntity.character.displayName);
-		}
-	}
-
-	public void Execute (CombatResolver srcResolver, CombatResolver deathResolver)
+	public override string ToString ()
 	{
-		// perhaps invoke the battle log for this
+		return string.Format ("[BattleMoveEvent: srcEntity={0}, eventType={1}]", srcEntity, eventType);
 	}
 }
+
+

@@ -10,27 +10,21 @@
 using System;
 using UnityEngine;
 
-public class BattleEventManager
+public class CombatOperationExecutor
 {
-	public IBattleEventListener battleEventListener {
-		get;
-		set;
-	}
 
-	public BattleEventManager ()
-	{
-	}
-	
-
-	public void GeneratePhysicalEvent(BattleEntity src, BattleEntity dest, 
+	public void ExecutePhysicalAttack(BattleEntity src, BattleEntity dest, 
 	                                BattleActionPhysical action,                                   	
 	                                CombatStatusEffectList options,
 	                                DamageType damageType,
 	                                ICombatNode physicalCombatNode) {
 		CombatResolver offensiveResolver = new CombatResolver (physicalCombatNode);
-		PhysicalAttackOperation attackEvent = new PhysicalAttackOperation(src, dest, action, damageType, offensiveResolver);
-		NotifyEvent (attackEvent);
-		PostDamageEvent(attackEvent);
+		CombatResolver defensiveResolver = new CombatResolver (dest.CreateCombatNodeBuilder().Build());
+		PhysicalAttackOperation attackOperation = new PhysicalAttackOperation(src, dest, action, damageType);
+		attackOperation.Execute (offensiveResolver, defensiveResolver);
+
+		NotifyEvent (attackOperation);
+		PostDamageEvent(attackOperation);
 
 		// check to see if we hit for any status effects
 		//if(!attackEvent.isEvaded) {
@@ -39,7 +33,7 @@ public class BattleEventManager
 		//}
 	}
 
-	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
+	public void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
 	                               BattleActionMagical action, 
 	                               CombatStatusEffectList options,
 	                                 DamageType damageType,
@@ -56,7 +50,7 @@ public class BattleEventManager
 		PostDamageEvent(magicEvent);
 	}
 
-	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 
+	public void ExecutePositive(BattleEntity src, BattleEntity dest, 
 	                                 BattleActionPositive action, 
 	                                 CombatStatusEffectList options) {
 		
@@ -86,12 +80,12 @@ public class BattleEventManager
 	}
 
 	// calculate and apply damage state (see if they are dead or not)
-	private void PostDamageEvent(IBattleDamageEvent dmgEvent) {
+	private void PostDamageEvent(DamageEvent dmgEvent) {
 		BattleEntity destEntity = dmgEvent.destEntity;
 		// if character died, notify death event
 		if(destEntity.character.curHP <= 0) {
 			destEntity.character.curHP = 0;
-			BattleEventDeath deathEvent = new BattleEventDeath(destEntity);
+			DeathEvent deathEvent = new DeathEvent(destEntity);
 			NotifyEvent(deathEvent);
 		}
 

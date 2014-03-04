@@ -8,7 +8,7 @@ public class BattleActionVocalize : BattleActionPositive {
 
 	}
 
-	public override void OnExecuteAction (float actionClock, BattleEventManager eventManager)
+	public override void OnExecuteAction (float actionClock)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
@@ -16,7 +16,7 @@ public class BattleActionVocalize : BattleActionPositive {
 				CombatStatusEffectList options = CombatStatusEffectList.Builder()
 					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, CombatStatusEffect.StatusEffectRule.ALWAYS )
 						.Build();
-				eventManager.GeneratePositiveEvent(sourceEntity, entity, this, null);
+				BattleSystem.combatExecutor.ExecutePositive(sourceEntity, entity, this, null);
 			}
 			mAttackCount++;
 		}	
