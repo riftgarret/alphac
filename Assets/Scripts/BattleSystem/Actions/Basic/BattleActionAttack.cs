@@ -15,7 +15,7 @@ public class BattleActionAttack : BattleActionPhysical {
 
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				eventManager.GeneratePhysicalEvent(sourceEntity, entity, this, BattleEventStatusEffects.EMPTY, damageType, null);
+				eventManager.GeneratePhysicalEvent(sourceEntity, entity, this, CombatStatusEffectList.EMPTY, damageType, null);
 			}
 			mAttackCount++;
 		}	

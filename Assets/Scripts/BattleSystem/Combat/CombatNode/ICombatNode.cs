@@ -8,10 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IDefensiveCombatNode
+public interface ICombatNode
 {
-	float GetPropertyAdd(DefensiveCombatNodeProperty property);
-	float GetPropertyMultiply(DefensiveCombatNodeProperty property);	
+
+	float GetPropertyAdd(CombatNodeProperty property);
+
+	float GetPropertyMultiply(CombatNodeProperty property);
+
 }
 
 

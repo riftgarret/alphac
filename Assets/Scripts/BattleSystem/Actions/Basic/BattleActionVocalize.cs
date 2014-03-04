@@ -13,8 +13,8 @@ public class BattleActionVocalize : BattleActionPositive {
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				BattleEventStatusEffects options = BattleEventStatusEffects.Builder()
-					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, StatusEffectEvent.StatusEffectRule.ALWAYS )
+				CombatStatusEffectList options = CombatStatusEffectList.Builder()
+					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, CombatStatusEffect.StatusEffectRule.ALWAYS )
 						.Build();
 				eventManager.GeneratePositiveEvent(sourceEntity, entity, this, null);
 			}

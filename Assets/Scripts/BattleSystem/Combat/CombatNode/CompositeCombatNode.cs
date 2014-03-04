@@ -10,33 +10,33 @@
 using System;
 using System.Collections.Generic;
 
-public class CompositeCombatModifierNode : IOffensiveCombatNode
+public class CompositeCombatNode : ICombatNode
 {
-	private List<IOffensiveCombatNode> mChildren;
+	private List<ICombatNode> mChildren;
 
-	public CompositeCombatModifierNode ()
+	public CompositeCombatNode ()
 	{
-		mChildren = new List<IOffensiveCombatNode>();
+		mChildren = new List<ICombatNode>();
 	}
 
-	public void AddNode(IOffensiveCombatNode combatNode) {
+	public void AddNode(ICombatNode combatNode) {
 		mChildren.Add (combatNode);
 	}
 
-	public float GetPropertyAdd(OffensiveCombatNodeProperty property) {
+	public float GetPropertyAdd(CombatNodeProperty property) {
 
 		float total = 0;
-		foreach(IOffensiveCombatNode mod in mChildren) {
+		foreach(ICombatNode mod in mChildren) {
 			total += mod.GetPropertyAdd(property);
 		}
 		return total;
 
 	}
 
-	public float GetPropertyMultiply(OffensiveCombatNodeProperty property) {
+	public float GetPropertyMultiply(CombatNodeProperty property) {
 
 		float total = 1;
-		foreach(IOffensiveCombatNode mod in mChildren) {
+		foreach(ICombatNode mod in mChildren) {
 			total *= mod.GetPropertyMultiply(property);
 		}
 		return total;

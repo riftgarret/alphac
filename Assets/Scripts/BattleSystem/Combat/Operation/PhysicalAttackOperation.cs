@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BattleEventPhysical : AbstractBattleDamageEvent
+public class PhysicalAttackOperation : AbstractCombatOperation
 {
 	private const float CRIT_MULTIPLIER_LOW = 1.5f;
 	private const float CRIT_MULTIPLIER_HIGH = 1.8f;
@@ -24,11 +24,10 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 	private bool mIsCrit;
 	private float mTotalDamage;
 
-	public BattleEventPhysical (BattleEntity src, 
+	public PhysicalAttackOperation (BattleEntity src, 
 	                            BattleEntity dest, 
 	                            BattleActionPhysical action, 
-	                            DamageType damageType, 
-	                            OffensiveCombatResolver combatResolver)
+	                            DamageType damageType)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
@@ -36,89 +35,47 @@ public class BattleEventPhysical : AbstractBattleDamageEvent
 		mIsEvaded = false;
 		mIsCrit = false;
 		mDmgType = damageType;
-
+	}
+	
+	public override void Execute (CombatResolver srcResolver, CombatResolver destResolver)
+	{
 		// check dodge before anything
-		float srcChanceToHit = combatResolver.GetAccuracy ();
-		float chanceToHit = srcChanceToHit / (srcChanceToHit + 0); // TODO defenseNode reflex
-
+		float srcChanceToHit = srcResolver.GetAccuracy ();
+		float reflex = destResolver.GetResist();
+		float chanceToHit = srcChanceToHit / (srcChanceToHit + reflex); 
+		
 		// TODO add chanceToHit increase
 		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
 			// missed
 			mIsEvaded = true;
 			return;
 		}
-
+		
 		// TODO set base damage in damage node or use total damage
-		float dmg = combatResolver.GetPhysicalDamage ();
-
+		float dmg = srcResolver.GetPhysicalDamage ();
+		
 		float damageSum = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
-
-
+		
+		
 		// calculate crit chance
-		float srcCritChance = combatResolver.GetCritChance();
-		float critChance = srcCritChance / (srcCritChance + 0); // TODO defenseNode crit defense
+		float srcCritChance = srcResolver.GetCritChance();
+		float critDefense = destResolver.GetCritDefense();
+		float critChance = srcCritChance / (srcCritChance + critDefense); 
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
 			mIsCrit = true;
 		}
-
+		
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack
-		float resistValue = 0; // TODO defenseNode  dest.GetResist(mDmgType);
-
+		float resistValue = destResolver.GetResist(mDmgType);
+		
 		// result damage should be same type of calculation
 		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);
 		mTotalDamage = Mathf.Ceil(mTotalDamage);
-	}
-	
-	public override BattleEntity srcEntity {
-		get {
-			return mSrcEntity;
-		}
-	}
 
-	public override BattleEntity destEntity {
-		get { return mDestEntity; }
-	}
-
-	public override BattleEventType eventType {
-		get {
-			return BattleEventType.ATTACK;
-		}
-	}
-
-	public override float totalDamage {
-		get {
-			return mTotalDamage;
-		}
-	}
-
-	public bool isEvaded {
-		get {
-			return mIsEvaded;
-		}
-	}
-
-	public bool isCrit {
-		get {
-			return mIsCrit;
-		}
-	}
-
-	public override string eventText {
-		get {
-			if(mIsEvaded) {
-				return string.Format("{0} missed {1}", mSrcEntity.character.displayName, mDestEntity.character.displayName);
-			}
-			string format = "{0} scored a {5} hit against {1} with {2} {3} damage, HP: {4}";
-			return string.Format(format, mSrcEntity.character.displayName, mDestEntity.character.displayName, TextUtils.DmgToString(mDmgType), mTotalDamage, mDestEntity.character.curHP, (mIsCrit? "critical " : ""));
-		}
-	}
-
-	public override void Execute ()
-	{
-		ExecuteDamage ();
+		ExecuteDamage (mTotalDamage);
 	}
 }
 

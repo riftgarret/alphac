@@ -13,7 +13,7 @@ public class CombatNodeBuilder
 	private CombatNodeFactory mFactory;
 
 	private int mWeaponIndex;
-	
+	private SkillCombatNode mSkillCombatNode;
 
 	public CombatNodeBuilder (CombatNodeFactory factory)
 	{
@@ -25,19 +25,27 @@ public class CombatNodeBuilder
 	/// Sets the index of the weapon. This is set to 0 by default.
 	/// </summary>
 	/// <param name="weaponIndex">Weapon index.</param>
-	public void SetWeaponIndex(int weaponIndex) {
+	public CombatNodeBuilder SetWeaponIndex(int weaponIndex) {
 		mWeaponIndex = weaponIndex;
+		return this;
 	}
 
-	public CompositeCombatModifierNode Build(SkillCombatNode skillCombatNode) {
+	public CombatNodeBuilder SetSkillCombatNode(SkillCombatNode skillCombatNode) {
+		mSkillCombatNode = skillCombatNode;
+		return this;
+	}
+
+	public CompositeCombatNode Build() {
 		// build composite for character
-		CompositeCombatModifierNode rootNode = new CompositeCombatModifierNode ();
+		CompositeCombatNode rootNode = new CompositeCombatNode ();
 		// child node
 		rootNode.AddNode (mFactory.CreateCharacterNode());
 		rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeaponIndex));
-		rootNode.AddNode (skillCombatNode);
+		if (mSkillCombatNode != null) {
+			rootNode.AddNode (mSkillCombatNode);
+		}
 
-		// TODO iterate through buffs
+		// TODO iterate through buffs and equipment
 		return rootNode;
 	}
 }

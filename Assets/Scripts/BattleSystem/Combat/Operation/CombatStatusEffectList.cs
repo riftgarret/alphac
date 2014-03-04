@@ -10,16 +10,16 @@
 using System;
 using System.Collections.Generic;
 
-public class BattleEventStatusEffects
+public class CombatStatusEffectList
 {
-	public static readonly BattleEventStatusEffects EMPTY = new BattleEventStatusEffects();
+	public static readonly CombatStatusEffectList EMPTY = new CombatStatusEffectList();
 	
-	public StatusEffectEvent[] statusEffectEvents {
+	public CombatStatusEffect[] statusEffects {
 				get;
 				private set;
 	}
 	
-	private BattleEventStatusEffects () {	}
+	private CombatStatusEffectList () {	}
 
 	/// <summary>
 	/// Builder this instance.
@@ -29,20 +29,20 @@ public class BattleEventStatusEffects
 	}
 
 	public class StatusEffectBuilder {
-		private List<StatusEffectEvent> statusEffectEvents = null;
+		private List<CombatStatusEffect> statusEffectEvents = null;
 
-		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, StatusEffectEvent.StatusEffectRule rule) {
+		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, CombatStatusEffect.StatusEffectRule rule) {
 			if(statusEffectEvents == null) {
-				statusEffectEvents = new List<StatusEffectEvent>();
+				statusEffectEvents = new List<CombatStatusEffect>();
 			}
-			statusEffectEvents.Add(new StatusEffectEvent(effect, target, rule));
+			statusEffectEvents.Add(new CombatStatusEffect(effect, target, rule));
 			return this;
 		}
 
-		public BattleEventStatusEffects Build() {
-			BattleEventStatusEffects ret = new BattleEventStatusEffects();
+		public CombatStatusEffectList Build() {
+			CombatStatusEffectList ret = new CombatStatusEffectList();
 			if(statusEffectEvents != null) {
-				ret.statusEffectEvents = statusEffectEvents.ToArray();
+				ret.statusEffects = statusEffectEvents.ToArray();
 			}
 			return ret;
 		}

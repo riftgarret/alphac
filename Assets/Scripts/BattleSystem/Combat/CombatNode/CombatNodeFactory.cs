@@ -23,7 +23,7 @@ public class CombatNodeFactory
 		mCachedWeaponConfigMap = new Dictionary<WeaponConfig, WeaponConfigCombatNode> ();
 	}
 
-	public IOffensiveCombatNode CreateWeaponConfigNode(int weaponIndex) {
+	public ICombatNode CreateWeaponConfigNode(int weaponIndex) {
 		Weapon weapon = mEntity.GetWeapon (weaponIndex);
 		WeaponConfig config = weapon.weaponConfig;
 		if (!mCachedWeaponConfigMap.ContainsKey (config)) {
@@ -32,7 +32,7 @@ public class CombatNodeFactory
 		return mCachedWeaponConfigMap [config];
 	}
 
-	public IOffensiveCombatNode CreateCharacterNode() {
+	public ICombatNode CreateCharacterNode() {
 		if (mCachedCharacterNode == null) {
 			mCachedCharacterNode = new CharacterCombatNode(mEntity.character);
 		}

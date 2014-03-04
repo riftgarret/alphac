@@ -8,21 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IBattleEvent
+public interface ICombatOperation
 {
-	BattleEntity srcEntity {
-		get;
-	}
-
-	BattleEventType eventType {
-		get;
-	}
-
-	// TODO remove event text and have it handled within execute
-	string  eventText {
-		get;
-	}
-
-	void Execute();
+	/// <summary>
+	/// Execute the specified srcResolver and destResolver.
+	/// </summary>
+	/// <param name="srcResolver">Source resolver.</param>
+	/// <param name="destResolver">Destination resolver.</param>
+	void Execute(CombatResolver srcResolver, CombatResolver destResolver);
 }
 

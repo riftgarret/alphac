@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 using System;
 
-public class StatusEffectEvent
+public class CombatStatusEffect
 {
 	/// <summary>
 	/// Gets the target.
@@ -38,7 +38,7 @@ public class StatusEffectEvent
 			private set;
 	}
 
-	public StatusEffectEvent (IStatusEffect effect, BattleEntity target, StatusEffectRule rule) {	
+	public CombatStatusEffect (IStatusEffect effect, BattleEntity target, StatusEffectRule rule) {	
 		this.effect = effect;
 		this.target = target;
 		this.rule = rule;

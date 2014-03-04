@@ -8,36 +8,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-
-public class BattleEventDeath : IBattleEvent
+public class BattleAttackEvent : IBattleDamageEvent
 {
-	private BattleEntity mSrcEntity;
+	BattleEntity mSrcEntity;
+	BattleEntity mDestEntity;
+	float mTotalDamage;
 
-	public BattleEventDeath (BattleEntity entity)
+	public BattleAttackEvent (BattleEntity srcEntity, BattleEntity destEntity, float totalDamage) 
 	{
-		mSrcEntity = entity;
+		this.mSrcEntity = srcEntity;
+		this.mDestEntity = destEntity;
+		this.mTotalDamage = totalDamage;
 	}
 
 	public BattleEntity srcEntity {
 		get {
-			return mSrcEntity;
+			return srcEntity;
 		}
 	}
 
 	public BattleEventType eventType {
 		get {
-			return BattleEventType.DEATH;
+			return BattleEventType.MOVE;
 		}
 	}
 
-	public string eventText {
-		get {
-			return string.Format("{0} has died.", mSrcEntity.character.displayName);
-		}
-	}
-
-	public void Execute ()
-	{
-		// perhaps invoke the battle log for this
-	}
 }
+
+

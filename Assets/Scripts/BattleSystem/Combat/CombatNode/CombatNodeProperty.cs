@@ -9,9 +9,9 @@
 // ------------------------------------------------------------------------------
 using System;
 
-public enum OffensiveCombatNodeProperty
+public enum CombatNodeProperty
 {
-	// common
+	// OFFENSIVE
 	TOTAL_DAMAGE,
 	CRIT_CHANCE,
 	RESIST_IGNORE,
@@ -42,6 +42,19 @@ public enum OffensiveCombatNodeProperty
 	POWER_PHYSICAL,
 	REFLEX_IGNORE,
 	ACCURACY,
+
+	// DEFENSIVE
+	REFLEX,
+	CRIT_DEFENSE,
+	RESIST_SLASH,
+	RESIST_CRUSH,
+	RESIST_PIERCE,
+	RESIST_DARK,
+	RESIST_LIGHT,
+	RESIST_WIND,
+	RESIST_EARTH,
+	RESIST_WATER,
+	RESIST_FIRE,
 	COUNT
 }
 

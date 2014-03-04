@@ -14,8 +14,8 @@ public class BattleActionHoarse : BattleActionMagical {
 
 			foreach(BattleEntity targetEntity in targetResolver.GetTargets(combatSkill)) {
 				// create status effect for hoarse
-				BattleEventStatusEffects effects = BattleEventStatusEffects.Builder()
-					.AddStatusEffect(new StatusEffectHoarse(1, 1), targetEntity, StatusEffectEvent.StatusEffectRule.ON_HIT)
+				CombatStatusEffectList effects = CombatStatusEffectList.Builder()
+					.AddStatusEffect(new StatusEffectHoarse(1, 1), targetEntity, CombatStatusEffect.StatusEffectRule.ON_HIT)
 					.Build();
 
 

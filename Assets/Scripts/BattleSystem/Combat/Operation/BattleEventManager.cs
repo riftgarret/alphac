@@ -22,23 +22,13 @@ public class BattleEventManager
 	}
 	
 
-	/// <summary>
-	/// Generates the attack event. If the attack hits, it will assign all dest status effects to dest battle entity, and others
-	/// to the src
-	/// </summary>
-	/// <param name="src">Source.</param>
-	/// <param name="dest">Destination.</param>
-	/// <param name="action">Action.</param>
-	/// <param name="modifiers">Modifiers.</param>
-	/// <param name="srcPhysicalStatusEffects">Source physical status effects.</param>
-	/// <param name="destPhysicalStatusEffects">Destination physical status effects.</param>
 	public void GeneratePhysicalEvent(BattleEntity src, BattleEntity dest, 
 	                                BattleActionPhysical action,                                   	
-	                                BattleEventStatusEffects options,
+	                                CombatStatusEffectList options,
 	                                DamageType damageType,
-	                                IOffensiveCombatNode physicalCombatNode) {
-		OffensiveCombatResolver offensiveResolver = new OffensiveCombatResolver (physicalCombatNode);
-		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageType, offensiveResolver);
+	                                ICombatNode physicalCombatNode) {
+		CombatResolver offensiveResolver = new CombatResolver (physicalCombatNode);
+		PhysicalAttackOperation attackEvent = new PhysicalAttackOperation(src, dest, action, damageType, offensiveResolver);
 		NotifyEvent (attackEvent);
 		PostDamageEvent(attackEvent);
 
@@ -51,18 +41,24 @@ public class BattleEventManager
 
 	public void GenerateMagicalEvent(BattleEntity src, BattleEntity dest, 
 	                               BattleActionMagical action, 
-	                               BattleEventStatusEffects options,
+	                               CombatStatusEffectList options,
 	                                 DamageType damageType,
-	                                 IOffensiveCombatNode magicalCombatNode) {
-		OffensiveCombatResolver offensiveResolver = new OffensiveCombatResolver (magicalCombatNode);
-		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageType, offensiveResolver);
+	                                 ICombatNode magicalCombatNode) {
+		// TODO, move src, dest to resolver type actions exposing raw battle entity
+		// remove battle action from event
+		// damage type ok
+		CombatResolver offensiveResolver = new CombatResolver (magicalCombatNode);
+		CombatResolver defensiveResolver = new CombatResolver (dest.CreateCombatNodeBuilder().Build());
+		MagicAttackOperation magicOperation = new MagicAttackOperation (src, dest, action, damageType);
+		magicOperation.Execute (offensiveResolver, defensiveResolver);
+
 		NotifyEvent(magicEvent);
 		PostDamageEvent(magicEvent);
 	}
 
 	public void GeneratePositiveEvent(BattleEntity src, BattleEntity dest, 
 	                                 BattleActionPositive action, 
-	                                 BattleEventStatusEffects options) {
+	                                 CombatStatusEffectList options) {
 		
 	}
 

@@ -8,13 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-public interface IOffensiveCombatNode
+public interface IBattleEvent
 {
+	BattleEntity srcEntity {
+		get;
+	}
 
-	float GetPropertyAdd(OffensiveCombatNodeProperty property);
-
-	float GetPropertyMultiply(OffensiveCombatNodeProperty property);
-
+	BattleEventType eventType {
+		get;
+	}
 }
-
 
