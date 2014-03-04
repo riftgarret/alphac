@@ -17,6 +17,10 @@ public class BattleActionHoarse : BattleActionMagical {
 				BattleEventStatusEffects effects = BattleEventStatusEffects.Builder()
 					.AddStatusEffect(new StatusEffectHoarse(1, 1), targetEntity, StatusEffectEvent.StatusEffectRule.ON_HIT)
 					.Build();
+
+
+				// combat node should just be character, skill
+
 				eventManager.GenerateMagicalEvent(sourceEntity, 
 				                                  targetEntity, 
 				                                  this, 

@@ -18,11 +18,22 @@ public abstract class BattleEntity {
 		protected set;
 	}
 
+	/// <summary>
+	/// The status effect manager. Manages status effects so when a new effect is added, 
+	/// we can tell if its refresh, new, or canceling something else.
+	/// </summary>
 	private StatusEffectManager mStatusEffectManager;
+
+	/// <summary>
+	/// The combat node factory. Used to generate a NodeBuilder which will bring together
+	/// an offensive combat nodes for stat aggregation
+	/// </summary>
+	private CombatNodeFactory mCombatNodeFactory;
 
 	// setup variables
 	public BattleEntity(Character character) {
 		mStatusEffectManager = new StatusEffectManager(this);
+		mCombatNodeFactory = new CombatNodeFactory (this);
 		turnState = new TurnState(this);
 		this.character = character;
 	}
@@ -67,121 +78,26 @@ public abstract class BattleEntity {
 		state.action.OnExecuteAction(state.turnClock, eventManager);
 	}
 
+
+	public CombatNodeBuilder CreateCombatNodeBuilder() {
+		return null;
+	}
+
 	/// <summary>
-	/// Generates the composite combat node. This will contain everything minus the skill combat node
+	/// Overloading Getting a weapon from the character incase there is a status buff that may add weapons. 
+	/// Such as summoned weapons
 	/// </summary>
-	/// <returns>The composite combat node.</returns>
-	public CompositeCombatModifierNode GenerateCompositeCombatNode() {
-		CompositeCombatModifierNode compositeNode = new CompositeCombatModifierNode ();
-
+	/// <returns>The weapon.</returns>
+	/// <param name="weaponIndex">Weapon index.</param>
+	public Weapon GetWeapon(int weaponIndex) {
+		return character.GetWeapon (weaponIndex);
 	}
 
-
-	
-	///////////////////
-	// proxy all character attributes / abilities so they can be adjusted by status effects
-	///////////////////////
-
-	// attributes
-	// current stats
-	public float curHP {
-		get { return this.character.curHP; }
-		set { this.character.curHP = value; }
-	}
-	public float curResource {
-		get { return this.character.curResource; }
-		set { this.character.curResource = value; }
-	}
-	
-	//
-	public float maxHP {
-		get { return this.character.maxHP; }
-	}
-
-	public float maxResource {
-		get { return this.character.maxResource; }
-	}
-	
-	// character name
-	public string displayName {
-		get { return this.character.displayName; }
-	}
-	
-	// stats
-	public float strength {
-		get { return this.character.strength; }
-	}
-
-	public float vitality {
-		get { return this.character.vitality; }
-	}
-
-	public float dexerity {
-		get { return this.character.dexerity; }
-	}
-
-	public float agility  {
-		get { return this.character.agility; }
-	}
-
-	public float inteligence {
-		get { return this.character.inteligence; }
-	}
-
-	public float wisdom {
-		get { return this.character.wisdom; }
-	}
-
-	public float luck {
-		get { return this.character.luck; }
-	}
-
-
-	// calculated attributes
-
-	public float physicalAttack {
-		get {
-			return this.character.physicalAttack;
-		}
-	}
-
-	public float magicAttack {
-		get { return this.character.magicAttack; }
-	}
-	
-	public float accuracy {
-		get {
-			return this.character.accuracy;
-		}
-	}
-	
-	public float relfex {
-		get {
-			return this.character.relfex;
-		}
-	}
-
-	public float critChance {
-		get { return this.character.critChance; }
-	}
-	
-	public float critDefense {
-		get { return this.character.critDefense; }
-	}
-
-	public float GetStat(StatType stat) {
-		return this.character.GetStat(stat);
-	}
-
-	public float GetResist(DamageType dmg) {
-		return this.character.GetResist(dmg);
-	}
-
-	public DamageType GetWeaponDamageType(int weaponIndex) {
-		return character.mainHandWeapon.weaponConfig.dmgType; // TODO
-	}
-
-	public float GetBaseDamage(int weaponIndex) {
-		return character.mainHandWeapon.weaponConfig.baseDamage;
+	/// <summary>
+	/// Overload max weapon count to allow summonable weapons
+	/// </summary>
+	/// <value>The max weapon count.</value>
+	public int maxWeaponCount {
+		get { return character.maxWeaponCount; }
 	}
 }

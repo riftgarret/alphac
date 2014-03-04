@@ -10,14 +10,14 @@
 using System;
 public class CombatNodeBuilder
 {
-	private BattleEntity mEntity;
+	private CombatNodeFactory mFactory;
 
 	private int mWeaponIndex;
 	
 
-	public CombatNodeBuilder (BattleEntity entity)
+	public CombatNodeBuilder (CombatNodeFactory factory)
 	{
-		this.mEntity = entity;
+		this.mFactory = factory;
 		this.mWeaponIndex = 0;
 	}
 
@@ -33,10 +33,11 @@ public class CombatNodeBuilder
 		// build composite for character
 		CompositeCombatModifierNode rootNode = new CompositeCombatModifierNode ();
 		// child node
-		rootNode.AddNode (new CharacterCombatNode (mEntity.character));
-		rootNode.AddNode (new WeaponConfigCombatNode (mEntity.character.mainHandWeapon));// TODO change for multiple weapons
+		rootNode.AddNode (mFactory.CreateCharacterNode());
+		rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeaponIndex));
 		rootNode.AddNode (skillCombatNode);
 
 		// TODO iterate through buffs
+		return rootNode;
 	}
 }

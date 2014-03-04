@@ -11,44 +11,27 @@ using System;
 
 public class ConfigurableCombatNode : IOffensiveCombatNode
 {
-
+	protected float [] mPropertyAdd;
+	protected float [] mPropertyMultiply;
 
 	public ConfigurableCombatNode ()
 	{
-		// sets defaults
-		powerPhysicalAdd = 0f;
-		powerMagicalAdd = 0f;
-		resistIgnoreAdd = 0f;
-		totalDamageAdd = 0f;
-		critChanceAdd = 0f;
-		armorIgnoreAdd = 0f;
-		dodgeIgnoreAdd = 0f;
-		accuracyAdd = 0f;
-		
-		powerPhysicalMultiply = 1f;
-		powerMagicalMultiply = 1f;
-		resistIgnoreMultiply = 1f;
-		totalDamageMultiply = 1f;
-		critChanceMultiply = 1f;
-		armorIgnoreMultiply = 1f;
-		dodgeIgnoreMultiply = 1f;
-		accuracyMultiply = 1f;
+		mPropertyAdd = new float[(int)OffensiveCombatNodeProperty.COUNT];
+		mPropertyMultiply = new float[(int)OffensiveCombatNodeProperty.COUNT];
 
-		statSTRAdd = 0f;
-		statVITAdd = 0f;
-		statDEXAdd = 0f;
-		statAGIAdd = 0f;
-		statINTAdd = 0f;
-		statWISAdd = 0f;
-		statLUCKAdd = 0f;
+		for(int i=0; i < (int)OffensiveCombatNodeProperty.COUNT; i++) {
+			mPropertyMultiply[i] = 1f;
+		}
+	}
 
-		statSTRMultiply = 1f;
-		statVITMultiply = 1f;
-		statDEXMultiply = 1f;
-		statAGIMultiply = 1f;
-		statINTMultiply = 1f;
-		statWISMultiply = 1f;
-		statLUCKMultiply = 1f;
+	public float GetPropertyAdd (OffensiveCombatNodeProperty property)
+	{
+		return mPropertyAdd[(int)property];
+	}
+
+	public float GetPropertyMultiply (OffensiveCombatNodeProperty property)
+	{
+		return mPropertyMultiply[(int)property];
 	}
 
 	/// <summary>
@@ -61,16 +44,16 @@ public class ConfigurableCombatNode : IOffensiveCombatNode
 			foreach(GeneralOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case GeneralOffensiveModifierType.TOTAL_DMG_ADD:
-					this.totalDamageAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.TOTAL_DAMAGE] = mod.modValue;
 					break;
 				case GeneralOffensiveModifierType.TOTAL_DMG_MULTIPLY:
-					this.totalDamageMultiply = mod.modValue;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.TOTAL_DAMAGE] = mod.modValue;
 					break;	
 				case GeneralOffensiveModifierType.CRIT_CHANCE_ADD:
-					this.critChanceAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.CRIT_CHANCE] = mod.modValue;
 					break;
 				case GeneralOffensiveModifierType.CRIT_CHANCE_MULTIPLY:
-					this.critChanceMultiply = mod.modValue;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.CRIT_CHANCE] = mod.modValue;
 					break;
 				}
 			}
@@ -83,25 +66,25 @@ public class ConfigurableCombatNode : IOffensiveCombatNode
 			foreach(StatModifier mod in modifiers) {
 				switch(mod.stat) {
 				case StatType.STR:
-					this.statSTRMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.STR] = mod.mod;
 					break;				
 				case StatType.VIT:
-					this.statVITMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.VIT] = mod.mod;
 					break;
 				case StatType.DEX:
-					this.statDEXMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.DEX] = mod.mod;
 					break;
 				case StatType.AGI:
-					this.statAGIMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.AGI] = mod.mod;
 					break;
 				case StatType.INT:
-					this.statINTMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.INT] = mod.mod;
 					break;
 				case StatType.WIS:
-					this.statWISMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.WIS] = mod.mod;
 					break;
 				case StatType.LUCK:
-					this.statLUCKMultiply = mod.mod;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.LUCK] = mod.mod;
 					break;
 				}
 			}
@@ -114,22 +97,22 @@ public class ConfigurableCombatNode : IOffensiveCombatNode
 			foreach(PhysicalOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case PhysicalOffensiveModifierType.POWER_PHYSICAL_ADD:
-					this.powerPhysicalAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.POWER_PHYSICAL] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.POWER_PHYSICAL_MULTIPLY:
-					this.powerPhysicalMultiply = mod.modValue;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.POWER_PHYSICAL] = mod.modValue;
 					break;
-				case PhysicalOffensiveModifierType.ARMOR_IGNORE_ADD:
-					this.armorIgnoreAdd = mod.modValue;
-					break;
-				case PhysicalOffensiveModifierType.ARMOR_IGNORE_MULTIPLY:
-					this.armorIgnoreMultiply = mod.modValue;
-					break;					
 				case PhysicalOffensiveModifierType.DODGE_IGNORE_ADD:
-					this.dodgeIgnoreAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.REFLEX_IGNORE] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.DODGE_IGNORE_MULTIPLY:
-					this.dodgeIgnoreMultiply = mod.modValue;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.REFLEX_IGNORE] = mod.modValue;
+					break;					
+				case PhysicalOffensiveModifierType.ARMOR_IGNORE_ADD:
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					break;
+				case PhysicalOffensiveModifierType.ARMOR_IGNORE_MULTIPLY:
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.RESIST_IGNORE] = mod.modValue;
 					break;					
 				}
 			}
@@ -142,169 +125,20 @@ public class ConfigurableCombatNode : IOffensiveCombatNode
 			foreach(MagicalOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case MagicalOffensiveModifierType.POWER_MAGICAL_ADD:
-					this.powerMagicalAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.POWER_MAGIC] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.POWER_MAGICAL_MULTIPLY:
-					this.powerMagicalMultiply = mod.modValue;
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.POWER_MAGIC] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.RESIST_IGNORE_ADD:
-					this.resistIgnoreAdd = mod.modValue;
+					this.mPropertyAdd[(int)OffensiveCombatNodeProperty.RESIST_IGNORE] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.RESIST_IGNORE_MULTIPLY:
-					this.resistIgnoreMultiply = mod.modValue;
-					break;					
+					this.mPropertyMultiply[(int)OffensiveCombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					break;
 				}
 			}
 		}		
-	}
-	
-	public float powerPhysicalAdd {
-		protected set;
-		get;
-	}
-	
-	public float powerPhysicalMultiply {
-		protected set;
-		get;
-	}
-	
-	public float totalDamageAdd {
-		protected set;
-		get;
-	}
-	
-	public float totalDamageMultiply {
-		protected set;
-		get;
-	}
-	
-	public float critChanceAdd {
-		protected set;
-		get;
-	}
-	
-	public float critChanceMultiply {
-		protected set;
-		get;
-	}
-	
-	public float armorIgnoreAdd {
-		protected set;
-		get;
-	}
-	
-	public float armorIgnoreMultiply {
-		protected set;
-		get;
-	}
-	
-	public float dodgeIgnoreAdd {
-		protected set;
-		get;
-	}
-	
-	public float dodgeIgnoreMultiply {
-		protected set;
-		get;
-	}
-	public float powerMagicalAdd {
-		protected set;
-		get;
-	}
-
-	public float powerMagicalMultiply {
-		protected set;
-		get;
-	}
-
-	public float resistIgnoreAdd {
-		protected set;
-		get;
-	}
-
-	public float resistIgnoreMultiply {
-		protected set;
-		get;
-	}
-
-	public float statSTRMultiply {
-		protected set;
-		get;
-	}
-
-	public float statVITMultiply {
-		protected set;
-		get;
-	}
-
-	public float statDEXMultiply {
-		protected set;
-		get;
-	}
-
-	public float statAGIMultiply {
-		protected set;
-		get;
-	}
-
-	public float statINTMultiply {
-		protected set;
-		get;
-	}
-
-	public float statWISMultiply {
-		protected set;
-		get;
-	}
-
-	public float statLUCKMultiply {
-		protected set;
-		get;
-	}
-
-	public float statSTRAdd {
-		protected set;
-		get;
-	}
-
-	public float statVITAdd {
-		protected set;
-		get;
-	}
-
-	public float statDEXAdd {
-		protected set;
-		get;
-	}
-
-	public float statAGIAdd {
-		protected set;
-		get;
-	}
-
-	public float statINTAdd {
-		protected set;
-		get;
-	}
-
-	public float statWISAdd {
-		protected set;
-		get;
-	}
-
-	public float statLUCKAdd {
-		protected set;
-		get;
-	}
-
-	public float accuracyAdd {
-		protected set;
-		get;
-	}
-
-	public float accuracyMultiply {
-		protected set;
-		get;
 	}
 }
 

@@ -25,7 +25,7 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 	private bool mIsCrit;
 	private float mTotalDamage;
 	
-	public BattleEventMagicAttack (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageType damageType, IOffensiveMagicalCombatNode combatNode)
+	public BattleEventMagicAttack (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageType damageType, OffensiveCombatResolver offensiveResolver)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;
@@ -35,8 +35,8 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 		mIsCrit = false;
 
 		// check dodge before anything
-		float defResistValue = dest.GetResist(damageType);
-		float power = combatNode.powerMagicalAdd * combatNode.powerMagicalMultiply;
+		float defResistValue = 0; // TODO defenseNode dest.GetResist(damageType);
+		float power = offensiveResolver.GetMagicalPower ();
 		float chanceToResist = power / (power + defResistValue);
 		
 		// TODO add chanceToHit increase
@@ -46,8 +46,7 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 			return;
 		}
 
-		float dmg = combatNode.totalDamageAdd;
-		dmg *= combatNode.totalDamageMultiply;
+		float dmg = offensiveResolver.GetMagicalDamage();
 
 		if(dmg == 0) {
 			mHasDamage = false;
@@ -55,24 +54,11 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 		}
 
 		// Calculate damage
-		float rolledDmg = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
-		
-		float damageSum = rolledDmg;
-		// calculate stat modifiers
-		
-		// not very straight forward here but the stat Add will be the default stat, and the multiply will be the modifier
-		damageSum += combatNode.statSTRAdd * combatNode.statSTRMultiply;
-		damageSum += combatNode.statVITAdd * combatNode.statVITMultiply;
-		damageSum += combatNode.statDEXAdd * combatNode.statDEXMultiply;
-		damageSum += combatNode.statAGIAdd * combatNode.statAGIMultiply;
-		damageSum += combatNode.statINTAdd * combatNode.statINTMultiply;
-		damageSum += combatNode.statWISAdd * combatNode.statWISMultiply;
-		damageSum += combatNode.statLUCKAdd * combatNode.statLUCKMultiply;
+		float damageSum = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
 
-		
 		// calculate crit chance
-		float srcCritChance = combatNode.critChanceAdd * combatNode.critChanceMultiply;
-		float critChance = srcCritChance / (srcCritChance + dest.critDefense);
+		float srcCritChance = offensiveResolver.GetCritChance ();
+		float critChance = srcCritChance / (srcCritChance + 0); // TODO defenseNode
 		// TODO factor in other chances
 		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
 			damageSum *= UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH); // crit
@@ -82,7 +68,7 @@ public class BattleEventMagicAttack : AbstractBattleDamageEvent
 		
 		// now calculate damage reduction from opponent
 		// TODO override dmg type if special attack?
-		float resistValue = dest.GetResist(damageType);
+		float resistValue = 0; // TODO defenseNode dest.GetResist(damageType);
 		
 		// result damage should be same type of calculation
 		mTotalDamage = damageSum * damageSum / (damageSum + resistValue);

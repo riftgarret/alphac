@@ -29,7 +29,7 @@ public class CharacterConfig : ScriptableObject
 	public CharacterClassConfig charClass;
 	
 	// equipment
-	public Weapon mainHandWeapon;
+	public Weapon [] weapons;
 	public ArmorSlot armorTorso;
 	public ArmorSlot armorArms;
 	public ArmorSlot armorLegs;

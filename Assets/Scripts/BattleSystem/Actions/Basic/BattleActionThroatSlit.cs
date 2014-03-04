@@ -12,7 +12,7 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
 
-			DamageType damageType = sourceEntity.GetWeaponDamageType(0);
+			DamageType damageType = GetWeaponDamageType(0);
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
 				BattleEventStatusEffects options = BattleEventStatusEffects.Builder()

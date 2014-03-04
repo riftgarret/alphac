@@ -8,19 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-
-public enum DamageType
+public interface IDefensiveCombatNode
 {
-	SLASH,
-	PIERCE,
-	CRUSH,
-	LIGHT,
-	DARK,
-	FIRE,
-	WATER,
-	EARTH,
-	WIND,
-	COUNT // number of damage types
+	float GetPropertyAdd(DefensiveCombatNodeProperty property);
+	float GetPropertyMultiply(DefensiveCombatNodeProperty property);	
 }
 
 

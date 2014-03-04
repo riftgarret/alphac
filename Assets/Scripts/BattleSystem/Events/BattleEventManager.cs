@@ -36,8 +36,9 @@ public class BattleEventManager
 	                                BattleActionPhysical action,                                   	
 	                                BattleEventStatusEffects options,
 	                                DamageType damageType,
-	                                IOffensivePhysicalCombatNode physicalCombatNode) {
-		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageType, physicalCombatNode);
+	                                IOffensiveCombatNode physicalCombatNode) {
+		OffensiveCombatResolver offensiveResolver = new OffensiveCombatResolver (physicalCombatNode);
+		BattleEventPhysical attackEvent = new BattleEventPhysical(src, dest, action, damageType, offensiveResolver);
 		NotifyEvent (attackEvent);
 		PostDamageEvent(attackEvent);
 
@@ -52,8 +53,9 @@ public class BattleEventManager
 	                               BattleActionMagical action, 
 	                               BattleEventStatusEffects options,
 	                                 DamageType damageType,
-	                                 IOffensiveMagicalCombatNode magicalCombatNode) {
-		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageType, magicalCombatNode);
+	                                 IOffensiveCombatNode magicalCombatNode) {
+		OffensiveCombatResolver offensiveResolver = new OffensiveCombatResolver (magicalCombatNode);
+		BattleEventMagicAttack magicEvent = new BattleEventMagicAttack (src, dest, action, damageType, offensiveResolver);
 		NotifyEvent(magicEvent);
 		PostDamageEvent(magicEvent);
 	}

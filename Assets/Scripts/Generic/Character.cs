@@ -41,11 +41,18 @@ public abstract class Character  {
 	// level and class
 	public int level;
 
-	[SerializeField]
+
 	public CharacterClassConfig charClass;
 
 	// equipment
-	public Weapon mainHandWeapon;
+	[SerializeField]
+	private Weapon [] mWeapons; // 0 = main weapon, 1 = offhand, 
+	public Weapon GetWeapon (int weaponIndex) {
+		return mWeapons [weaponIndex];
+	}
+	public int maxWeaponCount {
+		get { return 1; } // TODO link to character skill ability
+	}
 	public ArmorSlot armorHelmet;
 	public ArmorSlot armorTorso;
 	public ArmorSlot armorLegs;
@@ -84,24 +91,13 @@ public abstract class Character  {
 		level = other.level;
 		charClass = other.charClass;
 
-		mainHandWeapon = other.mainHandWeapon;
-
+		mWeapons = new Weapon[other.weapons.Length];
+		for (int i=0; i < other.weapons.Length; i++) {
+			mWeapons[i] = other.weapons[i];
+		}
 		curHP = maxHP;
 	}
-
-
-
-	// TODO tune for balance for dual weild
-	public float physicalAttack {
-	 get {
-			float atk = 1;
-			if(mainHandWeapon != null) {
-				atk += mainHandWeapon.CalculateAttack(this);
-			}
-
-			return strength + atk;
-		}
-	}
+			
 	// TODO
 	public float magicAttack {
 		get { return 0; }

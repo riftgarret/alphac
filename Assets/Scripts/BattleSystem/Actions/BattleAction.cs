@@ -26,6 +26,17 @@ public abstract class BattleAction : IBattleAction {
 	public abstract void OnExecuteAction(float actionClock, BattleEventManager eventManager);
 
 	/// <summary>
+	/// Gets the type of the weapon damage. Because its a popular used method for sending battle events
+	/// </summary>
+	/// <returns>The weapon damage type.</returns>
+	/// <param name="weaponIndex">Weapon index.</param>
+	public DamageType GetWeaponDamageType(int weaponIndex) {
+		Weapon weapon = this.sourceEntity.GetWeapon (weaponIndex);
+		WeaponConfig config = weapon.weaponConfig;
+		return config.dmgType;
+	}
+
+	/// <summary>
 	/// To complete action, not useful in current stage.
 	/// </summary>
 	/// <value>The total time.</value>
