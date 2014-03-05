@@ -16,7 +16,9 @@ public enum BattleEventType
 	RESIST,
 	ITEM,
 	MOVE,
-	DEATH
+	DEATH,
+	STATUS_EFFECT,
+	COUNT
 }
 
 

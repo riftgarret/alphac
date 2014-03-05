@@ -20,7 +20,7 @@ public class MagicAttackOperation : AbstractCombatOperation
 	private BattleEntity mDestEntity;
 	private DamageType mDamageType;
 
-	public MagicAttackOperation (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageType damageType, CombatResolver offensiveResolver)
+	public MagicAttackOperation (BattleEntity src, BattleEntity dest, BattleActionMagical action, DamageType damageType)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;

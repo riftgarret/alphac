@@ -12,13 +12,20 @@ using System.Collections.Generic;
 
 public class CombatResolver
 {
-
-	private HashSet<ICombatNode> mUsedCombatNodes;
+	private BattleEntity mEntity;
 	private ICombatNode mRootNode;
 
-	public CombatResolver (ICombatNode rootNode)
+	public CombatResolver (BattleEntity entity) : this(entity, entity.CreateDefaultCombatNode()) {
+	}
+
+	public CombatResolver (BattleEntity entity, ICombatNode rootNode)
 	{
 		mRootNode = rootNode;
+		mEntity = entity;
+	}
+
+	public BattleEntity entity {
+		get { return mEntity; }
 	}
 
 	public float GetProperty(CombatNodeProperty property) {

@@ -26,7 +26,7 @@ public class BattleEventManager
 	/// Notifies the event.
 	/// </summary>
 	/// <param name="battleEvent">Battle event.</param>
-	private void NotifyEvent(IBattleEvent battleEvent) {
+	public void NotifyEvent(IBattleEvent battleEvent) {
 		if(battleEventListener != null) {
 			battleEventListener.OnBattleEvent(battleEvent);
 		}

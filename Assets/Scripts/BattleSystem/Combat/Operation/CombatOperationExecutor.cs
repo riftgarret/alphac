@@ -18,19 +18,11 @@ public class CombatOperationExecutor
 	                                CombatStatusEffectList options,
 	                                DamageType damageType,
 	                                ICombatNode physicalCombatNode) {
-		CombatResolver offensiveResolver = new CombatResolver (physicalCombatNode);
-		CombatResolver defensiveResolver = new CombatResolver (dest.CreateCombatNodeBuilder().Build());
+		CombatResolver offensiveResolver = new CombatResolver (src, physicalCombatNode);
+		CombatResolver defensiveResolver = new CombatResolver (dest);
 		PhysicalAttackOperation attackOperation = new PhysicalAttackOperation(src, dest, action, damageType);
-		attackOperation.Execute (offensiveResolver, defensiveResolver);
 
-		NotifyEvent (attackOperation);
-		PostDamageEvent(attackOperation);
-
-		// check to see if we hit for any status effects
-		//if(!attackEvent.isEvaded) {
-		//	ApplyEffects(options.destStatusEffects, dest);
-		//	ApplyEffects(options.srcStatusEffects, src);
-		//}
+		ExecuteOperation (attackOperation, offensiveResolver, defensiveResolver, options);
 	}
 
 	public void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
@@ -41,13 +33,11 @@ public class CombatOperationExecutor
 		// TODO, move src, dest to resolver type actions exposing raw battle entity
 		// remove battle action from event
 		// damage type ok
-		CombatResolver offensiveResolver = new CombatResolver (magicalCombatNode);
-		CombatResolver defensiveResolver = new CombatResolver (dest.CreateCombatNodeBuilder().Build());
+		CombatResolver offensiveResolver = new CombatResolver (src, magicalCombatNode);
+		CombatResolver defensiveResolver = new CombatResolver (dest);
 		MagicAttackOperation magicOperation = new MagicAttackOperation (src, dest, action, damageType);
-		magicOperation.Execute (offensiveResolver, defensiveResolver);
 
-		NotifyEvent(magicEvent);
-		PostDamageEvent(magicEvent);
+		ExecuteOperation (magicOperation, offensiveResolver, defensiveResolver, options);
 	}
 
 	public void ExecutePositive(BattleEntity src, BattleEntity dest, 
@@ -56,29 +46,68 @@ public class CombatOperationExecutor
 		
 	}
 
+
 	/// <summary>
-	/// Applies the effects.
+	/// Execute an operation and manage check resulting event with CombatStatusEffect Rules if any
+	/// </summary>
+	/// <param name="operation">Operation.</param>
+	private void ExecuteOperation(ICombatOperation operation, CombatResolver srcResolver, CombatResolver destResolver, CombatStatusEffectList statusList) {
+		IBattleEvent battleEvent = operation.Execute (srcResolver, destResolver);
+
+		// notify resulting battle event
+		BattleSystem.eventManager.NotifyEvent (battleEvent);
+
+		// check to see if it was a damage event to see if we killed them
+		if (battleEvent.eventType == BattleEventType.DAMAGE) {
+			PostDamageEvent((DamageEvent)battleEvent); 	// may notify DeathEvent
+		}
+
+		// lets see if we hit the target or not
+		bool hitTarget = battleEvent.eventType == BattleEventType.DAMAGE
+						|| battleEvent.eventType == BattleEventType.NON_DAMAGE 
+						|| battleEvent.eventType == BattleEventType.ITEM;
+
+		bool missedTarget = battleEvent.eventType == BattleEventType.DODGE
+						|| battleEvent.eventType == BattleEventType.RESIST;
+
+		// iterate through combnat effects to see what should apply
+		foreach (CombatStatusEffect combatStatusEffect in statusList.statusEffects) {
+			switch(combatStatusEffect.rule) {			
+			case CombatStatusEffect.StatusEffectRule.ON_HIT:
+				if(hitTarget) {
+					ApplyEffect(combatStatusEffect, srcResolver.entity);
+				}
+				break;
+			case CombatStatusEffect.StatusEffectRule.ON_MISS:
+				if(missedTarget) {
+					ApplyEffect(combatStatusEffect, srcResolver.entity);
+				}
+				break;
+			case CombatStatusEffect.StatusEffectRule.ALWAYS:
+			default:
+				ApplyEffect(combatStatusEffect, srcResolver.entity);
+				break;
+			}
+		}
+
+
+	}
+
+	/// <summary>
+	/// Applies the effect. Notify the StatusEffect to the event manager
 	/// </summary>
 	/// <param name="effects">Effects.</param>
 	/// <param name="targetEntity">Target entity.</param>
-	private void ApplyEffects(IStatusEffect [] effects, BattleEntity targetEntity) {
-		if(effects != null) {
-			foreach(IStatusEffect effect in effects) {
-				targetEntity.ApplyStatusEffect(effect);
-			}
-		}
+	private void ApplyEffect(CombatStatusEffect combatEffect, BattleEntity srcEntity) {
+		BattleEntity destEntity = combatEffect.target;
+		IStatusEffect statusEffect = combatEffect.effect;
+		// first directly apply the effect
+		destEntity.ApplyStatusEffect (statusEffect);
+		// then create an event to notify that there has been some event for this status effect
+		IBattleEvent statusEvent = new StatusEffectEvent (srcEntity, destEntity, statusEffect);
+		BattleSystem.eventManager.NotifyEvent(statusEvent);
 	}
-
-	/// <summary>
-	/// Notifies the event.
-	/// </summary>
-	/// <param name="battleEvent">Battle event.</param>
-	private void NotifyEvent(IBattleEvent battleEvent) {
-		if(battleEventListener != null) {
-			battleEventListener.OnBattleEvent(battleEvent);
-		}
-	}
-
+	
 	// calculate and apply damage state (see if they are dead or not)
 	private void PostDamageEvent(DamageEvent dmgEvent) {
 		BattleEntity destEntity = dmgEvent.destEntity;
@@ -86,7 +115,7 @@ public class CombatOperationExecutor
 		if(destEntity.character.curHP <= 0) {
 			destEntity.character.curHP = 0;
 			DeathEvent deathEvent = new DeathEvent(destEntity);
-			NotifyEvent(deathEvent);
+			BattleSystem.eventManager.NotifyEvent(deathEvent);
 		}
 
 	}		

@@ -13,10 +13,13 @@ public class StatusEffectEvent : IBattleEvent
 {
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
+	private IStatusEffect mStatusEffect;
 
-	public StatusEffectEvent (BattleEntity srcEntity, BattleEntity destEntity) 
+	public StatusEffectEvent (BattleEntity srcEntity, BattleEntity destEntity, IStatusEffect statusEffect) 
 	{
-
+		mSrcEntity = srcEntity;
+		mDestEntity = destEntity;
+		mStatusEffect = statusEffect;
 	}
 
 	public BattleEntity srcEntity {
@@ -31,9 +34,15 @@ public class StatusEffectEvent : IBattleEvent
 		}
 	}
 
+	public IStatusEffect statusEffect {
+		get {
+			return mStatusEffect;
+		}
+	}
+
 	public BattleEventType eventType {
 		get {
-			return BattleEventType.NON_DAMAGE;
+			return BattleEventType.STATUS_EFFECT;
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class BattleActionVocalize : BattleActionPositive {
 				CombatStatusEffectList options = CombatStatusEffectList.Builder()
 					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, CombatStatusEffect.StatusEffectRule.ALWAYS )
 						.Build();
-				BattleSystem.combatExecutor.ExecutePositive(sourceEntity, entity, this, null);
+				BattleSystem.combatExecutor.ExecutePositive(sourceEntity, entity, this, options);
 			}
 			mAttackCount++;
 		}	

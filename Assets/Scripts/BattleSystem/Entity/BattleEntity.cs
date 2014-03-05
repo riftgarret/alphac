@@ -78,9 +78,21 @@ public abstract class BattleEntity {
 		state.action.OnExecuteAction(state.turnClock);
 	}
 
-
+	/// <summary>
+	/// Creates the combat node builder. This will have references to most of the 
+	/// Battle Entity, that includes, character, equipment, weapon, status effects
+	/// </summary>
+	/// <returns>The combat node builder.</returns>
 	public CombatNodeBuilder CreateCombatNodeBuilder() {
-		return null;
+		return new CombatNodeBuilder(mCombatNodeFactory);
+	}
+
+	/// <summary>
+	/// Create a default assimilation of the CombatNode, this will choose the first single weapon.
+	/// </summary>
+	/// <returns>The default combat node.</returns>
+	public CompositeCombatNode CreateDefaultCombatNode() {
+		return CreateCombatNodeBuilder().Build();
 	}
 
 	/// <summary>
