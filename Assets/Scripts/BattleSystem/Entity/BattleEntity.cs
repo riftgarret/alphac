@@ -114,10 +114,12 @@ public abstract class BattleEntity {
 	}
 
 	public float currentHP {
-		get { return character.curHP; }
+		get;
+		set;
 	}
 
 	public float maxHP {
-		get { return character.maxHP; }
+		get;
+		set;
 	}
 }

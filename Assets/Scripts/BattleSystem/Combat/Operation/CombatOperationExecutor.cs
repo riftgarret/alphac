@@ -59,7 +59,15 @@ public class CombatOperationExecutor
 
 		// check to see if it was a damage event to see if we killed them
 		if (battleEvent.eventType == BattleEventType.DAMAGE) {
-			PostDamageEvent((DamageEvent)battleEvent); 	// may notify DeathEvent
+			DamageEvent dmgEvent = (DamageEvent) battleEvent;
+
+			// if character died, notify death event
+			BattleEntity destEntity = dmgEvent.destEntity;
+			if(destEntity.currentHP <= 0) {
+				destEntity.character.curHP = 0;
+				DeathEvent deathEvent = new DeathEvent(destEntity);
+				BattleSystem.eventManager.NotifyEvent(deathEvent);
+			}
 		}
 
 		// lets see if we hit the target or not

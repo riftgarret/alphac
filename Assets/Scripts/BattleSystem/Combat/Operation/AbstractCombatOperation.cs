@@ -20,10 +20,10 @@ public abstract class AbstractCombatOperation : ICombatOperation
 	protected void ExecuteDamage (float damage, BattleEntity destEntity)
 	{
 		damage = Mathf.Ceil(damage);
-		if(destEntity.character.curHP <= 0) {
+		if(destEntity.currentHP <= 0) {
 			return; // character is dead, no need to add more death
 		}
-		destEntity.character.curHP -= damage;
+		destEntity.currentHP -= damage;
 	}
 
 	public abstract IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver);
