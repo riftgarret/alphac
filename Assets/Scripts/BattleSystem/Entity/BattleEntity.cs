@@ -112,4 +112,12 @@ public abstract class BattleEntity {
 	public int maxWeaponCount {
 		get { return character.maxWeaponCount; }
 	}
+
+	public float currentHP {
+		get { return character.curHP; }
+	}
+
+	public float maxHP {
+		get { return character.maxHP; }
+	}
 }

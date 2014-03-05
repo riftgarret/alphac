@@ -114,7 +114,7 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 	// battle event listener
 	public void OnBattleEvent (IBattleEvent e)
 	{
-		Debug.Log("something happened: " + (int) e.eventType);
+		Debug.Log("On event: " + e);
 		// TODO forward to combat log
 
 		// evaluate if the game is over, or we have won

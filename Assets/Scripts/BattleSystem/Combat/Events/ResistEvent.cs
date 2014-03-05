@@ -46,5 +46,11 @@ public class ResistEvent : IBattleEvent
 			return BattleEventType.RESIST;
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[ResistEvent: mSrcEntity={0}, mDestEntity={1}]", mSrcEntity, mDestEntity);
+	}
+	
 }
 

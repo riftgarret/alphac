@@ -44,8 +44,8 @@ public class MoveEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[BattleMoveEvent: srcEntity={0}, eventType={1}]", srcEntity, eventType);
-	}
+		return string.Format ("[MoveEvent: mSrcRow={0}, mDestRow={1}, mSrcEntity={2}]", mSrcRow, mDestRow, mSrcEntity);
+	}	
 }
 
 

@@ -70,7 +70,8 @@ public class DamageEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[BattleAttackEvent: srcEntity={0}, eventType={1}]", srcEntity, eventType);
+		return string.Format ("[DamageEvent: srcEntity={0}, destEntity={1}, damageType={2}, totalDamage={3}, damage={4}, critDamage={5}]", 
+		                      srcEntity, destEntity, TextUtils.DmgToString(damageType), totalDamage, damage, critDamage);
 	}
 }
 

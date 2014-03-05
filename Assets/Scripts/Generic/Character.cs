@@ -226,4 +226,10 @@ public abstract class Character  {
 		}
 		return 0f;
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[Character: displayName={0}]", displayName);
+	}
+	
 }

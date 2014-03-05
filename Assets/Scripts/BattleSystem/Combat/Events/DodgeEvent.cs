@@ -46,5 +46,11 @@ public class DodgeEvent : IBattleEvent
 			return BattleEventType.DODGE;
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[DodgeEvent: mSrcEntity={0}, mDestEntity={1}]", mSrcEntity, mDestEntity);
+	}
+	
 }
 

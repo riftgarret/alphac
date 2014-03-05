@@ -37,5 +37,11 @@ public class NonDamageEvent : IBattleEvent
 			return BattleEventType.NON_DAMAGE;
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[NonDamageEvent: mSrcEntity={0}, mDestEntity={1}]", mSrcEntity, mDestEntity);
+	}
+	
 }
 

@@ -45,5 +45,11 @@ public class StatusEffectEvent : IBattleEvent
 			return BattleEventType.STATUS_EFFECT;
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[StatusEffectEvent: mSrcEntity={0}, mDestEntity={1}, mStatusEffect={2}]", mSrcEntity, mDestEntity, mStatusEffect);
+	}
+	
 }
 

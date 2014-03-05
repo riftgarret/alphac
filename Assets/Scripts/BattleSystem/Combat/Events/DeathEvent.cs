@@ -30,14 +30,8 @@ public class DeathEvent : IBattleEvent
 		}
 	}
 
-	public string eventText {
-		get {
-			return string.Format("{0} has died.", mSrcEntity.character.displayName);
-		}
-	}
-
 	public override string ToString ()
 	{
-		return string.Format ("[BattleEventDeath: srcEntity={0}, eventType={1}, eventText={2}]", srcEntity, eventType, eventText);
+		return string.Format ("[DeathEvent: srcEntity={0}]", srcEntity.character.displayName);
 	}
 }
