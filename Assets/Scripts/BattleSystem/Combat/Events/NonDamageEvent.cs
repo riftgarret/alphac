@@ -16,7 +16,8 @@ public class NonDamageEvent : IBattleEvent
 
 	public NonDamageEvent (BattleEntity srcEntity, BattleEntity destEntity) 
 	{
-
+		mSrcEntity = srcEntity;
+		mDestEntity = destEntity;
 	}
 
 	public BattleEntity srcEntity {

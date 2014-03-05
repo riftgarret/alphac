@@ -24,7 +24,7 @@ public class MoveEvent : IBattleEvent
 
 	public BattleEntity srcEntity {
 		get {
-			return srcEntity;
+			return mSrcEntity;
 		}
 	}
 
@@ -32,6 +32,14 @@ public class MoveEvent : IBattleEvent
 		get {
 			return BattleEventType.MOVE;
 		}
+	}
+
+	public PCCharacter.RowPosition srcRow {
+		get { return mSrcRow; }
+	}
+
+	public PCCharacter.RowPosition destRow {
+		get { return mDestRow; }
 	}
 
 	public override string ToString ()

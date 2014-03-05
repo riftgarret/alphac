@@ -23,10 +23,11 @@ public class PCMoveOperation
 		this.mDestRow = destRow;
 	}
 
-	public void Execute ()
+	public IBattleEvent Execute ()
 	{
 		// need to animate this?
 		mSrcEntity.pcCharacter.rowPosition = mDestRow;
+		return new MoveEvent (mSrcEntity, mSrcRow, mDestRow);
 	}
 
 	public BattleEntity srcEntity {

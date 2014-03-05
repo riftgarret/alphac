@@ -28,7 +28,7 @@ public class DamageEvent : IBattleEvent
 
 	public BattleEntity srcEntity {
 		get {
-			return srcEntity;
+			return mSrcEntity;
 		}
 	}
 
