@@ -12,6 +12,10 @@ using UnityEngine;
 
 public abstract class AbstractCombatOperation : ICombatOperation
 {
+
+	protected const float CRIT_MULTIPLIER_LOW = 0.5f;
+	protected const float CRIT_MULTIPLIER_HIGH = 0.8f;
+
 	/// <summary>
 	/// Executes the damage against target entity.
 	/// </summary>
@@ -24,6 +28,12 @@ public abstract class AbstractCombatOperation : ICombatOperation
 			return; // character is dead, no need to add more death
 		}
 		destEntity.currentHP -= damage;
+	}
+
+	protected void ExecuteHealing(float heal, BattleEntity destEntity) {
+		heal = Mathf.Ceil(heal);
+		// heal but cap the hitpoints to the max
+		destEntity.currentHP = Mathf.Min (destEntity.currentHP + heal, destEntity.maxHP);
 	}
 
 	public abstract IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver);

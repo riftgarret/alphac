@@ -13,9 +13,6 @@ using UnityEngine;
 
 public class MagicAttackOperation : AbstractCombatOperation
 {
-	private const float CRIT_MULTIPLIER_LOW = 0.5f;
-	private const float CRIT_MULTIPLIER_HIGH = 0.8f;
-	
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
 	private DamageType mDamageType;

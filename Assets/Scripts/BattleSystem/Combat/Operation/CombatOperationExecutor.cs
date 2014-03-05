@@ -10,24 +10,43 @@
 using System;
 using UnityEngine;
 
+
 public class CombatOperationExecutor
 {
 
+	/// <summary>
+	/// Executes the physical attack. This will apply the damage and execute the status effects according to the specified Rules.
+	/// </summary>
+	/// <param name="src">Source.</param>
+	/// <param name="dest">Destination.</param>
+	/// <param name="action">Action.</param>
+	/// <param name="statusList">Status list.</param>
+	/// <param name="damageType">Damage type.</param>
+	/// <param name="physicalCombatNode">Physical combat node.</param>
 	public void ExecutePhysicalAttack(BattleEntity src, BattleEntity dest, 
 	                                BattleActionPhysical action,                                   	
-	                                CombatStatusEffectList options,
+	                                CombatStatusEffectList statusList,
 	                                DamageType damageType,
 	                                ICombatNode physicalCombatNode) {
 		CombatResolver offensiveResolver = new CombatResolver (src, physicalCombatNode);
 		CombatResolver defensiveResolver = new CombatResolver (dest);
 		PhysicalAttackOperation attackOperation = new PhysicalAttackOperation(src, dest, action, damageType);
 
-		ExecuteOperation (attackOperation, offensiveResolver, defensiveResolver, options);
+		ExecuteAttackOperation (attackOperation, offensiveResolver, defensiveResolver, statusList);
 	}
 
+	/// <summary>
+	/// Executes the magical attack. This will apply the damage and execute the status effects according to the specified Rules.
+	/// </summary>
+	/// <param name="src">Source.</param>
+	/// <param name="dest">Destination.</param>
+	/// <param name="action">Action.</param>
+	/// <param name="statusList">Status list.</param>
+	/// <param name="damageType">Damage type.</param>
+	/// <param name="magicalCombatNode">Magical combat node.</param>
 	public void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
-	                               BattleActionMagical action, 
-	                               CombatStatusEffectList options,
+	                               	 BattleActionMagical action, 
+	                                 CombatStatusEffectList statusList,
 	                                 DamageType damageType,
 	                                 ICombatNode magicalCombatNode) {
 		// TODO, move src, dest to resolver type actions exposing raw battle entity
@@ -37,37 +56,69 @@ public class CombatOperationExecutor
 		CombatResolver defensiveResolver = new CombatResolver (dest);
 		MagicAttackOperation magicOperation = new MagicAttackOperation (src, dest, action, damageType);
 
-		ExecuteOperation (magicOperation, offensiveResolver, defensiveResolver, options);
+		ExecuteAttackOperation (magicOperation, offensiveResolver, defensiveResolver, statusList);
 	}
 
+	/// <summary>
+	/// Executes the healing. This will not be ignored and will execute all status effects
+	/// </summary>
+	/// <param name="src">Source.</param>
+	/// <param name="dest">Destination.</param>
+	/// <param name="action">Action.</param>
+	/// <param name="options">Options.</param>
+	public void ExecuteHealing(BattleEntity src, BattleEntity dest, 
+	                           BattleActionPositive action, 
+	                           CombatStatusEffectList statusList,
+	                           ICombatNode healingCombatNode) {
+		CombatResolver offensiveResolver = new CombatResolver (src, healingCombatNode);
+		CombatResolver defensiveResolver = new CombatResolver (dest);
+		HealingOperation healOperation = new HealingOperation (src, dest, action);
+
+		// execute and do the healing
+		IBattleEvent battleEvent = healOperation.Execute (offensiveResolver, defensiveResolver);
+
+		// notify resulting battle event
+		BattleSystem.eventManager.NotifyEvent (battleEvent);
+
+		// since we execute everything, lets just do whatever execute positive to finish the workflow
+		ExecutePositive (src, dest, action, statusList);
+	}
+
+	/// <summary>
+	/// Executes the positive. No damage happens here, we just apply the status effects.
+	/// </summary>
+	/// <param name="src">Source.</param>
+	/// <param name="dest">Destination.</param>
+	/// <param name="action">Action.</param>
+	/// <param name="statusList">Status list.</param>
 	public void ExecutePositive(BattleEntity src, BattleEntity dest, 
-	                                 BattleActionPositive action, 
-	                                 CombatStatusEffectList options) {
-		
+	                            BattleActionPositive action, 
+	                            CombatStatusEffectList statusList) {
+		foreach (CombatStatusEffect combatStatusEffect in statusList.statusEffects) {
+			ApplyEffect(combatStatusEffect, src);
+		}
 	}
-
 
 	/// <summary>
 	/// Execute an operation and manage check resulting event with CombatStatusEffect Rules if any
 	/// </summary>
 	/// <param name="operation">Operation.</param>
-	private void ExecuteOperation(ICombatOperation operation, CombatResolver srcResolver, CombatResolver destResolver, CombatStatusEffectList statusList) {
+	private void ExecuteAttackOperation(ICombatOperation operation, CombatResolver srcResolver, CombatResolver destResolver, CombatStatusEffectList statusList) {
+		// check to see if we were alive before executing the event
+		BattleEntity destEntity = destResolver.entity;
+		bool wasAlive = destEntity.currentHP > 0;
+
+		// execute and apply damage
 		IBattleEvent battleEvent = operation.Execute (srcResolver, destResolver);
 
 		// notify resulting battle event
 		BattleSystem.eventManager.NotifyEvent (battleEvent);
 
 		// check to see if it was a damage event to see if we killed them
-		if (battleEvent.eventType == BattleEventType.DAMAGE) {
-			DamageEvent dmgEvent = (DamageEvent) battleEvent;
-
-			// if character died, notify death event
-			BattleEntity destEntity = dmgEvent.destEntity;
-			if(destEntity.currentHP <= 0) {
-				destEntity.character.curHP = 0;
-				DeathEvent deathEvent = new DeathEvent(destEntity);
-				BattleSystem.eventManager.NotifyEvent(deathEvent);
-			}
+		if (battleEvent.eventType == BattleEventType.DAMAGE && wasAlive && destEntity.currentHP <= 0) {
+			destEntity.character.curHP = 0;
+			DeathEvent deathEvent = new DeathEvent(destEntity);
+			BattleSystem.eventManager.NotifyEvent(deathEvent);		
 		}
 
 		// lets see if we hit the target or not
@@ -97,8 +148,6 @@ public class CombatOperationExecutor
 				break;
 			}
 		}
-
-
 	}
 
 	/// <summary>
