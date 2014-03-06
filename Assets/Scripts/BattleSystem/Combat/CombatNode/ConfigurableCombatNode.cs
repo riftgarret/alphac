@@ -16,20 +16,20 @@ public class ConfigurableCombatNode : ICombatNode
 
 	public ConfigurableCombatNode ()
 	{
-		mPropertyAdd = new float[(int)CombatNodeProperty.COUNT];
-		mPropertyMultiply = new float[(int)CombatNodeProperty.COUNT];
+		mPropertyAdd = new float[(int)CombatProperty.COUNT];
+		mPropertyMultiply = new float[(int)CombatProperty.COUNT];
 
-		for(int i=0; i < (int)CombatNodeProperty.COUNT; i++) {
+		for(int i=0; i < (int)CombatProperty.COUNT; i++) {
 			mPropertyMultiply[i] = 1f;
 		}
 	}
 
-	public float GetPropertyAdd (CombatNodeProperty property)
+	public float GetPropertyAdd (CombatProperty property)
 	{
 		return mPropertyAdd[(int)property];
 	}
 
-	public float GetPropertyMultiply (CombatNodeProperty property)
+	public float GetPropertyMultiply (CombatProperty property)
 	{
 		return mPropertyMultiply[(int)property];
 	}
@@ -44,16 +44,16 @@ public class ConfigurableCombatNode : ICombatNode
 			foreach(GeneralOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case GeneralOffensiveModifierType.TOTAL_DMG_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.TOTAL_DAMAGE] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.TOTAL_DAMAGE] = mod.modValue;
 					break;
 				case GeneralOffensiveModifierType.TOTAL_DMG_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.TOTAL_DAMAGE] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.TOTAL_DAMAGE] = mod.modValue;
 					break;	
 				case GeneralOffensiveModifierType.CRIT_CHANCE_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.CRIT_CHANCE] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.CRIT_CHANCE] = mod.modValue;
 					break;
 				case GeneralOffensiveModifierType.CRIT_CHANCE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.CRIT_CHANCE] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.CRIT_CHANCE] = mod.modValue;
 					break;
 				}
 			}
@@ -66,25 +66,25 @@ public class ConfigurableCombatNode : ICombatNode
 			foreach(StatModifier mod in modifiers) {
 				switch(mod.stat) {
 				case StatType.STR:
-					this.mPropertyMultiply[(int)CombatNodeProperty.STR] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.STR] = mod.mod;
 					break;				
 				case StatType.VIT:
-					this.mPropertyMultiply[(int)CombatNodeProperty.VIT] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.VIT] = mod.mod;
 					break;
 				case StatType.DEX:
-					this.mPropertyMultiply[(int)CombatNodeProperty.DEX] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.DEX] = mod.mod;
 					break;
 				case StatType.AGI:
-					this.mPropertyMultiply[(int)CombatNodeProperty.AGI] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.AGI] = mod.mod;
 					break;
 				case StatType.INT:
-					this.mPropertyMultiply[(int)CombatNodeProperty.INT] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.INT] = mod.mod;
 					break;
 				case StatType.WIS:
-					this.mPropertyMultiply[(int)CombatNodeProperty.WIS] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.WIS] = mod.mod;
 					break;
 				case StatType.LUCK:
-					this.mPropertyMultiply[(int)CombatNodeProperty.LUCK] = mod.mod;
+					this.mPropertyMultiply[(int)CombatProperty.LUCK] = mod.mod;
 					break;
 				}
 			}
@@ -97,22 +97,22 @@ public class ConfigurableCombatNode : ICombatNode
 			foreach(PhysicalOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case PhysicalOffensiveModifierType.POWER_PHYSICAL_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.POWER_PHYSICAL] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.POWER_PHYSICAL] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.POWER_PHYSICAL_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.POWER_PHYSICAL] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.POWER_PHYSICAL] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.DODGE_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.REFLEX_IGNORE] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.REFLEX_IGNORE] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.DODGE_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.REFLEX_IGNORE] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.REFLEX_IGNORE] = mod.modValue;
 					break;					
 				case PhysicalOffensiveModifierType.ARMOR_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.RESIST_IGNORE] = mod.modValue;
 					break;
 				case PhysicalOffensiveModifierType.ARMOR_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.RESIST_IGNORE] = mod.modValue;
 					break;					
 				}
 			}
@@ -125,16 +125,16 @@ public class ConfigurableCombatNode : ICombatNode
 			foreach(MagicalOffensiveModifier mod in modifiers) {
 				switch(mod.type) {
 				case MagicalOffensiveModifierType.POWER_MAGICAL_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.POWER_MAGIC] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.POWER_MAGIC] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.POWER_MAGICAL_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.POWER_MAGIC] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.POWER_MAGIC] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.RESIST_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					this.mPropertyAdd[(int)CombatProperty.RESIST_IGNORE] = mod.modValue;
 					break;
 				case MagicalOffensiveModifierType.RESIST_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatNodeProperty.RESIST_IGNORE] = mod.modValue;
+					this.mPropertyMultiply[(int)CombatProperty.RESIST_IGNORE] = mod.modValue;
 					break;
 				}
 			}

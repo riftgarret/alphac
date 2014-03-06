@@ -11,9 +11,9 @@ using System;
 public interface ICombatNode
 {
 
-	float GetPropertyAdd(CombatNodeProperty property);
+	float GetPropertyAdd(CombatProperty property);
 
-	float GetPropertyMultiply(CombatNodeProperty property);
+	float GetPropertyMultiply(CombatProperty property);
 
 }
 

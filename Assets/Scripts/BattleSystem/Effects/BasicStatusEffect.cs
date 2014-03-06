@@ -43,7 +43,7 @@ public abstract class BasicStatusEffect : IStatusEffect
 		get;
 	}
 
-	public abstract EffectSourceType sourceType {
+	public abstract StatusEffectType sourceType {
 		get;
 	}
 

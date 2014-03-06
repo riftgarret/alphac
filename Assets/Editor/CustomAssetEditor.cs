@@ -39,10 +39,15 @@ public class CustomAssetEditor {
 	}
 	*/
 
-	[MenuItem("Assets/Create/Skill/Combat Skill Config")]	
-	public static void CreateCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<CombatSkillData>(), "CombatSkill");
+	[MenuItem("Assets/Create/Skill/Physical Combat Skill Config")]	
+	public static void CreatePhysicalCombatSkillAsset() {
+		CompleteAssetCreation(X.CreateInstance<PhysicalCombatSkillData>(), "PhysicalCombatSkill");
 	}	
+
+	[MenuItem("Assets/Create/Skill/Magical Combat Skill Config")]	
+	public static void CreateMagicalCombatSkillAsset() {
+		CompleteAssetCreation(X.CreateInstance<MagicalCombatSkillData>(), "MagicalCombatSkill");
+	}
 
 	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
 	public static void CreatePCSkillSetAsset() {

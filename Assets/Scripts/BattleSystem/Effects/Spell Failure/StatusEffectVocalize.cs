@@ -29,9 +29,9 @@ public class StatusEffectVocalize : StatusEffectSpellFailure
 		return string.Format("{0} feels his/her voice go return to normal.");
 	}
 
-	public override EffectSourceType sourceType {
+	public override StatusEffectType sourceType {
 		get {
-			return EffectSourceType.POSITIVE;
+			return StatusEffectType.MAGICAL_BUFF;
 		}
 	}
 

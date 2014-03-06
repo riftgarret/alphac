@@ -23,7 +23,7 @@ public class CompositeCombatNode : ICombatNode
 		mChildren.Add (combatNode);
 	}
 
-	public float GetPropertyAdd(CombatNodeProperty property) {
+	public float GetPropertyAdd(CombatProperty property) {
 
 		float total = 0;
 		foreach(ICombatNode mod in mChildren) {
@@ -33,7 +33,7 @@ public class CompositeCombatNode : ICombatNode
 
 	}
 
-	public float GetPropertyMultiply(CombatNodeProperty property) {
+	public float GetPropertyMultiply(CombatProperty property) {
 
 		float total = 1;
 		foreach(ICombatNode mod in mChildren) {

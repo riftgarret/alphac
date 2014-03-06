@@ -28,9 +28,9 @@ public class StatusEffectPrickedThroat : StatusEffectSpellFailure
 		return string.Format("{0} feels his/her voice go return to normal.");
 	}
 
-	public override EffectSourceType sourceType {
+	public override StatusEffectType sourceType {
 		get {
-			return EffectSourceType.NEGATIVE_PHYSICAL;
+			return StatusEffectType.PHYSICAL_DEBUFF;
 		}
 	}
 

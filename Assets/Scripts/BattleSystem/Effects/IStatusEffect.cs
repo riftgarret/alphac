@@ -32,7 +32,7 @@ public interface IStatusEffect
 	/// the effect is resisted
 	/// </summary>
 	/// <value>The type of the source.</value>
-	EffectSourceType sourceType {
+	StatusEffectType sourceType {
 		get;
 	}
 

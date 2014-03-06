@@ -92,7 +92,7 @@ public class CombatOperationExecutor
 	public void ExecutePositive(BattleEntity src, BattleEntity dest, 
 	                            BattleActionPositive action, 
 	                            CombatStatusEffectList statusList) {
-		foreach (CombatStatusEffect combatStatusEffect in statusList.statusEffects) {
+		foreach (StatusEffectRule combatStatusEffect in statusList.statusEffects) {
 			ApplyEffect(combatStatusEffect, src);
 		}
 	}
@@ -129,19 +129,19 @@ public class CombatOperationExecutor
 						|| eventType == BattleEventType.RESIST;
 
 		// iterate through combnat effects to see what should apply
-		foreach (CombatStatusEffect combatStatusEffect in statusList.statusEffects) {
+		foreach (StatusEffectRule combatStatusEffect in statusList.statusEffects) {
 			switch(combatStatusEffect.rule) {			
-			case CombatStatusEffect.StatusEffectRule.ON_HIT:
+			case StatusEffectRule.StatusEffectHitPredicate.ON_HIT:
 				if(hitTarget) {
 					ApplyEffect(combatStatusEffect, srcResolver.entity);
 				}
 				break;
-			case CombatStatusEffect.StatusEffectRule.ON_MISS:
+			case StatusEffectRule.StatusEffectHitPredicate.ON_MISS:
 				if(missedTarget) {
 					ApplyEffect(combatStatusEffect, srcResolver.entity);
 				}
 				break;
-			case CombatStatusEffect.StatusEffectRule.ALWAYS:
+			case StatusEffectRule.StatusEffectHitPredicate.ALWAYS:
 			default:
 				ApplyEffect(combatStatusEffect, srcResolver.entity);
 				break;
@@ -154,7 +154,7 @@ public class CombatOperationExecutor
 	/// </summary>
 	/// <param name="effects">Effects.</param>
 	/// <param name="targetEntity">Target entity.</param>
-	private void ApplyEffect(CombatStatusEffect combatEffect, BattleEntity srcEntity) {
+	private void ApplyEffect(StatusEffectRule combatEffect, BattleEntity srcEntity) {
 		BattleEntity destEntity = combatEffect.target;
 		IStatusEffect statusEffect = combatEffect.effect;
 		// first directly apply the effect

@@ -14,7 +14,7 @@ public class CombatStatusEffectList
 {
 	public static readonly CombatStatusEffectList EMPTY = new CombatStatusEffectList();
 	
-	public CombatStatusEffect[] statusEffects {
+	public StatusEffectRule[] statusEffects {
 				get;
 				private set;
 	}
@@ -29,13 +29,13 @@ public class CombatStatusEffectList
 	}
 
 	public class StatusEffectBuilder {
-		private List<CombatStatusEffect> statusEffectEvents = null;
+		private List<StatusEffectRule> statusEffectEvents = null;
 
-		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, CombatStatusEffect.StatusEffectRule rule) {
+		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, StatusEffectRule.StatusEffectHitPredicate rule) {
 			if(statusEffectEvents == null) {
-				statusEffectEvents = new List<CombatStatusEffect>();
+				statusEffectEvents = new List<StatusEffectRule>();
 			}
-			statusEffectEvents.Add(new CombatStatusEffect(effect, target, rule));
+			statusEffectEvents.Add(new StatusEffectRule(effect, target, rule));
 			return this;
 		}
 
