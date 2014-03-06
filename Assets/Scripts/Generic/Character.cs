@@ -61,16 +61,16 @@ public abstract class Character  {
 	public Character() {}
 
 	// used for cloning
-	public static Character CreateFromConfig(CharacterConfig config) {
-		if(config is EnemyCharacterConfig) {
-			return new EnemyCharacter((EnemyCharacterConfig)config);
+	public static Character CreateFromConfig(CharacterData config) {
+		if(config is EnemyCharacterData) {
+			return new EnemyCharacter((EnemyCharacterData)config);
 		}
 		else {
-			return new PCCharacter((PCCharacterConfig)config);
+			return new PCCharacter((PCCharacterData)config);
 		}
 	}
 
-	protected Character(CharacterConfig other) {
+	protected Character(CharacterData other) {
 		// name
 		displayName = other.displayName;
 

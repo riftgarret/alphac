@@ -11,11 +11,11 @@ using System;
 
 public abstract class CombatSkill : Skill
 {
-	public CombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	public CombatSkill(CombatSkillData config, int level) : base (config, level) {
 	}
 
-	public CombatSkillConfig combatSkillConfig {
-		get { return (CombatSkillConfig) mSkillConfig; } 
+	public CombatSkillData combatSkillConfig {
+		get { return (CombatSkillData) mSkillConfig; } 
 	}
 
 	public StatModifier [] statModifiers {

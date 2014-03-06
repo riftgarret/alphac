@@ -23,8 +23,8 @@ public class AISkillRule
 	}
 
 	[SerializeField]
-	private CombatSkillConfig mSkill = null;
-	public CombatSkillConfig skill { 
+	private CombatSkillData mSkill = null;
+	public CombatSkillData skill { 
 		get { return mSkill; }
 	}
 

@@ -20,7 +20,7 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	
 	public static void CreateNPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemyCharacterConfig>(), "EnemyConfig");
+		CompleteAssetCreation(X.CreateInstance<EnemyCharacterData>(), "EnemyConfig");
 	}	
 
 	[MenuItem("Assets/Create/Enemy/Enemy Party")]	
@@ -30,7 +30,7 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	
 	public static void CreateEnemySkillSetSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemySkillSetConfig>(), "EnemySkillSet");
+		CompleteAssetCreation(X.CreateInstance<EnemySkillSetData>(), "EnemySkillSet");
 	}
 	/*
 	[MenuItem("Assets/Create/Enemy/Enemy AI Rule")]	
@@ -41,17 +41,17 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Skill/Combat Skill Config")]	
 	public static void CreateCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<CombatSkillConfig>(), "CombatSkill");
+		CompleteAssetCreation(X.CreateInstance<CombatSkillData>(), "CombatSkill");
 	}	
 
 	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
 	public static void CreatePCSkillSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCSkillSetConfig>(), "SkillSet");
+		CompleteAssetCreation(X.CreateInstance<PCSkillSetData>(), "SkillSet");
 	}
 
 	[MenuItem("Assets/Create/Test/PC Character Config")]	
 	public static void CreateTestPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCCharacterConfig>(), "NPC");
+		CompleteAssetCreation(X.CreateInstance<PCCharacterData>(), "NPC");
 	}	
 
 

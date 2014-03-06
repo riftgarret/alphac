@@ -8,13 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
-public class EnemySkillSetConfig : ScriptableObject
+public class EnemyCharacterData : CharacterData
 {
-	[SerializeField]
-	private AISkillRule [] mAISkillRules = new AISkillRule[5];
-	public AISkillRule[] skillRules {
-		get { return mAISkillRules; }
-	}
+	public EnemySkillSetData skillRules;
 }
+

@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class EnemyCharacterConfig : CharacterConfig
+public class PCCharacterData : CharacterData
 {
-	public EnemySkillSetConfig skillRules;
+	public PCSkillSetData skillsetConfig;
 }
 

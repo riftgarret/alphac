@@ -10,26 +10,11 @@
 using System;
 using UnityEngine;
 
-public class CharacterConfig : ScriptableObject
-{	
-	// character name
-	public string displayName;
-	
-	// stats
-	public float strength;
-	public float vitality;
-	public float dexerity;
-	public float agility;
-	public float inteligence;
-	public float wisdom;
-	public float luck;
-	
-	// level and class
-	public int level;
-	public CharacterClassData charClass;
-	
-	// equipment
-	public Weapon [] weapons;
-	public Armor [] armors;
+public class EnemySkillSetData : ScriptableObject
+{
+	[SerializeField]
+	private AISkillRule [] mAISkillRules = new AISkillRule[5];
+	public AISkillRule[] skillRules {
+		get { return mAISkillRules; }
+	}
 }
-

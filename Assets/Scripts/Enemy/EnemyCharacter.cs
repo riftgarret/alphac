@@ -19,7 +19,7 @@ public class EnemyCharacter : Character
 		get { return mSkillResolver; }
 	}
 
-	public EnemyCharacter(EnemyCharacterConfig config) : base(config) {
+	public EnemyCharacter(EnemyCharacterData config) : base(config) {
 		mSkillResolver = new AISkillResolver(config.skillRules);
 	}
 	

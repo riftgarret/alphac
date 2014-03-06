@@ -11,11 +11,11 @@ using System;
 
 public class MagicalCombatSkill : CombatSkill
 {
-	public MagicalCombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	public MagicalCombatSkill(CombatSkillData config, int level) : base (config, level) {
 	}
 
-	public MagicalCombatSkillConfig magicalCombatSkillConfig {
-		get { return (MagicalCombatSkillConfig) mSkillConfig; } 
+	public MagicalCombatSkillData magicalCombatSkillConfig {
+		get { return (MagicalCombatSkillData) mSkillConfig; } 
 	}
 
 	public float this[MagicalOffensiveModifierType type] {

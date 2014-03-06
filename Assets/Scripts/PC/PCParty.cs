@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
 [System.Serializable]
 public class PCParty : ScriptableObject {
 	
-	public PCCharacterConfig[] characterConfigs;
+	public PCCharacterData[] characterConfigs;
 
 	void OnEnabled() {
 

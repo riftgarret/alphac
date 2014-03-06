@@ -11,11 +11,11 @@ using System;
 
 public class PhysicalCombatSkill : CombatSkill
 {
-	public PhysicalCombatSkill(CombatSkillConfig config, int level) : base (config, level) {
+	public PhysicalCombatSkill(CombatSkillData config, int level) : base (config, level) {
 	}
 
-	public PhysicalCombatSkillConfig physicalCombatSkillConfig {
-		get { return (PhysicalCombatSkillConfig) mSkillConfig; } 
+	public PhysicalCombatSkillData physicalCombatSkillConfig {
+		get { return (PhysicalCombatSkillData) mSkillConfig; } 
 	}
 
 	public float this[PhysicalOffensiveModifierType type] {

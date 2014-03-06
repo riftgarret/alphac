@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 [Serializable]
-public abstract class CombatSkillConfig : SkillConfig {
+public abstract class CombatSkillData : SkillData {
 	[SerializeField]
 	private CombatSkillActionEnum mCombatSkillEnum = CombatSkillActionEnum.BASIC_FIGHT;
 	public CombatSkillActionEnum combatSkillEnum { get { return mCombatSkillEnum; } }

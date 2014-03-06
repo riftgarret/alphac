@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PositiveCombatSkillConfig : CombatSkillConfig
+public class PositiveCombatSkillData : CombatSkillData
 {
 	[SerializeField]
 	private PositiveOffensiveModifier [] mOffensiveModifiers = null;

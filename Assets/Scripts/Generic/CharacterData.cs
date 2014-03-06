@@ -10,27 +10,26 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public abstract class Skill
-{
-	public Skill(SkillData config, int level) {
-		mLevel = level;
-		mSkillConfig = config;
-	}
-
-	[SerializeField]
-	protected int mLevel;
-
-	public int level{ 
-		get { return mLevel; }
-		set { mLevel = value; }
-	}	
-
-	[SerializeField]
-	protected SkillData mSkillConfig;
-
-	public SkillData skillConfig { 
-		get { return mSkillConfig; } 
-		set { mSkillConfig = value; }
-	} 
+public class CharacterData : ScriptableObject
+{	
+	// character name
+	public string displayName;
+	
+	// stats
+	public float strength;
+	public float vitality;
+	public float dexerity;
+	public float agility;
+	public float inteligence;
+	public float wisdom;
+	public float luck;
+	
+	// level and class
+	public int level;
+	public CharacterClassData charClass;
+	
+	// equipment
+	public Weapon [] weapons;
+	public Armor [] armors;
 }
+
