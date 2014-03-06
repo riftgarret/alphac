@@ -27,12 +27,12 @@ public class CombatOperationExecutor
 	                                BattleActionPhysical action,                                   	
 	                                CombatStatusEffectList statusList,
 	                                DamageType damageType,
-	                                ICombatNode physicalCombatNode) {
-		CombatResolver offensiveResolver = new CombatResolver (src, physicalCombatNode);
-		CombatResolver defensiveResolver = new CombatResolver (dest);
+	                                CombatResolver srcResolver) {
+
+		CombatResolver destResolver = new CombatResolver (dest);
 		PhysicalAttackOperation attackOperation = new PhysicalAttackOperation(src, dest, action, damageType);
 
-		ExecuteAttackOperation (attackOperation, offensiveResolver, defensiveResolver, statusList);
+		ExecuteAttackOperation (attackOperation, srcResolver, destResolver, statusList);
 	}
 
 	/// <summary>
@@ -48,15 +48,14 @@ public class CombatOperationExecutor
 	                               	 BattleActionMagical action, 
 	                                 CombatStatusEffectList statusList,
 	                                 DamageType damageType,
-	                                 ICombatNode magicalCombatNode) {
+	                                 CombatResolver srcResolver) {
 		// TODO, move src, dest to resolver type actions exposing raw battle entity
 		// remove battle action from event
 		// damage type ok
-		CombatResolver offensiveResolver = new CombatResolver (src, magicalCombatNode);
-		CombatResolver defensiveResolver = new CombatResolver (dest);
+		CombatResolver destResolver = new CombatResolver (dest);
 		MagicAttackOperation magicOperation = new MagicAttackOperation (src, dest, action, damageType);
 
-		ExecuteAttackOperation (magicOperation, offensiveResolver, defensiveResolver, statusList);
+		ExecuteAttackOperation (magicOperation, srcResolver, destResolver, statusList);
 	}
 
 	/// <summary>
@@ -69,13 +68,12 @@ public class CombatOperationExecutor
 	public void ExecuteHealing(BattleEntity src, BattleEntity dest, 
 	                           BattleActionPositive action, 
 	                           CombatStatusEffectList statusList,
-	                           ICombatNode healingCombatNode) {
-		CombatResolver offensiveResolver = new CombatResolver (src, healingCombatNode);
-		CombatResolver defensiveResolver = new CombatResolver (dest);
+	                           CombatResolver srcResolver) {
+		CombatResolver destResolver = new CombatResolver (dest);
 		HealingOperation healOperation = new HealingOperation (src, dest, action);
 
 		// execute and do the healing
-		IBattleEvent battleEvent = healOperation.Execute (offensiveResolver, defensiveResolver);
+		IBattleEvent battleEvent = healOperation.Execute (srcResolver, destResolver);
 
 		// notify resulting battle event
 		BattleSystem.eventManager.NotifyEvent (battleEvent);
@@ -110,24 +108,25 @@ public class CombatOperationExecutor
 
 		// execute and apply damage
 		IBattleEvent battleEvent = operation.Execute (srcResolver, destResolver);
+		BattleEventType eventType = battleEvent.eventType;
 
 		// notify resulting battle event
 		BattleSystem.eventManager.NotifyEvent (battleEvent);
 
 		// check to see if it was a damage event to see if we killed them
-		if (battleEvent.eventType == BattleEventType.DAMAGE && wasAlive && destEntity.currentHP <= 0) {
+		if (eventType == BattleEventType.DAMAGE && wasAlive && destEntity.currentHP <= 0) {
 			destEntity.character.curHP = 0;
 			DeathEvent deathEvent = new DeathEvent(destEntity);
 			BattleSystem.eventManager.NotifyEvent(deathEvent);		
 		}
 
 		// lets see if we hit the target or not
-		bool hitTarget = battleEvent.eventType == BattleEventType.DAMAGE
-						|| battleEvent.eventType == BattleEventType.NON_DAMAGE 
-						|| battleEvent.eventType == BattleEventType.ITEM;
+		bool hitTarget = eventType == BattleEventType.DAMAGE
+						|| eventType == BattleEventType.NON_DAMAGE 
+						|| eventType == BattleEventType.ITEM;
 
-		bool missedTarget = battleEvent.eventType == BattleEventType.DODGE
-						|| battleEvent.eventType == BattleEventType.RESIST;
+		bool missedTarget = eventType == BattleEventType.DODGE
+						|| eventType == BattleEventType.RESIST;
 
 		// iterate through combnat effects to see what should apply
 		foreach (CombatStatusEffect combatStatusEffect in statusList.statusEffects) {
@@ -164,16 +163,4 @@ public class CombatOperationExecutor
 		IBattleEvent statusEvent = new StatusEffectEvent (srcEntity, destEntity, statusEffect);
 		BattleSystem.eventManager.NotifyEvent(statusEvent);
 	}
-	
-	// calculate and apply damage state (see if they are dead or not)
-	private void PostDamageEvent(DamageEvent dmgEvent) {
-		BattleEntity destEntity = dmgEvent.destEntity;
-		// if character died, notify death event
-		if(destEntity.character.curHP <= 0) {
-			destEntity.character.curHP = 0;
-			DeathEvent deathEvent = new DeathEvent(destEntity);
-			BattleSystem.eventManager.NotifyEvent(deathEvent);
-		}
-
-	}		
 }

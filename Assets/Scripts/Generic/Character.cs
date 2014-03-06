@@ -42,23 +42,19 @@ public abstract class Character  {
 	public int level;
 
 
-	public CharacterClassConfig charClass;
+	public CharacterClassData charClass;
 
 	// equipment
-	[SerializeField]
-	private Weapon [] mWeapons; // 0 = main weapon, 1 = offhand, 
-	public Weapon GetWeapon (int weaponIndex) {
-		return mWeapons [weaponIndex];
-	}
-	public int maxWeaponCount {
-		get { return 1; } // TODO link to character skill ability
-	}
-	public ArmorSlot armorHelmet;
-	public ArmorSlot armorTorso;
-	public ArmorSlot armorLegs;
-	public ArmorSlot armorArms;
+	private WeaponConfig mWeaponConfig;
+	private ArmorConfig mArmorConfig;
 
+	public Weapon [] equipedWeapons {
+		get { return mWeaponConfig.equipedWeapons; }
+	}
 
+	public Armor [] equipedArmor {
+		get { return mArmorConfig.equipedArmor; }
+	}
 	// armor, accessory
 	
 	// empty constructor
@@ -73,6 +69,7 @@ public abstract class Character  {
 			return new PCCharacter((PCCharacterConfig)config);
 		}
 	}
+
 	protected Character(CharacterConfig other) {
 		// name
 		displayName = other.displayName;
@@ -91,10 +88,20 @@ public abstract class Character  {
 		level = other.level;
 		charClass = other.charClass;
 
-		mWeapons = new Weapon[other.weapons.Length];
+		// create armor and weapon configs from class rules
+		mWeaponConfig = charClass.CreateWeaponConfig();
+		mArmorConfig = charClass.CreateArmorConfig ();
+
+
 		for (int i=0; i < other.weapons.Length; i++) {
-			mWeapons[i] = other.weapons[i];
+			mWeaponConfig.EquipWeapon(other.weapons[i], i);
 		}
+
+		for (int i=0; i < other.weapons.Length; i++) {
+			mArmorConfig.EquipArmor(other.armors[i], other.armors[i].slot);
+		}
+
+
 		curHP = maxHP;
 	}
 			
@@ -155,9 +162,8 @@ public abstract class Character  {
 
 
 	public float GetResist(DamageType dmg) {
-		float armorResist = GetTotalArmorResists(dmg);
 		float classResist = GetClassArmorResists(dmg);
-		return armorResist + classResist;
+		return classResist;
 	}
 
 	private float GetClassArmorResists(DamageType type) {
@@ -185,22 +191,9 @@ public abstract class Character  {
 			return 1;
 		}
 	}
+	
 
-	/// <summary>
-	/// Gets the total armor resists. for the armor set
-	/// </summary>
-	/// <returns>The total armor resists.</returns>
-	/// <param name="type">Type.</param>
-	private float GetTotalArmorResists(DamageType type) {
-		float total = 0f;
-		total += GetArmorResist(type, armorArms);
-		total += GetArmorResist(type, armorHelmet);
-		total += GetArmorResist(type, armorTorso);
-		total += GetArmorResist(type, armorLegs);
-		return total;
-	}
-
-	private float GetArmorResist(DamageType type, ArmorSlot armor) {
+	private float GetArmorResist(DamageType type, Armor armor) {
 		if(armor == null) {
 			return 0f;
 		}

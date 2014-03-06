@@ -11,17 +11,19 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ArmorSlot
+public class Armor
 {
+	public static readonly Armor EMPTY_ARMOR = new Armor();
+
 	[SerializeField]
-	private ArmorConfig mConfig;
-	public ArmorConfig config {
+	private ArmorData mConfig;
+	public ArmorData config {
 		get { return mConfig; }
 	}	
 
-	public ArmorSlot() {}
+	public Armor() {}
 
-	public ArmorSlot(ArmorConfig config) {
+	public Armor(ArmorData config) {
 		mConfig = config;
 	}
 

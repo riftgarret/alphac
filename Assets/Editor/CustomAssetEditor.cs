@@ -10,12 +10,12 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Character Class")]	
 	public static void CreateClassAsset() {		
-		CompleteAssetCreation(X.CreateInstance<CharacterClassConfig>(), "CharacterClass");
+		CompleteAssetCreation(X.CreateInstance<CharacterClassData>(), "CharacterClass");
 	}
 
 	[MenuItem("Assets/Create/Equipment/Weapon")]	
 	public static void CreateWeaponAsset() {		
-		CompleteAssetCreation(X.CreateInstance<WeaponConfig>(), "Weapon");
+		CompleteAssetCreation(X.CreateInstance<WeaponData>(), "Weapon");
 	}
 
 	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	

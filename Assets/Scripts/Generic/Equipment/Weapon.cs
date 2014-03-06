@@ -15,15 +15,21 @@ using UnityEngine;
 [Serializable]
 public class Weapon
 {
+	public static readonly Weapon EMPTY_WEAPON = new Weapon();
+	/// <summary>
+	/// Not to be mistaken with EMPTY weapon, unarmed is default for first weapon slot if none
+	/// </summary>
+	public static readonly Weapon UNARMED_WEAPON = new Weapon();
+
 	// weapon config to setup in the data module
 	[SerializeField]
-	private WeaponConfig mWeaponConfig;
+	private WeaponData mWeaponConfig;
 
 	// TODO add 'inscriptions'
 
 	public Weapon() {}
 
-	public Weapon (WeaponConfig config) {
+	public Weapon (WeaponData config) {
 		this.mWeaponConfig = config;
 	}
 
@@ -42,7 +48,7 @@ public class Weapon
 		return atk;
 	}
 
-	public WeaponConfig weaponConfig {
+	public WeaponData weaponConfig {
 		get { return mWeaponConfig; } 
 	}
 }

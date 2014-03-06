@@ -11,12 +11,27 @@ public class BattleActionAttack : BattleActionPhysical {
 	public override void OnExecuteAction (float actionClock)
 	{	
 		if(actionClock >= timeAction && mAttackCount == 0) {
-			DamageType damageType = GetWeaponDamageType(0);
 
+			// temp set all as default
+			SkillCombatNode skillNode = new SkillCombatNode(this.combatSkill);
+			int weaponCount = sourceEntity.equipedWeapons.Length;
 
+			// TODO not sure if this should always be all, or just known to be single or all
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
-				BattleSystem.combatExecutor.ExecutePhysicalAttack(sourceEntity, entity, this, CombatStatusEffectList.EMPTY, damageType, null);
+
+				// for each weapon
+				for(int weaponIndex = 0; weaponIndex < weaponCount; weaponIndex++) {
+					// TODO if more than 1 weapon, we should dull down multiple hits dmg
+					CombatResolver resolver = sourceEntity.CreateCombatNodeBuilder()
+						.SetSkillCombatNode(skillNode)
+						.SetWeaponIndex(weaponIndex)
+						.BuildResolver();
+
+					BattleSystem.combatExecutor.ExecutePhysicalAttack(sourceEntity, entity, this, CombatStatusEffectList.EMPTY, GetWeaponDamageType(weaponIndex), resolver);
+				}
+
 			}
+
 			mAttackCount++;
 		}	
 	}

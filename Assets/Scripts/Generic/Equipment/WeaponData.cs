@@ -10,26 +10,16 @@
 using System;
 using UnityEngine;
 
-public class CharacterConfig : ScriptableObject
-{	
-	// character name
-	public string displayName;
-	
-	// stats
-	public float strength;
-	public float vitality;
-	public float dexerity;
-	public float agility;
-	public float inteligence;
-	public float wisdom;
-	public float luck;
-	
-	// level and class
-	public int level;
-	public CharacterClassData charClass;
-	
-	// equipment
-	public Weapon [] weapons;
-	public Armor [] armors;
-}
+[Serializable]
+public class WeaponData : ScriptableObject
+{
+	public string weaponName;
+	public float baseDamage;
+	public GeneralOffensiveModifier[] generalModifiers; // todo move this to physical weapon mod
+	public PhysicalOffensiveModifier[] physicalModifiers; // todo move this to physical weapon mod
+	public StatModifier [] statModifiers;
+	public DamageType dmgType;
+	public WeaponType weaponType;
 
+	public Texture2D icon;
+}

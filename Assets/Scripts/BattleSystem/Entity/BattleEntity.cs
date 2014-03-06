@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Battle entity. Main class that contains all current effects and state of this character in battle.
+/// </summary>
 public abstract class BattleEntity {
 
 	// turn phase
@@ -36,6 +39,8 @@ public abstract class BattleEntity {
 		mCombatNodeFactory = new CombatNodeFactory (this);
 		turnState = new TurnState(this);
 		this.character = character;
+		this.maxHP = character.maxHP;
+		this.currentHP = character.curHP;
 	}
 
 
@@ -95,22 +100,8 @@ public abstract class BattleEntity {
 		return CreateCombatNodeBuilder().Build();
 	}
 
-	/// <summary>
-	/// Overloading Getting a weapon from the character incase there is a status buff that may add weapons. 
-	/// Such as summoned weapons
-	/// </summary>
-	/// <returns>The weapon.</returns>
-	/// <param name="weaponIndex">Weapon index.</param>
-	public Weapon GetWeapon(int weaponIndex) {
-		return character.GetWeapon (weaponIndex);
-	}
-
-	/// <summary>
-	/// Overload max weapon count to allow summonable weapons
-	/// </summary>
-	/// <value>The max weapon count.</value>
-	public int maxWeaponCount {
-		get { return character.maxWeaponCount; }
+	public Weapon [] equipedWeapons {
+		get { return character.equipedWeapons; }
 	}
 
 	public float currentHP {

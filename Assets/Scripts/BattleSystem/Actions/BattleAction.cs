@@ -31,8 +31,8 @@ public abstract class BattleAction : IBattleAction {
 	/// <returns>The weapon damage type.</returns>
 	/// <param name="weaponIndex">Weapon index.</param>
 	public DamageType GetWeaponDamageType(int weaponIndex) {
-		Weapon weapon = this.sourceEntity.GetWeapon (weaponIndex);
-		WeaponConfig config = weapon.weaponConfig;
+		Weapon weapon = this.sourceEntity.equipedWeapons[weaponIndex];
+		WeaponData config = weapon.weaponConfig;
 		return config.dmgType;
 	}
 

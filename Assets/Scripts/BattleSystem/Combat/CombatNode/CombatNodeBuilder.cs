@@ -12,7 +12,10 @@ public class CombatNodeBuilder
 {
 	private CombatNodeFactory mFactory;
 
+	// if weapon is provided, weapon index is ignored
+	private Weapon mWeapon;
 	private int mWeaponIndex;
+
 	private SkillCombatNode mSkillCombatNode;
 
 	public CombatNodeBuilder (CombatNodeFactory factory)
@@ -30,6 +33,11 @@ public class CombatNodeBuilder
 		return this;
 	}
 
+	public CombatNodeBuilder SetWeapon(Weapon weapon) {
+		mWeapon = weapon;
+		return this;
+	}
+
 	public CombatNodeBuilder SetSkillCombatNode(SkillCombatNode skillCombatNode) {
 		mSkillCombatNode = skillCombatNode;
 		return this;
@@ -40,12 +48,24 @@ public class CombatNodeBuilder
 		CompositeCombatNode rootNode = new CompositeCombatNode ();
 		// child node
 		rootNode.AddNode (mFactory.CreateCharacterNode());
-		rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeaponIndex));
+		if (mWeapon != null) {
+			rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeapon));
+		} else {
+			rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeaponIndex));
+		}
 		if (mSkillCombatNode != null) {
 			rootNode.AddNode (mSkillCombatNode);
 		}
 
 		// TODO iterate through buffs and equipment
 		return rootNode;
+	}
+
+	/// <summary>
+	/// Build the combat resolver directly
+	/// </summary>
+	/// <returns>The resolver.</returns>
+	public CombatResolver BuildResolver() {
+		return new CombatResolver(mFactory.entity, Build());
 	}
 }

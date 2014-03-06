@@ -14,18 +14,26 @@ public class CombatNodeFactory
 {
 	private BattleEntity mEntity;
 
-	private Dictionary<WeaponConfig, WeaponConfigCombatNode> mCachedWeaponConfigMap;
+	public BattleEntity entity {
+		get { return mEntity; }
+	}
+
+	private Dictionary<WeaponData, WeaponConfigCombatNode> mCachedWeaponConfigMap;
 	private CharacterCombatNode mCachedCharacterNode;
 
 	public CombatNodeFactory (BattleEntity entity)
 	{
 		mEntity = entity;
-		mCachedWeaponConfigMap = new Dictionary<WeaponConfig, WeaponConfigCombatNode> ();
+		mCachedWeaponConfigMap = new Dictionary<WeaponData, WeaponConfigCombatNode> ();
 	}
 
-	public ICombatNode CreateWeaponConfigNode(int weaponIndex) {
-		Weapon weapon = mEntity.GetWeapon (weaponIndex);
-		WeaponConfig config = weapon.weaponConfig;
+	public ICombatNode CreateWeaponConfigNode(int equipedWeaponIndex) {
+		Weapon weapon = mEntity.equipedWeapons [equipedWeaponIndex];
+		return CreateWeaponConfigNode (weapon);
+	}
+
+	public ICombatNode CreateWeaponConfigNode(Weapon weapon) {
+		WeaponData config = weapon.weaponConfig;
 		if (!mCachedWeaponConfigMap.ContainsKey (config)) {
 			mCachedWeaponConfigMap[config] = new WeaponConfigCombatNode(config);
 		}
