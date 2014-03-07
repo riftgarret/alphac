@@ -1,20 +1,13 @@
 fileFormatVersion: 2
-guid: 8aaaddaf77893ee4b9ac1eb8b1b46aae
+guid: 43ed800cf8736564ca18f8f2b86cf80f
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: Collision
-    100002: //RootNode
-    100004: Spiral_Stairs
-    400000: Collision
-    400002: //RootNode
-    400004: Spiral_Stairs
-    2300000: Collision
-    2300002: Spiral_Stairs
-    3300000: Collision
-    3300002: Spiral_Stairs
-    4300000: Collision
-    4300002: Spiral_Stairs
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube
     7400000: Default Take
     9500000: //RootNode
   materials:
