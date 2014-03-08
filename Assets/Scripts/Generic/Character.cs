@@ -42,7 +42,7 @@ public abstract class Character  {
 	public int level;
 
 
-	public CharacterClassData charClass;
+	public CharacterClassSO charClass;
 
 	// equipment
 	private WeaponConfig mWeaponConfig;
@@ -61,16 +61,16 @@ public abstract class Character  {
 	public Character() {}
 
 	// used for cloning
-	public static Character CreateFromConfig(CharacterData config) {
-		if(config is EnemyCharacterData) {
-			return new EnemyCharacter((EnemyCharacterData)config);
+	public static Character CreateFromConfig(CharacterSO config) {
+		if(config is EnemyCharacterSO) {
+			return new EnemyCharacter((EnemyCharacterSO)config);
 		}
 		else {
-			return new PCCharacter((PCCharacterData)config);
+			return new PCCharacter((PCCharacterSO)config);
 		}
 	}
 
-	protected Character(CharacterData other) {
+	protected Character(CharacterSO other) {
 		// name
 		displayName = other.displayName;
 

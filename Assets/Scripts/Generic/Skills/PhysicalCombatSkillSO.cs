@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PhysicalCombatSkillData : CombatSkillSO
+public class PhysicalCombatSkillSO : CombatSkillSO
 {
 	[SerializeField]
 	private PhysicalOffensiveModifier [] mOffensiveModifiers = null;

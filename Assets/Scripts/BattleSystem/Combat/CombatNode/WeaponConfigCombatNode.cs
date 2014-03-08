@@ -11,7 +11,7 @@ using System;
 
 public class WeaponConfigCombatNode : ConfigurableCombatNode
 {
-	public WeaponConfigCombatNode(WeaponData weaponConfig) : base() {
+	public WeaponConfigCombatNode(WeaponSO weaponConfig) : base() {
 		// TODO put in magical augments
 		ReadGeneralModifiers(weaponConfig.generalModifiers);
 		ReadPhysicalModifiers(weaponConfig.physicalModifiers);

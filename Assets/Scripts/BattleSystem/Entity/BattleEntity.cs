@@ -48,7 +48,7 @@ public abstract class BattleEntity {
 		turnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
 	}
 
-	public void ApplyStatusEffect(IStatusEffect statusEffect) {
+	public void ApplyStatusEffect(IStatusEffectExecutor statusEffect) {
 		mStatusEffectManager.HandleAddStatus(statusEffect);
 	}
 

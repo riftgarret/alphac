@@ -6,7 +6,7 @@ using System;
 /// This is mostly a test script to setup parties, will not be used in game
 /// </summary>
 [Serializable]
-public class PCSkillSetData : ScriptableObject {
+public class PCSkillSetSO : ScriptableObject {
 
 	[SerializeField]
 	private SkillConstructor [] skills = null;
@@ -31,7 +31,7 @@ public class PCSkillSetData : ScriptableObject {
 
 	[Serializable]
 	public class SkillConstructor {
-		public CombatSkillData skill;
+		public CombatSkillSO skill;
 		public int level;
 	}
 }

@@ -14,7 +14,7 @@ public class BattleActionVocalize : BattleActionPositive {
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
 				CombatStatusEffectList options = CombatStatusEffectList.Builder()
-					.AddStatusEffect(new StatusEffectVocalize(1,1), entity, StatusEffectRule.StatusEffectHitPredicate.ALWAYS )
+				//	.AddStatusEffect(new StatusEffectVocalize(1,1), entity, StatusEffectRule.StatusEffectHitPredicate.ALWAYS )
 						.Build();
 				BattleSystem.combatExecutor.ExecutePositive(sourceEntity, entity, this, options);
 			}

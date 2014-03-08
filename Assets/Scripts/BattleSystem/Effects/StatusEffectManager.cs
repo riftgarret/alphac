@@ -18,8 +18,8 @@ using UnityEngine;
 public class StatusEffectManager
 {
 	// for fast access to get those effects
-	private Dictionary<EffectType, LinkedList<IStatusEffect>> mSkillTypeEffectMap;
-	private Dictionary<string, IStatusEffect> mKeyedEffectMap;
+	private Dictionary<StatusEffectGroupSO, StatusEffectNode> mEffectNodeMap;
+	// TODO should have a sorted list of status effects for sake of loading GUI
 	private BattleEntity mBattleEntity;
 
 	/// <summary>
@@ -28,81 +28,146 @@ public class StatusEffectManager
 	/// <param name="entity">The Entity to manage. </param>
 	public StatusEffectManager (BattleEntity entity)
 	{
-		mSkillTypeEffectMap = new Dictionary<EffectType, LinkedList<IStatusEffect>>();
-		mKeyedEffectMap = new Dictionary<string, IStatusEffect>();
+		mEffectNodeMap = new Dictionary<StatusEffectGroupSO, StatusEffectNode>();
 		mBattleEntity = entity;
 	}
-
-	/// <summary>
-	/// Gets the effect list. If one does not exist, it will be made.
-	/// </summary>
-	/// <returns>The effect list.</returns>
-	/// <param name="type">Type.</param>
-	private LinkedList<IStatusEffect> GetEffectList(EffectType type) {
-		if(! mSkillTypeEffectMap.ContainsKey(type)) {
-			mSkillTypeEffectMap[type] = new LinkedList<IStatusEffect>();
-		}
-		return mSkillTypeEffectMap[type];
-	}
-
+	
 	/// <summary>
 	/// Handles the add status.
 	/// </summary>
 	/// <param name="effect">Effect.</param>
 	/// <param name="printLog">If set to <c>true</c> print log.</param>
-	public void HandleAddStatus(IStatusEffect effect) {
-		// check to see if this already exists
-		if(mKeyedEffectMap.ContainsKey(effect.statusKey)) {
-			// lets see if this is a reversable action, as in, lets remove the debuff / buff
-			IStatusEffect currentEffect = mKeyedEffectMap[effect.statusKey];
-			// lets remove it, either action we will do will be to replace it or keep it removed
-			RemoveEffect(currentEffect, false);
-			// if these were opposite effects, lets not readd it
-			if(currentEffect.sourceType != effect.sourceType) {
-				return; 
-			}
+	public bool HandleAddStatus(IStatusEffectExecutor effect) {
+		StatusEffectNode node = mEffectNodeMap[effect.statusEffectGroup];
+		if(node == null) {
+			node = new StatusEffectNode(this);
+			mEffectNodeMap[effect.statusEffectGroup] = node;
 		}
 
-		// Add the effect
-		AddEffect(effect, true);
+		return node.ApplyEffect(effect);
 	}
 
-
-	private void AddEffect(IStatusEffect effect, bool printLog) {
-		mSkillTypeEffectMap[effect.effectType].AddLast(effect);
-		mKeyedEffectMap[effect.statusKey] = effect;
-	}
-
-	private void RemoveEffect(IStatusEffect effect, bool printLog) {
-		// remove from all lists
-		mSkillTypeEffectMap[effect.effectType].Remove(effect);
-		mKeyedEffectMap.Remove(effect.statusKey);
-
-		if(printLog) {
-			Debug.Log(effect.GetTextOnDettach(mBattleEntity));
+	private void RemoveEffect(IStatusEffectExecutor effect, bool printLog) {
+		StatusEffectNode node = mEffectNodeMap[effect.statusEffectGroup];
+		if(node != null) {
+			node.RemoveEffect(effect);
 		}
 	}
 
 	public void OnTimeIncrement(float timeDelta) {
-		LinkedList<IStatusEffect> removalQueue = null; // lazy init this if it needs to be made
-		foreach(IStatusEffect effect in mKeyedEffectMap.Values) {
+		LinkedList<IStatusEffectExecutor> removalQueue = null; // lazy init this if it needs to be made
+		foreach(IStatusEffectExecutor effect in mKeyedEffectMap.Values) {
 			effect.IncrementDurationTime(timeDelta);
 
 			if(effect.currentDurationLength <= 0) {
 				// add to queue
 				if(removalQueue == null) {
-					removalQueue = new LinkedList<IStatusEffect>();
+					removalQueue = new LinkedList<IStatusEffectExecutor>();
 				}
 				removalQueue.AddLast(effect);
 			}
 		}
 
 		if(removalQueue != null) {
-			foreach(IStatusEffect effect in removalQueue) {
+			foreach(IStatusEffectExecutor effect in removalQueue) {
 				RemoveEffect(effect, true);
 			}
 		}
 	}	
+
+	// An internal data structure to manage the possible single instance types of these types of
+	// buffs and debuffs being applied. Using a Chain of Responsibility pattern to delegate its rules
+	// for clearing, and rebuffing.
+	class StatusEffectNode {
+		// TODO return node type, so we can easily grab attributes from 
+
+		// even though we cant have a magical debuff and magical buff at the same time
+		// its a lot less tedious to debug if we just have separate pointers
+		private IStatusEffectExecutor physicalExecutor;
+		private IStatusEffectExecutor magicalDebuffExecutor;
+		private IStatusEffectExecutor magicalBuffExecutor;
+
+		private StatusEffectManager parent;
+
+		public StatusEffectNode(StatusEffectManager manager) {
+			this.parent = manager;
+		}
+
+		public bool ApplyEffect(IStatusEffectExecutor effect) {
+			StatusEffectType type = effect.effectType;
+
+			switch(type) {
+			case StatusEffectType.MAGICAL_BUFF:
+				return ApplyMagicalBuffEffect(effect);
+			case StatusEffectType.MAGICAL_DEBUFF:
+				return ApplyMagicalDebuffEffect(effect);
+			case StatusEffectType.PHYSICAL_DEBUFF:
+				return ApplyPhysicalDebuffEffect(effect);
+			}
+			// 
+			Debug.Log("Somehow tried to apply a non-magical/physical effect: " + effect);
+			return false;
+		}
+
+		/// <summary>
+		/// Applies the magical buff effect. If we have a debuff, lets remove it instead.
+		/// </summary>
+		/// <param name="effect">Effect.</param>
+		private bool ApplyMagicalBuffEffect(IStatusEffectExecutor effect) {
+			if(magicalDebuffExecutor != null) {
+				magicalDebuffExecutor = null;
+				return false;
+			}
+
+			magicalBuffExecutor = effect;
+			return true;
+		}
+
+		/// <summary>
+		/// Applies the magical buff effect. If we have a debuff, lets remove it instead.
+		/// </summary>
+		/// <param name="effect">Effect.</param>
+		private bool ApplyMagicalDebuffEffect(IStatusEffectExecutor effect) {
+			if(magicalBuffExecutor != null) {
+				magicalBuffExecutor = null;
+				return false;
+			}
+			
+			magicalDebuffExecutor = effect;
+			return true;
+		}
+
+		private bool ApplyPhysicalDebuffEffect(IStatusEffectExecutor effect) {
+			physicalExecutor = effect;
+			return true;
+		}
+
+		public void RemoveEffect(IStatusEffectExecutor effect) {
+			StatusEffectType type = effect.effectType;
+			
+			switch(type) {
+			case StatusEffectType.MAGICAL_BUFF:
+				if(magicalBuffExecutor == effect) {
+					magicalBuffExecutor = null;
+				}
+				return;
+			case StatusEffectType.MAGICAL_DEBUFF:
+				if(magicalDebuffExecutor == effect) {
+					magicalDebuffExecutor = null;
+				}
+				return;
+			case StatusEffectType.PHYSICAL_DEBUFF:
+				if(physicalExecutor == effect) {
+					physicalExecutor = null;
+				}
+				return;
+			}
+		}
+
+		bool isEmpty {
+			get { return magicalDebuffExecutor == null && physicalExecutor == null && magicalBuffExecutor == null; }
+		}
+	}
 }
 
 

@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class PCCharacterData : CharacterSO
+public class PCCharacterSO : CharacterSO
 {
 	public PCSkillSetSO skillsetConfig;
 }

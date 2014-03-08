@@ -5,7 +5,7 @@ using System.Collections;
 [System.Serializable]
 public class PCParty : ScriptableObject {
 	
-	public PCCharacterData[] characterConfigs;
+	public PCCharacterSO[] characterConfigs;
 
 	void OnEnabled() {
 

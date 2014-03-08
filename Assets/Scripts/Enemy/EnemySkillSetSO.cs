@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class EnemySkillSetData : ScriptableObject
+public class EnemySkillSetSO : ScriptableObject
 {
 	[SerializeField]
 	private AISkillRule [] mAISkillRules = new AISkillRule[5];

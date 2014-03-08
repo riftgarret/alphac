@@ -37,7 +37,7 @@ public class PCCharacter : Character
 */
 	}
 	
-	public PCCharacter(PCCharacterData config) : base(config) {
+	public PCCharacter(PCCharacterSO config) : base(config) {
 		skillSet = new PCSkillSet();
 		config.skillsetConfig.InitSkills(skillSet);
 	}

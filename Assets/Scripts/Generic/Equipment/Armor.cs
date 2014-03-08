@@ -16,14 +16,14 @@ public class Armor
 	public static readonly Armor EMPTY_ARMOR = new Armor();
 
 	[SerializeField]
-	private ArmorData mConfig;
-	public ArmorData config {
+	private ArmorSO mConfig;
+	public ArmorSO config {
 		get { return mConfig; }
 	}	
 
 	public Armor() {}
 
-	public Armor(ArmorData config) {
+	public Armor(ArmorSO config) {
 		mConfig = config;
 	}
 

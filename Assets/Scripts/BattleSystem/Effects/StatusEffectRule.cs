@@ -24,7 +24,7 @@ public class StatusEffectRule
 	/// Gets the effect.
 	/// </summary>
 	/// <value>The effect.</value>
-	public IStatusEffect effect {
+	public IStatusEffectExecutor effect {
 			get;
 			private set;
 	}
@@ -38,7 +38,7 @@ public class StatusEffectRule
 			private set;
 	}
 
-	public StatusEffectRule (IStatusEffect effect, BattleEntity target, StatusEffectHitPredicate rule) {	
+	public StatusEffectRule (IStatusEffectExecutor effect, BattleEntity target, StatusEffectHitPredicate rule) {	
 		this.effect = effect;
 		this.target = target;
 		this.rule = rule;

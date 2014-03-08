@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class EnemyParty : ScriptableObject {
 	
-	public EnemyCharacterData[] characterConfigs;
+	public EnemyCharacterSO[] characterConfigs;
 
 	void OnEnabled() {
 

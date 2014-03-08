@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 using System;
 
+/// <summary>
+/// DEPRECATED, but keep around so we can modify our other combat stats when we start to really polish this workflow
+/// </summary>
 public enum EffectType
 {
 	// stat effects

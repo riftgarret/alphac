@@ -16,44 +16,49 @@ using UnityEngine;
 /// as well as applying multiple buffs of the same type.
 /// 
 /// </summary>
-public class StatusEffectGroupData : ScriptableObject
+public class StatusEffectGroupSO : ScriptableObject
 {
 	// IF THIS IS A STAT GROUP, LETS SET IT HERE
 	[SerializeField]
 	private CombatProperty mCombatProperty = CombatProperty.NONE;
+	// TODO special case status effect group: 
+	// ie: poison, haste, onEvent()
+
+	// GUI information 
+
+	// icons
+	[SerializeField]
+	private StatusEffectGroupGUIProperty mMagicalBuffGUIProperty;
+
+	[SerializeField]
+	private StatusEffectGroupGUIProperty mMagicalDebuffGUIProperty;
+
+	[SerializeField]
+	private StatusEffectGroupGUIProperty mPhysicalDebuffGUIProperty;
+
+
+	// accessors
 	public CombatProperty combatProperty {
 		get { return mCombatProperty; }
 	}
 
-	// TODO special case status effect group: 
-	// ie: poison, haste, onEvent()
+	public StatusEffectGroupGUIProperty magicalBuffGUIProperty {
+		get {
+			return this.mMagicalBuffGUIProperty;
+		}
+	}
 
-	// ICONS
+	public StatusEffectGroupGUIProperty magicalDebuffGUIProperty {
+		get {
+			return this.mMagicalDebuffGUIProperty;
+		}
+	}
 
-	/// <summary>
-	/// The magical buff icon.
-	/// </summary>
-	[SerializeField]
-	private Texture2D mMagicalBuffIcon;
-
-	[SerializeField]
-	private Texture2D mMagicalDebuffIcon;
-
-	[SerializeField]
-	private Texture2D mPhysicalDebuffIcon;
-
-	[SerializeField]
-	private string mOnMagicalDebuffTextFormat;
-
-	[SerializeField]
-	private string mOnPhysicalDebuffTextFormat;
-
-	[SerializeField]
-	private string mOnMagicalBuffTextFormat;
-
-	[SerializeField]
-	private string mOnCuredTextFormat;
-
+	public StatusEffectGroupGUIProperty physicalDebuffGUIProperty {
+		get {
+			return this.mPhysicalDebuffGUIProperty;
+		}
+	}
 }
 
 

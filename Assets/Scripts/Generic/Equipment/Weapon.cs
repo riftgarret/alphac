@@ -23,13 +23,13 @@ public class Weapon
 
 	// weapon config to setup in the data module
 	[SerializeField]
-	private WeaponData mWeaponConfig;
+	private WeaponSO mWeaponConfig;
 
 	// TODO add 'inscriptions'
 
 	public Weapon() {}
 
-	public Weapon (WeaponData config) {
+	public Weapon (WeaponSO config) {
 		this.mWeaponConfig = config;
 	}
 
@@ -48,7 +48,7 @@ public class Weapon
 		return atk;
 	}
 
-	public WeaponData weaponConfig {
+	public WeaponSO weaponConfig {
 		get { return mWeaponConfig; } 
 	}
 }

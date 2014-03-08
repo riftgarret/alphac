@@ -11,11 +11,11 @@ using System;
 
 public class PositiveCombatSkill : CombatSkill
 {
-	public PositiveCombatSkill(CombatSkillData config, int level) : base (config, level) {
+	public PositiveCombatSkill(CombatSkillSO config, int level) : base (config, level) {
 	}
 
-	public PositiveCombatSkillData positiveCombatSkillConfig {
-		get { return (PositiveCombatSkillData) mSkillConfig; } 
+	public PositiveCombatSkillSO positiveCombatSkillConfig {
+		get { return (PositiveCombatSkillSO) mSkillConfig; } 
 	}
 
 	public float this[PositiveOffensiveModifierType type] {

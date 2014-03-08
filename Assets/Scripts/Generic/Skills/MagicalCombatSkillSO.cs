@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagicalCombatSkillData : CombatSkillData
+public class MagicalCombatSkillSO : CombatSkillSO
 {
 	[SerializeField]
 	private MagicalOffensiveModifier [] mOffensiveModifiers = null;

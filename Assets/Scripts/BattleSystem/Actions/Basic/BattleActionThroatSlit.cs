@@ -16,7 +16,7 @@ public class BattleActionThroatSlit : BattleActionPhysical {
 
 			foreach(BattleEntity entity in targetResolver.GetTargets(combatSkill)) {
 				CombatStatusEffectList options = CombatStatusEffectList.Builder()
-					.AddStatusEffect(new StatusEffectPrickedThroat(10,9), entity, StatusEffectRule.StatusEffectHitPredicate.ON_HIT)
+				//	.AddStatusEffect(new StatusEffectPrickedThroat(10,9), entity, StatusEffectRule.StatusEffectHitPredicate.ON_HIT)
 						.Build();
 				BattleSystem.combatExecutor.ExecutePhysicalAttack(sourceEntity, entity,  this, options, damageType, null);
 			}

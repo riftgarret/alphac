@@ -10,17 +10,17 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Character Class")]	
 	public static void CreateClassAsset() {		
-		CompleteAssetCreation(X.CreateInstance<CharacterClassData>(), "CharacterClass");
+		CompleteAssetCreation(X.CreateInstance<CharacterClassSO>(), "CharacterClass");
 	}
 
 	[MenuItem("Assets/Create/Equipment/Weapon")]	
 	public static void CreateWeaponAsset() {		
-		CompleteAssetCreation(X.CreateInstance<WeaponData>(), "Weapon");
+		CompleteAssetCreation(X.CreateInstance<WeaponSO>(), "Weapon");
 	}
 
 	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	
 	public static void CreateNPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemyCharacterData>(), "EnemyConfig");
+		CompleteAssetCreation(X.CreateInstance<EnemyCharacterSO>(), "EnemyConfig");
 	}	
 
 	[MenuItem("Assets/Create/Enemy/Enemy Party")]	
@@ -30,7 +30,7 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	
 	public static void CreateEnemySkillSetSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemySkillSetData>(), "EnemySkillSet");
+		CompleteAssetCreation(X.CreateInstance<EnemySkillSetSO>(), "EnemySkillSet");
 	}
 	/*
 	[MenuItem("Assets/Create/Enemy/Enemy AI Rule")]	
@@ -41,22 +41,22 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Skill/Physical Combat Skill Config")]	
 	public static void CreatePhysicalCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<PhysicalCombatSkillData>(), "PhysicalCombatSkill");
+		CompleteAssetCreation(X.CreateInstance<PhysicalCombatSkillSO>(), "PhysicalCombatSkill");
 	}	
 
 	[MenuItem("Assets/Create/Skill/Magical Combat Skill Config")]	
 	public static void CreateMagicalCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<MagicalCombatSkillData>(), "MagicalCombatSkill");
+		CompleteAssetCreation(X.CreateInstance<MagicalCombatSkillSO>(), "MagicalCombatSkill");
 	}
 
 	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
 	public static void CreatePCSkillSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCSkillSetData>(), "SkillSet");
+		CompleteAssetCreation(X.CreateInstance<PCSkillSetSO>(), "SkillSet");
 	}
 
 	[MenuItem("Assets/Create/Test/PC Character Config")]	
 	public static void CreateTestPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCCharacterData>(), "NPC");
+		CompleteAssetCreation(X.CreateInstance<PCCharacterSO>(), "NPC");
 	}	
 
 

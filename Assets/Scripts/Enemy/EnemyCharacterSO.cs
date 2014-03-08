@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class EnemyCharacterData : CharacterSO
+public class EnemyCharacterSO : CharacterSO
 {
 	public EnemySkillSetSO skillRules;
 }

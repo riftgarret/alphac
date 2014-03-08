@@ -31,7 +31,7 @@ public class CombatStatusEffectList
 	public class StatusEffectBuilder {
 		private List<StatusEffectRule> statusEffectEvents = null;
 
-		public StatusEffectBuilder AddStatusEffect(IStatusEffect effect, BattleEntity target, StatusEffectRule.StatusEffectHitPredicate rule) {
+		public StatusEffectBuilder AddStatusEffect(IStatusEffectExecutor effect, BattleEntity target, StatusEffectRule.StatusEffectHitPredicate rule) {
 			if(statusEffectEvents == null) {
 				statusEffectEvents = new List<StatusEffectRule>();
 			}

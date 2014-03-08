@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class ArmorData : ScriptableObject
+public class ArmorSO : ScriptableObject
 {
 
 	[SerializeField]

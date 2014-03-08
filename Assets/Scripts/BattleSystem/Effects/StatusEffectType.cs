@@ -13,6 +13,6 @@ public enum StatusEffectType
 	PHYSICAL_DEBUFF,
 	MAGICAL_DEBUFF,
 	MAGICAL_BUFF,
-	CURE
+	COUNT
 }
 

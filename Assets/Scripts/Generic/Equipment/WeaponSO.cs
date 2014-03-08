@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class WeaponData : ScriptableObject
+public class WeaponSO : ScriptableObject
 {
 	public string weaponName;
 	public float baseDamage;

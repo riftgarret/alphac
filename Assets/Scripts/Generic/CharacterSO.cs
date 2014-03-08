@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class CharacterData : ScriptableObject
+public class CharacterSO : ScriptableObject
 {	
 	// character name
 	public string displayName;
@@ -26,7 +26,7 @@ public class CharacterData : ScriptableObject
 	
 	// level and class
 	public int level;
-	public CharacterClassData charClass;
+	public CharacterClassSO charClass;
 	
 	// equipment
 	public Weapon [] weapons;
