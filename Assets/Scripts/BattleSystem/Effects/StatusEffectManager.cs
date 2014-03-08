@@ -149,6 +149,7 @@ public class StatusEffectManager
 			case StatusEffectType.MAGICAL_BUFF:
 				if(magicalBuffExecutor == effect) {
 					magicalBuffExecutor = null;
+					BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent());
 				}
 				return;
 			case StatusEffectType.MAGICAL_DEBUFF:

@@ -9,13 +9,13 @@
 // ------------------------------------------------------------------------------
 using System;
 
-public class StatusEffectEvent : IBattleEvent
+public class StatusEffectAddEvent : IBattleEvent
 {
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
 	private IStatusEffectExecutor mStatusEffect;
 
-	public StatusEffectEvent (BattleEntity srcEntity, BattleEntity destEntity, IStatusEffectExecutor statusEffect) 
+	public StatusEffectAddEvent (BattleEntity srcEntity, BattleEntity destEntity, IStatusEffectExecutor statusEffect) 
 	{
 		mSrcEntity = srcEntity;
 		mDestEntity = destEntity;
