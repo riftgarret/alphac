@@ -13,16 +13,16 @@ using UnityEngine;
 public class StatusEffectSO : ScriptableObject
 {
 	[SerializeField]
-	private StatusEffectGroupSO mStatusEffectGroup;
+	private StatusEffectGroupSO mStatusEffectGroup = null;
 
 	[SerializeField]
-	private ValueModifier mValueModifier;
+	private ValueModifier mValueModifier = new ValueModifier();
 
 	[SerializeField]
-	private StatusEffectType mStatusEffectType;
+	private StatusEffectType mStatusEffectType = StatusEffectType.MAGICAL_BUFF;
 
 	[SerializeField]
-	private float mDuration;
+	private float mDuration = 0;
 
 	public StatusEffectGroupSO statusEffectGroup {
 		get {

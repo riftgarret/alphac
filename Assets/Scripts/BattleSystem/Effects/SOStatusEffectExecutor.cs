@@ -15,7 +15,7 @@ public abstract class SOStatusEffectExecutor : IStatusEffectExecutor
 	private StatusEffectSO mStatusEffectSO;
 
 	public SOStatusEffectExecutor(StatusEffectSO so) {
-
+		mStatusEffectSO = so;
 	}
 
 	public StatusEffectSO statusEffectSO {

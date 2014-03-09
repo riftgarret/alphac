@@ -28,13 +28,13 @@ public class StatusEffectGroupSO : ScriptableObject
 
 	// icons
 	[SerializeField]
-	private StatusEffectGroupGUIProperty mMagicalBuffGUIProperty;
+	private StatusEffectGroupGUIProperty mMagicalBuffGUIProperty = null;
 
 	[SerializeField]
-	private StatusEffectGroupGUIProperty mMagicalDebuffGUIProperty;
+	private StatusEffectGroupGUIProperty mMagicalDebuffGUIProperty = null;
 
 	[SerializeField]
-	private StatusEffectGroupGUIProperty mPhysicalDebuffGUIProperty;
+	private StatusEffectGroupGUIProperty mPhysicalDebuffGUIProperty = null;
 
 
 	// accessors
