@@ -157,10 +157,7 @@ public class CombatOperationExecutor
 	private void ApplyEffect(StatusEffectRule combatEffect, BattleEntity srcEntity) {
 		BattleEntity destEntity = combatEffect.target;
 		IStatusEffectExecutor statusEffect = combatEffect.effect;
-		// first directly apply the effect
+		// first directly apply the effect, it will notify the event from the StatusEffectManager
 		destEntity.ApplyStatusEffect (statusEffect);
-		// then create an event to notify that there has been some event for this status effect
-		IBattleEvent statusEvent = new StatusEffectAddEvent (srcEntity, destEntity, statusEffect);
-		BattleSystem.eventManager.NotifyEvent(statusEvent);
 	}
 }

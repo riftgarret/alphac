@@ -9,35 +9,35 @@
 // ------------------------------------------------------------------------------
 using System;
 
-public class StatusEffectAddEvent : IBattleEvent
+public class StatusEffectEvent : IBattleEvent
 {
-	private BattleEntity mSrcEntity;
-	private BattleEntity mDestEntity;
-	private IStatusEffectExecutor mStatusEffect;
-
-	public StatusEffectAddEvent (BattleEntity srcEntity, BattleEntity destEntity, IStatusEffectExecutor statusEffect) 
+	public enum StatusEventType {
+		NEW,
+		REPLACED,
+		REMOVED,
+		EXPIRED,
+	}
+	
+	public StatusEffectEvent (BattleEntity srcEntity, IStatusEffectExecutor statusEffect, StatusEventType statusEventType) 
 	{
-		mSrcEntity = srcEntity;
-		mDestEntity = destEntity;
-		mStatusEffect = statusEffect;
+		this.srcEntity = srcEntity;
+		this.statusEffect = statusEffect;
+		this.statusEventType = statusEventType;
 	}
 
 	public BattleEntity srcEntity {
-		get {
-			return mSrcEntity;
-		}
+		private set;
+		get;
 	}
 
-	public BattleEntity destEntity {
-		get {
-			return mDestEntity;
-		}
+	public StatusEventType statusEventType {
+		private set;
+		get;
 	}
 
 	public IStatusEffectExecutor statusEffect {
-		get {
-			return mStatusEffect;
-		}
+		private set;
+		get;
 	}
 
 	public BattleEventType eventType {
@@ -48,7 +48,7 @@ public class StatusEffectAddEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[StatusEffectEvent: mSrcEntity={0}, mDestEntity={1}, mStatusEffect={2}]", mSrcEntity, mDestEntity, mStatusEffect);
+		return string.Format ("[StatusEffectEvent: srcEntity={0}, statusEventType={1}, statusEffect={2}, eventType={3}]", srcEntity, statusEventType, statusEffect, eventType);
 	}
 	
 }

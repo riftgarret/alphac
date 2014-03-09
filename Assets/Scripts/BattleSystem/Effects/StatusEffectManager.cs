@@ -37,41 +37,23 @@ public class StatusEffectManager
 	/// </summary>
 	/// <param name="effect">Effect.</param>
 	/// <param name="printLog">If set to <c>true</c> print log.</param>
-	public bool HandleAddStatus(IStatusEffectExecutor effect) {
+	public void HandleAddStatus(IStatusEffectExecutor effect) {
 		StatusEffectNode node = mEffectNodeMap[effect.statusEffectGroup];
 		if(node == null) {
 			node = new StatusEffectNode(this);
 			mEffectNodeMap[effect.statusEffectGroup] = node;
 		}
 
-		return node.ApplyEffect(effect);
+		node.ApplyEffect(effect);
 	}
 
-	private void RemoveEffect(IStatusEffectExecutor effect, bool printLog) {
-		StatusEffectNode node = mEffectNodeMap[effect.statusEffectGroup];
-		if(node != null) {
-			node.RemoveEffect(effect);
-		}
-	}
-
+	/// <summary>
+	/// Raises the time increment event.
+	/// </summary>
+	/// <param name="timeDelta">Time delta.</param>
 	public void OnTimeIncrement(float timeDelta) {
-		LinkedList<IStatusEffectExecutor> removalQueue = null; // lazy init this if it needs to be made
-		foreach(IStatusEffectExecutor effect in mKeyedEffectMap.Values) {
-			effect.IncrementDurationTime(timeDelta);
-
-			if(effect.currentDurationLength <= 0) {
-				// add to queue
-				if(removalQueue == null) {
-					removalQueue = new LinkedList<IStatusEffectExecutor>();
-				}
-				removalQueue.AddLast(effect);
-			}
-		}
-
-		if(removalQueue != null) {
-			foreach(IStatusEffectExecutor effect in removalQueue) {
-				RemoveEffect(effect, true);
-			}
+		foreach(StatusEffectGroupSO key in mEffectNodeMap.Keys) {
+			mEffectNodeMap[key].IncrementTime(timeDelta);
 		}
 	}	
 
@@ -83,90 +65,103 @@ public class StatusEffectManager
 
 		// even though we cant have a magical debuff and magical buff at the same time
 		// its a lot less tedious to debug if we just have separate pointers
-		private IStatusEffectExecutor physicalExecutor;
-		private IStatusEffectExecutor magicalDebuffExecutor;
-		private IStatusEffectExecutor magicalBuffExecutor;
+		private IStatusEffectExecutor [] executors;
 
 		private StatusEffectManager parent;
 
 		public StatusEffectNode(StatusEffectManager manager) {
 			this.parent = manager;
+			executors = new IStatusEffectExecutor[(int)StatusEffectType.COUNT];
 		}
 
-		public bool ApplyEffect(IStatusEffectExecutor effect) {
+		public void ApplyEffect(IStatusEffectExecutor effect) {
 			StatusEffectType type = effect.effectType;
 
 			switch(type) {
 			case StatusEffectType.MAGICAL_BUFF:
-				return ApplyMagicalBuffEffect(effect);
+				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_DEBUFF]);
+				break;
 			case StatusEffectType.MAGICAL_DEBUFF:
-				return ApplyMagicalDebuffEffect(effect);
+				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_BUFF]);
+				break;
 			case StatusEffectType.PHYSICAL_DEBUFF:
-				return ApplyPhysicalDebuffEffect(effect);
+				ApplyEffect(effect, null);
+				break;
 			}
-			// 
-			Debug.Log("Somehow tried to apply a non-magical/physical effect: " + effect);
-			return false;
+
 		}
 
 		/// <summary>
 		/// Applies the magical buff effect. If we have a debuff, lets remove it instead.
 		/// </summary>
 		/// <param name="effect">Effect.</param>
-		private bool ApplyMagicalBuffEffect(IStatusEffectExecutor effect) {
-			if(magicalDebuffExecutor != null) {
-				magicalDebuffExecutor = null;
-				return false;
+		private void ApplyEffect(IStatusEffectExecutor effect, IStatusEffectExecutor oppositeEffect) {
+			if(oppositeEffect != null) {
+				RemoveEffect(oppositeEffect.effectType, StatusEffectEvent.StatusEventType.REMOVED);
 			}
-
-			magicalBuffExecutor = effect;
-			return true;
+			else {
+				AddEffect(effect);
+			}
 		}
 
 		/// <summary>
-		/// Applies the magical buff effect. If we have a debuff, lets remove it instead.
+		/// If this execotor slot exists, remove it and fire the event type to the EventManager
+		/// </summary>
+		/// <param name="effectType">Effect type.</param>
+		/// <param name="eventType">Event type.</param>
+		private void RemoveEffect(StatusEffectType effectType, StatusEffectEvent.StatusEventType eventType) {
+			IStatusEffectExecutor oldEffect = executors[(int)effectType];
+			if(oldEffect != null) {
+				executors[(int)effectType] = null;
+				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, oldEffect, eventType));
+			}
+		}
+
+		/// <summary>
+		/// Adds the effect. Then notify the EventManager
 		/// </summary>
 		/// <param name="effect">Effect.</param>
-		private bool ApplyMagicalDebuffEffect(IStatusEffectExecutor effect) {
-			if(magicalBuffExecutor != null) {
-				magicalBuffExecutor = null;
-				return false;
+		private void AddEffect(IStatusEffectExecutor effect) {
+			if(effect != null) {
+				// if existing effect exists, lets replace it using that eventType
+				StatusEffectType effectType = effect.effectType;
+				IStatusEffectExecutor existingEffect = executors[(int)effectType];
+				StatusEffectEvent.StatusEventType eventType = executors[(int)effectType] != null? 
+					StatusEffectEvent.StatusEventType.REPLACED 
+						: StatusEffectEvent.StatusEventType.NEW;
+
+				executors[(int)effectType] = effect;
+				// notify listeners
+				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, effect, eventType));
 			}
-			
-			magicalDebuffExecutor = effect;
-			return true;
 		}
 
-		private bool ApplyPhysicalDebuffEffect(IStatusEffectExecutor effect) {
-			physicalExecutor = effect;
-			return true;
-		}
 
-		public void RemoveEffect(IStatusEffectExecutor effect) {
-			StatusEffectType type = effect.effectType;
-			
-			switch(type) {
-			case StatusEffectType.MAGICAL_BUFF:
-				if(magicalBuffExecutor == effect) {
-					magicalBuffExecutor = null;
-					BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent());
+		/// <summary>
+		/// Increments the time. Potential place for expiring an event
+		/// </summary>
+		/// <param name="timeDelta">Time delta.</param>
+		public void IncrementTime(float timeDelta) {
+			foreach(IStatusEffectExecutor executor in executors) {
+				if(executor != null) {
+					executor.IncrementDurationTime(timeDelta);
+
+					if(executor.isExpired) {
+						RemoveEffect(executor.effectType, StatusEffectEvent.StatusEventType.EXPIRED);
+					}
 				}
-				return;
-			case StatusEffectType.MAGICAL_DEBUFF:
-				if(magicalDebuffExecutor == effect) {
-					magicalDebuffExecutor = null;
-				}
-				return;
-			case StatusEffectType.PHYSICAL_DEBUFF:
-				if(physicalExecutor == effect) {
-					physicalExecutor = null;
-				}
-				return;
 			}
 		}
 
 		bool isEmpty {
-			get { return magicalDebuffExecutor == null && physicalExecutor == null && magicalBuffExecutor == null; }
+			get { 
+				foreach(IStatusEffectExecutor executor in executors) {
+					if(executor != null) {
+						return false;
+					}
+				}
+				return true;
+			}
 		}
 	}
 }
