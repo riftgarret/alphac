@@ -16,7 +16,7 @@ public class HealingOperation : AbstractCombatOperation
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
 
-	public HealingOperation (BattleEntity src, BattleEntity dest, BattleActionPositive action)
+	public HealingOperation (BattleEntity src, BattleEntity dest)
 	{
 		this.mSrcEntity = src;
 		this.mDestEntity = dest;

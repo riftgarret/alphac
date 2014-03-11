@@ -48,6 +48,10 @@ public class Weapon
 		return atk;
 	}
 
+	public DamageType damageType {
+		get { return mWeaponConfig.dmgType; }
+	}
+
 	public WeaponSO weaponConfig {
 		get { return mWeaponConfig; } 
 	}

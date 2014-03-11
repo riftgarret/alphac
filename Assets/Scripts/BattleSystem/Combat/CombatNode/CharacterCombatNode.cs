@@ -14,28 +14,28 @@ public class CharacterCombatNode : ConfigurableCombatNode
 	public CharacterCombatNode (Character c) : base()
 	{
 		// offense
-		mPropertyAdd [(int)CombatProperty.ACCURACY] = c.accuracy;
-		mPropertyAdd [(int)CombatProperty.CRIT_CHANCE] = c.critChance;
-		mPropertyAdd [(int)CombatProperty.STR] = c.strength;
-		mPropertyAdd [(int)CombatProperty.VIT] = c.vitality;
-		mPropertyAdd [(int)CombatProperty.DEX] = c.dexerity;
-		mPropertyAdd [(int)CombatProperty.AGI] = c.agility;
-		mPropertyAdd [(int)CombatProperty.INT] = c.inteligence;
-		mPropertyAdd [(int)CombatProperty.WIS] = c.wisdom;
-		mPropertyAdd [(int)CombatProperty.LUCK] = c.luck;
+		mPropertyAdd [(int)CombatPropertyType.ACCURACY] = c.accuracy;
+		mPropertyAdd [(int)CombatPropertyType.CRIT_CHANCE] = c.critChance;
+		mPropertyAdd [(int)CombatPropertyType.STR] = c.strength;
+		mPropertyAdd [(int)CombatPropertyType.VIT] = c.vitality;
+		mPropertyAdd [(int)CombatPropertyType.DEX] = c.dexerity;
+		mPropertyAdd [(int)CombatPropertyType.AGI] = c.agility;
+		mPropertyAdd [(int)CombatPropertyType.INT] = c.inteligence;
+		mPropertyAdd [(int)CombatPropertyType.WIS] = c.wisdom;
+		mPropertyAdd [(int)CombatPropertyType.LUCK] = c.luck;
 
 		// def
-		mPropertyAdd [(int)CombatProperty.CRIT_DEFENSE] = c.critDefense;
-		mPropertyAdd [(int)CombatProperty.REFLEX] = c.relfex;
-		mPropertyAdd [(int)CombatProperty.RESIST_SLASH] = c.GetResist (DamageType.SLASH);
-		mPropertyAdd [(int)CombatProperty.RESIST_PIERCE] = c.GetResist (DamageType.PIERCE);
-		mPropertyAdd [(int)CombatProperty.RESIST_CRUSH] = c.GetResist (DamageType.CRUSH);
-		mPropertyAdd [(int)CombatProperty.RESIST_LIGHT] = c.GetResist (DamageType.LIGHT);
-		mPropertyAdd [(int)CombatProperty.RESIST_DARK] = c.GetResist (DamageType.DARK);
-		mPropertyAdd [(int)CombatProperty.RESIST_WIND] = c.GetResist (DamageType.WIND);
-		mPropertyAdd [(int)CombatProperty.RESIST_EARTH] = c.GetResist (DamageType.EARTH);
-		mPropertyAdd [(int)CombatProperty.RESIST_WATER] = c.GetResist (DamageType.WATER);
-		mPropertyAdd [(int)CombatProperty.RESIST_FIRE] = c.GetResist (DamageType.FIRE);
+		mPropertyAdd [(int)CombatPropertyType.CRIT_DEFENSE] = c.critDefense;
+		mPropertyAdd [(int)CombatPropertyType.REFLEX] = c.relfex;
+		mPropertyAdd [(int)CombatPropertyType.RESIST_SLASH] = c.GetResist (DamageType.SLASH);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_PIERCE] = c.GetResist (DamageType.PIERCE);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_CRUSH] = c.GetResist (DamageType.CRUSH);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_LIGHT] = c.GetResist (DamageType.LIGHT);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_DARK] = c.GetResist (DamageType.DARK);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_WIND] = c.GetResist (DamageType.WIND);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_EARTH] = c.GetResist (DamageType.EARTH);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_WATER] = c.GetResist (DamageType.WATER);
+		mPropertyAdd [(int)CombatPropertyType.RESIST_FIRE] = c.GetResist (DamageType.FIRE);
 	}
 }
 

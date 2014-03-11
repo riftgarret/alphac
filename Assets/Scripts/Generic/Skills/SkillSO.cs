@@ -12,9 +12,15 @@ using System.Collections;
 using UnityEngine;
 
 [Serializable]
-public class SkillSO : ScriptableObject
+public class SkillSO : ScriptableObject, ISkill
 {
 	public string displayName;
 	Texture2D icon;
+
+	public string DisplayName {
+		get {
+			return displayName;
+		}
+	}
 }
 

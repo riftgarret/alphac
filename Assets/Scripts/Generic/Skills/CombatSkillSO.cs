@@ -3,52 +3,45 @@ using System.Collections;
 using System;
 
 [Serializable]
-public abstract class CombatSkillSO : SkillSO {
-	[SerializeField]
-	private CombatSkillActionEnum mCombatSkillEnum = CombatSkillActionEnum.BASIC_FIGHT;
-	public CombatSkillActionEnum combatSkillEnum { get { return mCombatSkillEnum; } }
+public class CombatSkillSO : SkillSO , ICombatSkill{
 	
-	[SerializeField]
-	private TargetFilter mTargetFilter = TargetFilter.REQUIRE_ALIVE;
-	public TargetFilter targetFilter { get { return mTargetFilter; } }
 
-	[SerializeField]
-	private TargetingType mPrimaryTargetType = TargetingType.SINGLE;
-	public TargetingType primaryTargetType { get { return mPrimaryTargetType; } }
+	public float timePrepare = 1f;	
+	public float timeAction = 1f;	
+	public float timeRecover = 1f;
 
-	[SerializeField]
-	private TargetStart mInitialTarget = TargetStart.ENEMY;
-	public TargetStart initialTarget { get { return mInitialTarget; } }
-	
-	[SerializeField]
-	private float mTimePrepare = 1f;
-	public float timePrepare { get { return mTimePrepare; } }
+	public TargetingRule targetRule;
+	public CombatRound [] combatRounds = new CombatRound[1];
 
-	[SerializeField]
-	private float mTimeAction = 1f;
-	public float timeAction { get { return mTimeAction; } }
+	// TODO other preconditions to check, ie, weapons equiped, skills active, etc
 
-	[SerializeField]
-	private float mTimeRecover = 1f;
-	public float timeRecover { get { return mTimeRecover; } }	
-
-	[SerializeField]
-	private StatModifier [] mStatModifiers = null;
-	public StatModifier [] statModifiers {
-		get { return mStatModifiers; }
+	public float TimePrepare {
+		get {
+			return timePrepare;
+		}
 	}
 
-	/// <summary>
-	/// Gets the type of the combat skill. Useful to determining the event skill to initiate
-	/// </summary>
-	/// <value>The type of the combat skill.</value>
-	public abstract CombatSkillType combatSkillType {
-		get;
+	public float TimeAction {
+		get {
+			return timeAction;
+		}
 	}
 
-	/// <summary>
-	/// Creates the combat skill.
-	/// </summary>
-	/// <returns>The combat skill.</returns>
-	public abstract CombatSkill CreateCombatSkill(int level);
+	public float TimeRecover {
+		get {
+			return timeRecover;
+		}
+	}
+
+	public TargetingRule TargetRule {
+		get {
+			return targetRule;
+		}
+	}
+
+	public CombatRound[] CombatRounds {
+		get {
+			return combatRounds;
+		}
+	}	
 }

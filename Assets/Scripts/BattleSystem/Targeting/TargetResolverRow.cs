@@ -28,22 +28,20 @@ public class TargetResolverRow : ITargetResolver
 		mBattleEntityManager = manager;
 	}	
 
-	public bool isValidTarget (CombatSkill skill)
+	public bool HasValidTargets (ICombatSkill skill)
 	{
 		foreach(BattleEntity entity in mBattleEntityManager.GetRow(mRowPosition)) {
-			bool passed = TargetConditionFilter.PassesFilter(entity, skill.combatSkillConfig.targetFilter);
-			if(passed) {
+			if(skill.TargetRule.IsValidTarget(entity)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public BattleEntity[] GetTargets(CombatSkill skill) {
+	public BattleEntity[] GetTargets(ICombatSkill skill) {
 		List<BattleEntity> filteredEntities = new List<BattleEntity>();
 		foreach(BattleEntity entity in mBattleEntityManager.GetRow(mRowPosition)) {
-			bool passed = TargetConditionFilter.PassesFilter(entity, skill.combatSkillConfig.targetFilter);
-			if(passed) {
+			if(skill.TargetRule.IsValidTarget(entity)) {
 				filteredEntities.Add(entity);
 			}
 		}

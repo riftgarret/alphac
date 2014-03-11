@@ -28,20 +28,20 @@ public class CombatResolver
 		get { return mEntity; }
 	}
 
-	public float GetProperty(CombatProperty property) {
+	public float GetProperty(CombatPropertyType property) {
 		float ret = mRootNode.GetPropertyAdd (property);
 		ret *= mRootNode.GetPropertyMultiply (property);
 		return ret;
 	}
 
 	public float GetAccuracy() {
-		return GetProperty(CombatProperty.ACCURACY);
+		return GetProperty(CombatPropertyType.ACCURACY);
 	}
 
 	public float GetPhysicalDamage() {
-		float totalDamage = GetProperty (CombatProperty.TOTAL_DAMAGE);
+		float totalDamage = GetProperty (CombatPropertyType.TOTAL_DAMAGE);
 
-		float strScale = GetProperty (CombatProperty.MAG_SCALE_STR);
+		float strScale = GetProperty (CombatPropertyType.MAG_SCALE_STR);
 		if (strScale >= 0) {
 
 		}
@@ -49,16 +49,16 @@ public class CombatResolver
 	}
 
 	public float GetMagicalDamage() {
-		float totalDamage = GetProperty (CombatProperty.TOTAL_DAMAGE);
+		float totalDamage = GetProperty (CombatPropertyType.TOTAL_DAMAGE);
 		return totalDamage;
 	}
 
 	public float GetPhysicalPower() {
-		return GetProperty(CombatProperty.POWER_PHYSICAL);
+		return GetProperty(CombatPropertyType.POWER_PHYSICAL);
 	}
 
 	public float GetMagicalPower() {
-		return GetProperty(CombatProperty.POWER_MAGIC);
+		return GetProperty(CombatPropertyType.POWER_MAGIC);
 	}
 
 	/// <summary>
@@ -66,7 +66,7 @@ public class CombatResolver
 	/// </summary>
 	/// <returns>The crit chance.</returns>
 	public float GetCritChance() {
-		return GetProperty(CombatProperty.CRIT_CHANCE);
+		return GetProperty(CombatPropertyType.CRIT_CHANCE);
 	}
 
 	/// <summary>
@@ -74,7 +74,7 @@ public class CombatResolver
 	/// </summary>
 	/// <returns>The reflex.</returns>
 	public float GetReflex() {
-		return GetProperty(CombatProperty.REFLEX);
+		return GetProperty(CombatPropertyType.REFLEX);
 	}
 	
 	/// <summary>
@@ -82,7 +82,7 @@ public class CombatResolver
 	/// </summary>
 	/// <returns>The crit defense.</returns>
 	public float GetCritDefense() {
-		return GetProperty(CombatProperty.CRIT_DEFENSE);
+		return GetProperty(CombatPropertyType.CRIT_DEFENSE);
 	}
 	
 	/// <summary>
@@ -91,35 +91,35 @@ public class CombatResolver
 	/// <returns>The resist.</returns>
 	/// <param name="dmgType">Dmg type.</param>
 	public float GetResist(DamageType dmgType) {
-		CombatProperty prop;
+		CombatPropertyType prop;
 		switch (dmgType) {
 		case DamageType.SLASH:
-			prop = CombatProperty.RESIST_SLASH;
+			prop = CombatPropertyType.RESIST_SLASH;
 			break;
 		case DamageType.CRUSH:
-			prop = CombatProperty.RESIST_CRUSH;
+			prop = CombatPropertyType.RESIST_CRUSH;
 			break;
 		case DamageType.PIERCE:
-			prop = CombatProperty.RESIST_PIERCE;
+			prop = CombatPropertyType.RESIST_PIERCE;
 			break;
 		case DamageType.DARK:
-			prop = CombatProperty.RESIST_DARK;
+			prop = CombatPropertyType.RESIST_DARK;
 			break;
 		case DamageType.LIGHT:
-			prop = CombatProperty.RESIST_LIGHT;
+			prop = CombatPropertyType.RESIST_LIGHT;
 			break;
 		case DamageType.WIND:
-			prop = CombatProperty.RESIST_WIND;
+			prop = CombatPropertyType.RESIST_WIND;
 			break;
 		case DamageType.EARTH:
-			prop = CombatProperty.RESIST_EARTH;
+			prop = CombatPropertyType.RESIST_EARTH;
 			break;
 		case DamageType.WATER:
-			prop = CombatProperty.RESIST_WATER;
+			prop = CombatPropertyType.RESIST_WATER;
 			break;
 		case DamageType.FIRE:
 		default:
-			prop = CombatProperty.RESIST_FIRE;
+			prop = CombatPropertyType.RESIST_FIRE;
 			break;
 		}
 		

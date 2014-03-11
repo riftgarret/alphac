@@ -18,7 +18,7 @@ public interface ITargetResolver
 	/// Gets a value indicating whether this <see cref="ITargetResolver"/> is valid target.
 	/// </summary>
 	/// <value><c>true</c> if is valid target; otherwise, <c>false</c>.</value>
-	bool isValidTarget(CombatSkill skill);
+	bool HasValidTargets(ICombatSkill skill);
 
-	BattleEntity[] GetTargets(CombatSkill skill);
+	BattleEntity[] GetTargets(ICombatSkill skill);
 }

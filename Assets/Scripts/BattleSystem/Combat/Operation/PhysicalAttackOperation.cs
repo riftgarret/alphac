@@ -19,7 +19,6 @@ public class PhysicalAttackOperation : AbstractCombatOperation
 
 	public PhysicalAttackOperation (BattleEntity src, 
 	                            BattleEntity dest, 
-	                            BattleActionPhysical action, 
 	                            DamageType damageType)
 	{
 		this.mSrcEntity = src;

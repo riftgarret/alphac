@@ -18,6 +18,11 @@ public class CustomAssetEditor {
 		CompleteAssetCreation(X.CreateInstance<WeaponSO>(), "Weapon");
 	}
 
+	[MenuItem("Assets/Create/Equipment/Armor")]	
+	public static void CreateArmorAsset() {		
+		CompleteAssetCreation(X.CreateInstance<ArmorSO>(), "Armor");
+	}
+
 	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	
 	public static void CreateNPCAsset() {
 		CompleteAssetCreation(X.CreateInstance<EnemyCharacterSO>(), "EnemyConfig");
@@ -39,14 +44,24 @@ public class CustomAssetEditor {
 	}
 	*/
 
-	[MenuItem("Assets/Create/Skill/Physical Combat Skill Config")]	
-	public static void CreatePhysicalCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<PhysicalCombatSkillSO>(), "PhysicalCombatSkill");
-	}	
+	[MenuItem("Assets/Create/Skill/Combat Skill")]	
+	public static void CreateCombatSkillAsset() {
+		CompleteAssetCreation(X.CreateInstance<CombatSkillSO>(), "CombatSkill");
+	}
 
-	[MenuItem("Assets/Create/Skill/Magical Combat Skill Config")]	
-	public static void CreateMagicalCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<MagicalCombatSkillSO>(), "MagicalCombatSkill");
+	[MenuItem("Assets/Create/Skill/Target Condition/Life")]	
+	public static void CreateTargetConditionLifeAsset() {
+		CompleteAssetCreation(X.CreateInstance<TargetLifeConditionSO>(), "TargetConditionLife");
+	}
+
+	[MenuItem("Assets/Create/Skill/Status Effect")]	
+	public static void CreateStatusEffectAsset() {
+		CompleteAssetCreation(X.CreateInstance<StatusEffectSO>(), "StatusEffect");
+	}
+
+	[MenuItem("Assets/Create/Skill/Status Effect Group")]	
+	public static void CreateStatusEffectGroupAsset() {
+		CompleteAssetCreation(X.CreateInstance<StatusEffectGroupSO>(), "StatusEffectGroup");
 	}
 
 	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
@@ -70,9 +85,9 @@ public class CustomAssetEditor {
 			path = path.Replace(Path.GetFileName (AssetDatabase.GetAssetPath (Selection.activeObject)), "");		
 		}		
 		AssetDatabase.CreateAsset (asset, AssetDatabase.GenerateUniqueAssetPath (path + "/New " + entityName + ".asset"));
-
-		Selection.activeObject = asset;  
 		EditorUtility.FocusProjectWindow();		
+		Selection.activeObject = asset;  
+
 		//StartRenameSelectedAsset();
 	}
 

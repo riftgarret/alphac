@@ -19,7 +19,7 @@ public class StatusEffectCombatNode : ConfigurableCombatNode
 	public StatusEffectCombatNode(CombatPropertyStatusEffectExecutor statusEffectExecutor) : base() {
 		// TODO track node meta
 		StatusEffectSO so = statusEffectExecutor.statusEffectSO;
-		CombatProperty property = so.statusEffectGroup.combatProperty;
+		CombatPropertyType property = so.statusEffectGroup.combatProperty;
 		mPropertyAdd[(int)property] = so.valueModifier.add;
 		mPropertyMultiply[(int)property] = so.valueModifier.multiply;
 	}

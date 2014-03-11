@@ -20,7 +20,7 @@ public class StatusEffectGroupSO : ScriptableObject
 {
 	// IF THIS IS A STAT GROUP, LETS SET IT HERE
 	[SerializeField]
-	private CombatProperty mCombatProperty = CombatProperty.NONE;
+	private CombatPropertyType mCombatProperty = CombatPropertyType.NONE;
 	// TODO special case status effect group: 
 	// ie: poison, haste, onEvent()
 
@@ -38,7 +38,7 @@ public class StatusEffectGroupSO : ScriptableObject
 
 
 	// accessors
-	public CombatProperty combatProperty {
+	public CombatPropertyType combatProperty {
 		get { return mCombatProperty; }
 	}
 
