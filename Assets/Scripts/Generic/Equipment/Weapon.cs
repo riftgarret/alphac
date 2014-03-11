@@ -13,7 +13,7 @@ using UnityEngine;
 
 // TODO separate PhysicalWeapon from MagicalWeapon (for caster reasons)
 [Serializable]
-public class Weapon
+public class Weapon : IWeapon
 {
 	public static readonly Weapon EMPTY_WEAPON = new Weapon();
 	/// <summary>
@@ -22,38 +22,35 @@ public class Weapon
 	public static readonly Weapon UNARMED_WEAPON = new Weapon();
 
 	// weapon config to setup in the data module
-	[SerializeField]
-	private WeaponSO mWeaponConfig;
 
-	// TODO add 'inscriptions'
-
-	public Weapon() {}
-
-	public Weapon (WeaponSO config) {
-		this.mWeaponConfig = config;
-	}
-
-	/// <summary>
-	/// Calculates the attack. based on modifiers and base damasge
-	/// </summary>
-	/// <returns>The attack.</returns>
-	/// <param name="character">Character.</param>
-	public float CalculateAttack(Character character) {
-		float atk = mWeaponConfig.baseDamage;
-		if(mWeaponConfig.physicalModifiers != null) {
-			foreach(StatModifier stat in mWeaponConfig.statModifiers) {
-				atk += character.GetStat(stat.stat) * stat.mod;
-			}
+	public DamageType DamageType {
+		get {
+			throw new NotImplementedException ();
 		}
-		return atk;
 	}
 
-	public DamageType damageType {
-		get { return mWeaponConfig.dmgType; }
+	public WeaponType WeaponType {
+		get {
+			throw new NotImplementedException ();
+		}
 	}
 
-	public WeaponSO weaponConfig {
-		get { return mWeaponConfig; } 
+	public string DisplayName {
+		get {
+			throw new NotImplementedException ();
+		}
+	}
+
+	public Texture2D Icon {
+		get {
+			throw new NotImplementedException ();
+		}
+	}
+
+	public ICombatNode combatNode {
+		get {
+			throw new NotImplementedException ();
+		}
 	}
 }
 

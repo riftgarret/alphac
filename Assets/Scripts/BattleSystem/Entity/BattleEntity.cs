@@ -100,7 +100,7 @@ public abstract class BattleEntity {
 		return CreateCombatNodeBuilder().Build();
 	}
 
-	public Weapon [] equipedWeapons {
+	public IWeapon [] equipedWeapons {
 		get { return character.equipedWeapons; }
 	}
 

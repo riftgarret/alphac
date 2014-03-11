@@ -48,7 +48,7 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 		get { return mEntityManager; }
 	}
 
-	public EnemyParty enemyParty;
+	public EnemyPartySO enemyParty;
 	public PCParty pcParty;
 
 	private bool mOnBattleChangedFlag;

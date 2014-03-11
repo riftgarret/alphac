@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class EnemyParty : ScriptableObject {
+public class EnemyPartySO : SanitySO {
 	
 	public EnemyCharacterSO[] characterConfigs;
 
@@ -46,12 +46,10 @@ public class EnemyParty : ScriptableObject {
 		return retValue;
 	}
 
-	/// <summary>
-	/// Due to reusing Data assets, we need to make sure our enemy instances are unique, so we will
-	/// copy / clone them so they all have their own life bars and unique names
-	/// </summary>
-	/// <param name="enemies">Enemies.</param>
-	private void CopyEnemies(EnemyCharacter [] enemies) {
-
+	protected override void SanityCheck ()
+	{
+		if(characterConfigs == null || characterConfigs.Length == 0) {
+			LogNull("characterConfigs");
+		}
 	}
 }

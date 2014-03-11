@@ -15,20 +15,19 @@ public class CombatOperationExecutor
 {
 	public void Execute(BattleEntity src, BattleEntity dest, ICombatSkill combatSkill, CombatRound combatRound) {
 		// figure out damage type
-		Weapon equipedWeapon = src.equipedWeapons[combatRound.weaponIndex];
+		IWeapon equipedWeapon = src.equipedWeapons[combatRound.weaponIndex];
 		if(equipedWeapon == null) {
 			Debug.Log("No equiped weapon, aborting");
 			return;
 		}
 
-		DamageType damageType = equipedWeapon.damageType;
+		DamageType damageType = equipedWeapon.DamageType;
 		if(!combatRound.useWeaponDamageType) {
 			damageType = combatRound.damageTypeOverride;
 		}
 
 		// get source combat node
-		SkillCombatNode skillNode = new SkillCombatNode(combatSkill);
-		skillNode.Load(combatRound);
+		SkillCombatNode skillNode = new SkillCombatNode(combatSkill, combatRound);
 
 		CombatResolver srcResolver = src.CreateCombatNodeBuilder()
 			.SetSkillCombatNode(skillNode)

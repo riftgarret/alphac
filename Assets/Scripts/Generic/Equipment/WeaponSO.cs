@@ -11,15 +11,47 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class WeaponSO : ScriptableObject
+public class WeaponSO : EquipmentSO, IWeapon
 {
-	public string weaponName;
-	public float baseDamage;
-	public GeneralOffensiveModifier[] generalModifiers; // todo move this to physical weapon mod
-	public PhysicalOffensiveModifier[] physicalModifiers; // todo move this to physical weapon mod
-	public StatModifier [] statModifiers;
-	public DamageType dmgType;
-	public WeaponType weaponType;
+	public CombatProperty [] combatProperties;
+	public DamageType damageType = DamageType.COUNT;
+	public WeaponType weaponType = WeaponType.COUNT;
 
-	public Texture2D icon;
+	protected override void SanityCheck ()
+	{
+		base.SanityCheck ();
+
+		if(combatProperties == null) {
+			LogNull("combatProperties");
+		}
+
+		if(damageType == DamageType.COUNT) {
+			LogInvalidEnum("damageType");
+		}
+
+		if(weaponType == WeaponType.COUNT) {
+			LogInvalidEnum("weaponType");
+		}
+	}
+
+	public DamageType DamageType {
+		get {
+			return damageType;
+		}
+	}
+
+	public WeaponType WeaponType {
+		get {
+			return weaponType;
+		}
+	}
+
+	protected override ICombatNode CreateCombatNode ()
+	{
+		WeaponCombatNode node = new WeaponCombatNode(this);
+		node.Load(combatProperties);
+		return node;
+	}
+
+	// TODO build combat node to pull values from for UI
 }

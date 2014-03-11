@@ -10,30 +10,39 @@
 using System;
 using UnityEngine;
 
-public class ArmorSO : ScriptableObject
+public class ArmorSO : EquipmentSO, IArmor
 {
 
-	[SerializeField]
-	private string mDisplayName = null;
-	public string displayName { 
-		get { return mDisplayName; }
+	public ArmorPosition armorPosition = ArmorPosition.TORSO;
+	public ArmorType armorType = ArmorType.LIGHT;
+	public CombatProperty [] combatProperties;
+
+	protected override void SanityCheck ()
+	{
+		base.SanityCheck();
+
+		if(combatProperties == null) {
+			LogNull("combatProperties");
+		}
 	}
 
-	[SerializeField]
-	private ArmorPosition mArmorPosition = ArmorPosition.TORSO;
-	public ArmorPosition armorPosition { 
-		get { return mArmorPosition; }
+	public ArmorPosition ArmorPosition {
+		get {
+			return armorPosition;
+		}
 	}
 
-	[SerializeField]
-	private ArmorType mArmorType = ArmorType.LIGHT;
-	public ArmorType armorType { 
-		get { return mArmorType; }
+	public ArmorType ArmorType {
+		get {
+			return armorType;
+		}
 	}
 
-	[SerializeField]
-	private ResistProperties mResists = null;
-	public ResistProperties resists {
-		get { return mResists; }
-	}	
+	protected override ICombatNode CreateCombatNode ()
+	{
+		ArmorCombatNode node =  new ArmorCombatNode(this);
+		node.Load(combatProperties);
+		return node;
+	}
 }
+ 

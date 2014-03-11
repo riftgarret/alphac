@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using UnityEngine;
 
 public class ConfigurableCombatNode : ICombatNode
 {
@@ -35,110 +36,19 @@ public class ConfigurableCombatNode : ICombatNode
 	}
 
 	/// <summary>
-	/// Read and load the general modifiers.
+	/// Load the specified combatProperties.
 	/// </summary>
-	/// <param name="modifiers">Modifiers.</param>
-	public void ReadGeneralModifiers(GeneralOffensiveModifier [] modifiers) {
-		// parse out general
-		if(modifiers != null) {
-			foreach(GeneralOffensiveModifier mod in modifiers) {
-				switch(mod.type) {
-				case GeneralOffensiveModifierType.TOTAL_DMG_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.TOTAL_DAMAGE] = mod.modValue;
-					break;
-				case GeneralOffensiveModifierType.TOTAL_DMG_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.TOTAL_DAMAGE] = mod.modValue;
-					break;	
-				case GeneralOffensiveModifierType.CRIT_CHANCE_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.CRIT_CHANCE] = mod.modValue;
-					break;
-				case GeneralOffensiveModifierType.CRIT_CHANCE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.CRIT_CHANCE] = mod.modValue;
-					break;
-				}
-			}
+	/// <param name="combatProperties">Combat properties.</param>
+	public void Load(CombatProperty [] combatProperties) {
+		if(combatProperties == null) {
+			Debug.Log("Failed to load combatProperties, null: " + this);
+			return;
 		}
-	}
 
-	public void ReadStatModifiers(StatModifier [] modifiers) {
-		// parse out general
-		if(modifiers != null) {
-			foreach(StatModifier mod in modifiers) {
-				switch(mod.stat) {
-				case StatType.STR:
-					this.mPropertyMultiply[(int)CombatPropertyType.STR] = mod.mod;
-					break;				
-				case StatType.VIT:
-					this.mPropertyMultiply[(int)CombatPropertyType.VIT] = mod.mod;
-					break;
-				case StatType.DEX:
-					this.mPropertyMultiply[(int)CombatPropertyType.DEX] = mod.mod;
-					break;
-				case StatType.AGI:
-					this.mPropertyMultiply[(int)CombatPropertyType.AGI] = mod.mod;
-					break;
-				case StatType.INT:
-					this.mPropertyMultiply[(int)CombatPropertyType.INT] = mod.mod;
-					break;
-				case StatType.WIS:
-					this.mPropertyMultiply[(int)CombatPropertyType.WIS] = mod.mod;
-					break;
-				case StatType.LUCK:
-					this.mPropertyMultiply[(int)CombatPropertyType.LUCK] = mod.mod;
-					break;
-				}
-			}
+		foreach(CombatProperty property in combatProperties) {
+			this.mPropertyAdd[(int)property.propertyType] = property.add;
+			this.mPropertyMultiply[(int)property.propertyType] = property.multiply;
 		}
-	}
-
-	public void ReadPhysicalModifiers(PhysicalOffensiveModifier [] modifiers) {
-		// parse out physical
-		if(modifiers != null) {
-			foreach(PhysicalOffensiveModifier mod in modifiers) {
-				switch(mod.type) {
-				case PhysicalOffensiveModifierType.POWER_PHYSICAL_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.POWER_PHYSICAL] = mod.modValue;
-					break;
-				case PhysicalOffensiveModifierType.POWER_PHYSICAL_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.POWER_PHYSICAL] = mod.modValue;
-					break;
-				case PhysicalOffensiveModifierType.DODGE_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.REFLEX_IGNORE] = mod.modValue;
-					break;
-				case PhysicalOffensiveModifierType.DODGE_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.REFLEX_IGNORE] = mod.modValue;
-					break;					
-				case PhysicalOffensiveModifierType.ARMOR_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.RESIST_IGNORE] = mod.modValue;
-					break;
-				case PhysicalOffensiveModifierType.ARMOR_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.RESIST_IGNORE] = mod.modValue;
-					break;					
-				}
-			}
-		}		
-	}
-
-	public void ReadMagicalModifiers(MagicalOffensiveModifier [] modifiers) {
-		// parse out physical
-		if(modifiers != null) {
-			foreach(MagicalOffensiveModifier mod in modifiers) {
-				switch(mod.type) {
-				case MagicalOffensiveModifierType.POWER_MAGICAL_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.POWER_MAGIC] = mod.modValue;
-					break;
-				case MagicalOffensiveModifierType.POWER_MAGICAL_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.POWER_MAGIC] = mod.modValue;
-					break;
-				case MagicalOffensiveModifierType.RESIST_IGNORE_ADD:
-					this.mPropertyAdd[(int)CombatPropertyType.RESIST_IGNORE] = mod.modValue;
-					break;
-				case MagicalOffensiveModifierType.RESIST_IGNORE_MULTIPLY:
-					this.mPropertyMultiply[(int)CombatPropertyType.RESIST_IGNORE] = mod.modValue;
-					break;
-				}
-			}
-		}		
 	}
 }
 

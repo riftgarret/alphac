@@ -6,7 +6,7 @@ using System;
 /// This is mostly a test script to setup parties, will not be used in game
 /// </summary>
 [Serializable]
-public class PCSkillSetSO : ScriptableObject {
+public class PCSkillSetSO : SanitySO {
 
 	[SerializeField]
 	private CombatSkillSO [] skills = null;
@@ -25,5 +25,11 @@ public class PCSkillSetSO : ScriptableObject {
 			skillset.hotKeys[i].skill = skillset.skills[i];
 		}
 	}
-		
+
+	protected override void SanityCheck ()
+	{
+		if(skills == null) {
+			LogNull("skills");
+		}
+	}
 }

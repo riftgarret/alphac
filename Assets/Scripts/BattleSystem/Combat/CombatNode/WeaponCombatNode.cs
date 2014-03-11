@@ -8,30 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using System.Collections;
-using UnityEngine;
 
-[Serializable]
-public class SkillSO : SanitySO, ISkill
+public class WeaponCombatNode : ConfigurableCombatNode
 {
-	public string displayName;
-	public Texture2D icon;
 
-	public string DisplayName {
-		get {
-			return displayName;
-		}
-	}
+	public WeaponCombatNode(IWeapon weapon) : base() {
 
-	protected override void SanityCheck ()
-	{
-		if(string.IsNullOrEmpty(displayName)) {
-			LogNull("displayName");
-		}
-
-		if(icon == null) {
-			LogNull("icon");
-		}
 	}
 }
 

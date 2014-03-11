@@ -30,7 +30,7 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Enemy/Enemy Party")]	
 	public static void CreateEnemyPartyAsset() {		
-		CompleteAssetCreation(X.CreateInstance<EnemyParty>(), "Enemy Party");
+		CompleteAssetCreation(X.CreateInstance<EnemyPartySO>(), "Enemy Party");
 	}
 
 	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	

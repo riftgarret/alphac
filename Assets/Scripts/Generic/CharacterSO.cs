@@ -29,7 +29,7 @@ public class CharacterSO : ScriptableObject
 	public CharacterClassSO charClass;
 	
 	// equipment
-	public Weapon [] weapons;
-	public Armor [] armors;
+	public WeaponSO [] weapons;
+	public ArmorSO [] armors;
 }
 

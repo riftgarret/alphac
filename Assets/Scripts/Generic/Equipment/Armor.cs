@@ -11,36 +11,41 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Armor
+public class Armor : IArmor
 {
 	public static readonly Armor EMPTY_ARMOR = new Armor();
 
-	[SerializeField]
-	private ArmorSO mConfig;
-	public ArmorSO config {
-		get { return mConfig; }
-	}	
-
-	public Armor() {}
-
-	public Armor(ArmorSO config) {
-		mConfig = config;
+	public ArmorPosition ArmorPosition {
+		private set;
+		get;
 	}
 
-	public string displayName {
-		get { return mConfig.displayName; }
+	public ArmorType ArmorType {
+		private set;
+		get;
 	}
 
-	public ArmorPosition slot {
-		get { return mConfig.armorPosition; }
+	public CombatProperty[] CombatProperties {
+		private set;
+		get;
 	}
 
-	public ArmorType type {
-		get { return mConfig.armorType; }
+	public string DisplayName {
+		get {
+			throw new NotImplementedException ();
+		}
 	}
 
-	public ResistProperties resists {
-		get { return mConfig.resists; }
+	public Texture2D Icon {
+		get {
+			throw new NotImplementedException ();
+		}
+	}
+
+	public ICombatNode combatNode {
+		get {
+			throw new NotImplementedException ();
+		}
 	}
 }
 

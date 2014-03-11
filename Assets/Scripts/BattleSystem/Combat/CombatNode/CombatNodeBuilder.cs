@@ -13,7 +13,7 @@ public class CombatNodeBuilder
 	private CombatNodeFactory mFactory;
 
 	// if weapon is provided, weapon index is ignored
-	private Weapon mWeapon;
+	private IWeapon mWeapon;
 	private int mWeaponIndex;
 
 	private SkillCombatNode mSkillCombatNode;
@@ -33,7 +33,7 @@ public class CombatNodeBuilder
 		return this;
 	}
 
-	public CombatNodeBuilder SetWeapon(Weapon weapon) {
+	public CombatNodeBuilder SetWeapon(IWeapon weapon) {
 		mWeapon = weapon;
 		return this;
 	}

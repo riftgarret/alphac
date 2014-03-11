@@ -12,11 +12,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CharacterClassSO : ScriptableObject
+public class CharacterClassSO : SanitySO
 {
 	public float expertisePerLevel = 1f;
 	public float hitpointsPerLevel = 10f;
-	public string className;
+	public string displayName;
 
 	public bool hasArmorTorso = true;
 	public bool hasArmorLegs = true;
@@ -80,5 +80,12 @@ public class CharacterClassSO : ScriptableObject
 	/// <param name="character">Character.</param>
 	public float CalculateExpertise(Character character) {
 		return expertisePerLevel * character.level;
+	}
+
+	protected override void SanityCheck ()
+	{
+		if(string.IsNullOrEmpty(displayName)) {
+			LogNull("displayName");
+		}
 	}
 }

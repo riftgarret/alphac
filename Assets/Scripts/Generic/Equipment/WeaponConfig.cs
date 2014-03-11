@@ -23,8 +23,8 @@ public class WeaponConfig
 		}
 	}
 
-	private Weapon [] mWeaponSlots;
-	private Weapon[] mEquipedWeapons;
+	private IWeapon [] mWeaponSlots;
+	private IWeapon[] mEquipedWeapons;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WeaponSlot"/> class. This will create all slots as EMPTY_WEAPON
@@ -53,7 +53,7 @@ public class WeaponConfig
 	/// </summary>
 	/// <param name="weapon">Weapon.</param>
 	/// <param name="weaponIndex">Weapon index.</param>
-	public void EquipWeapon(Weapon weapon, int weaponIndex) {
+	public void EquipWeapon(IWeapon weapon, int weaponIndex) {
 		if (weaponIndex >= mWeaponSlots.Length) {
 			return; // ignore if we are out of bounds, this will really only happen on loading a config
 		}
@@ -71,7 +71,7 @@ public class WeaponConfig
 	/// </summary>
 	private void RebuildEquipedArray() {
 
-		List<Weapon> newEquipedWeapons = new List<Weapon>();
+		List<IWeapon> newEquipedWeapons = new List<IWeapon>();
 
 		foreach (Weapon weapon in mWeaponSlots) {
 			if(weapon != Weapon.EMPTY_WEAPON) {
@@ -82,7 +82,7 @@ public class WeaponConfig
 		mEquipedWeapons = newEquipedWeapons.ToArray();
 	}
 
-	public Weapon[] equipedWeapons {
+	public IWeapon[] equipedWeapons {
 		get { return mEquipedWeapons; }
 	}
 
@@ -90,7 +90,7 @@ public class WeaponConfig
 	/// Gets or sets the <see cref="CompositeWeaponSlot"/> at the specified index.
 	/// </summary>
 	/// <param name="index">Index.</param>
-	public Weapon this [int index] {
+	public IWeapon this [int index] {
 		get {
 			return mWeaponSlots[index];
 		}

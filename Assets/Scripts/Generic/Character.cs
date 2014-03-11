@@ -48,7 +48,7 @@ public abstract class Character  {
 	private WeaponConfig mWeaponConfig;
 	private ArmorConfig mArmorConfig;
 
-	public Weapon [] equipedWeapons {
+	public IWeapon [] equipedWeapons {
 		get { return mWeaponConfig.equipedWeapons; }
 	}
 
@@ -96,11 +96,11 @@ public abstract class Character  {
 		for (int i=0; i < other.weapons.Length; i++) {
 			mWeaponConfig.EquipWeapon(other.weapons[i], i);
 		}
-
+		/*
 		for (int i=0; i < other.weapons.Length; i++) {
 			mArmorConfig.EquipArmor(other.armors[i], other.armors[i].slot);
 		}
-
+*/
 
 		curHP = maxHP;
 	}
@@ -190,34 +190,6 @@ public abstract class Character  {
 		default:
 			return 1;
 		}
-	}
-	
-
-	private float GetArmorResist(DamageType type, Armor armor) {
-		if(armor == null) {
-			return 0f;
-		}
-		switch(type) {
-		case DamageType.CRUSH:
-			return armor.config.resists.crush;
-		case DamageType.PIERCE:
-			return armor.config.resists.pierce;
-		case DamageType.SLASH:
-			return armor.config.resists.slash;
-		case DamageType.DARK:
-			return armor.config.resists.dark;
-		case DamageType.LIGHT:
-			return armor.config.resists.light;
-		case DamageType.WIND:
-			return armor.config.resists.wind;
-		case DamageType.EARTH:
-			return armor.config.resists.earth;
-		case DamageType.FIRE:
-			return armor.config.resists.fire;
-		case DamageType.WATER:
-			return armor.config.resists.water;
-		}
-		return 0f;
 	}
 
 	public override string ToString ()
