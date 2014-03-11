@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class CharacterSO : ScriptableObject
+public class CharacterSO : SanitySO
 {	
 	// character name
 	public string displayName;
@@ -31,5 +31,12 @@ public class CharacterSO : ScriptableObject
 	// equipment
 	public WeaponSO [] weapons;
 	public ArmorSO [] armors;
+
+
+	protected override void SanityCheck ()
+	{
+		LogEmptyArray("weapons", weapons);
+		LogEmptyArray("armors", armors);
+	}
 }
 

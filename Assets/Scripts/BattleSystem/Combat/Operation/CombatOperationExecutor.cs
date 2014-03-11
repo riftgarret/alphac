@@ -183,6 +183,7 @@ public class CombatOperationExecutor
 				break;
 			}
 		}
+		
 	}
 
 	/// <summary>

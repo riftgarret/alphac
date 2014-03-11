@@ -60,12 +60,7 @@ public class SelectableTargetManager {
 		// if we assigned a predicate, lets remove those entities
 
 		entitySet.RemoveWhere(delegate(BattleEntity obj) {
-			foreach(TargetConditionSO condition in skill.TargetRule.conditions) {
-				if(!condition.IsValidTarget(obj)) {
-					return false;
-				}
-			}	
-			return true;
+			return !skill.TargetRule.IsValidTarget(obj);			
 		});
 
 	}

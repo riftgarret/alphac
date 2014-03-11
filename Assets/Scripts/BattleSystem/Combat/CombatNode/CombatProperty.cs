@@ -12,7 +12,12 @@ using System;
 [Serializable]
 public class CombatProperty : ValueModifier
 {
-	public CombatPropertyType propertyType = CombatPropertyType.NONE;
+	public CombatPropertyType propertyType;
+
+	public CombatProperty() : base () { 
+		propertyType = CombatPropertyType.NONE;
+	}
+
 }
 
 

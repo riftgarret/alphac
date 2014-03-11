@@ -23,34 +23,36 @@ public class Weapon : IWeapon
 
 	// weapon config to setup in the data module
 
+	public Weapon() {
+		DamageType = DamageType.SLASH;
+		WeaponType = WeaponType.AXE;
+		DisplayName = "Uninitialized";
+		combatNode = new WeaponCombatNode(this);
+	}
+
 	public DamageType DamageType {
-		get {
-			throw new NotImplementedException ();
-		}
+		get;
+		set;
 	}
 
 	public WeaponType WeaponType {
-		get {
-			throw new NotImplementedException ();
-		}
+		get; 
+		set;
 	}
 
 	public string DisplayName {
-		get {
-			throw new NotImplementedException ();
-		}
+		get;
+		set;
 	}
 
 	public Texture2D Icon {
-		get {
-			throw new NotImplementedException ();
-		}
+		get;
+		set;
 	}
 
 	public ICombatNode combatNode {
-		get {
-			throw new NotImplementedException ();
-		}
+		get;
+		set;
 	}
 }
 

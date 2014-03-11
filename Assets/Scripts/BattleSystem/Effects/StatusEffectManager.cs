@@ -125,7 +125,6 @@ public class StatusEffectManager
 			if(effect != null) {
 				// if existing effect exists, lets replace it using that eventType
 				StatusEffectType effectType = effect.effectType;
-				IStatusEffectExecutor existingEffect = executors[(int)effectType];
 				StatusEffectEvent.StatusEventType eventType = executors[(int)effectType] != null? 
 					StatusEffectEvent.StatusEventType.REPLACED 
 						: StatusEffectEvent.StatusEventType.NEW;

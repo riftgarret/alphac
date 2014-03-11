@@ -18,6 +18,19 @@ public abstract class SanitySO : ScriptableObject
 
 	protected abstract void SanityCheck();
 
+	protected void LogEmptyArray<T>(string propertyName, T [] data) where T : class {
+		if(data == null) {
+			LogNull(propertyName);
+		}
+		else {
+			for(int i=0; i < data.Length; i++) {
+				if(data[i] == null) {
+					LogMessage(propertyName, "Null at [" + i + "]");
+				}
+			}
+		}
+	}
+
 	protected void LogNull(string propertyName) {
 		LogMessage(propertyName, "NULL property");
 	}

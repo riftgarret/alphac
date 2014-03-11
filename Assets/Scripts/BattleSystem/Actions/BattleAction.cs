@@ -37,7 +37,7 @@ public class BattleAction : IBattleAction {
 		float triggerValue = timeAction *(float)(mCombatRoundIndex + 1) / (float)mCombatRoundCount;
 
 		// if we have passed next click for the action clock
-		if(triggerValue >= actionClock) {
+		if(triggerValue <= actionClock) {
 			DoCombatRound(mCombatRoundIndex);
 			mCombatRoundIndex++;
 		}

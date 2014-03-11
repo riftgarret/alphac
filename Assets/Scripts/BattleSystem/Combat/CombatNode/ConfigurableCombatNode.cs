@@ -50,6 +50,20 @@ public class ConfigurableCombatNode : ICombatNode
 			this.mPropertyMultiply[(int)property.propertyType] = property.multiply;
 		}
 	}
+
+	public void Load(ResistProperties resists) {
+		if(resists != null) {
+			mPropertyAdd[(int)CombatPropertyType.RESIST_CRUSH] = resists.crush;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_SLASH] = resists.slash;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_PIERCE] = resists.pierce;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_LIGHT] = resists.light;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_DARK] = resists.dark;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_EARTH] = resists.earth;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_WIND] = resists.wind;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_FIRE] = resists.fire;
+			mPropertyAdd[(int)CombatPropertyType.RESIST_WATER] = resists.water;
+		}
+	}
 }
 
 

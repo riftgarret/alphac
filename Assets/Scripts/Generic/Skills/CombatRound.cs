@@ -24,7 +24,7 @@ public class CombatRound
 
 
 	public CombatOperationType operationType = CombatOperationType.PHYSICAL_ATTACK;
-	public StatusEffectRule [] statusEffectRules;
-	public CombatProperty [] combatProperties;
+	public StatusEffectRule [] statusEffectRules = new StatusEffectRule[0];
+	public CombatProperty [] combatProperties = new CombatProperty[0];
 }
 

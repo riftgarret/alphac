@@ -33,7 +33,7 @@ public class TargetingRule
 	/// <param name="entity">Entity.</param>
 	public bool IsValidTarget(BattleEntity entity) {
 		foreach(TargetConditionSO condition in conditions) {
-			if(condition.IsValidTarget(entity)) {
+			if(!condition.IsValidTarget(entity)) {
 				return false;
 			}
 		}

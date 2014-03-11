@@ -49,14 +49,17 @@ public abstract class Character  {
 	private ArmorConfig mArmorConfig;
 
 	public IWeapon [] equipedWeapons {
-		get { return mWeaponConfig.equipedWeapons; }
+		get { 
+			if(mWeaponConfig.equipedWeapons.Length == 0) 
+				Debug.Log ("empty equipedWeapons"); 
+			return mWeaponConfig.equipedWeapons; }
 	}
 
 	public Armor [] equipedArmor {
 		get { return mArmorConfig.equipedArmor; }
 	}
 	// armor, accessory
-	
+
 	// empty constructor
 	public Character() {}
 

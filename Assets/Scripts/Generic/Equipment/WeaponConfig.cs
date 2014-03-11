@@ -39,7 +39,7 @@ public class WeaponConfig
 
 		this.maxWeaponCount = maxWeaponCount;
 
-		mWeaponSlots = new Weapon[maxWeaponCount];
+		mWeaponSlots = new IWeapon[maxWeaponCount];
 		mWeaponSlots [0] = Weapon.UNARMED_WEAPON;
 		for(int i=1; i < maxWeaponCount; i++) {
 			mWeaponSlots[i] = Weapon.EMPTY_WEAPON;
@@ -73,7 +73,7 @@ public class WeaponConfig
 
 		List<IWeapon> newEquipedWeapons = new List<IWeapon>();
 
-		foreach (Weapon weapon in mWeaponSlots) {
+		foreach (IWeapon weapon in mWeaponSlots) {
 			if(weapon != Weapon.EMPTY_WEAPON) {
 				newEquipedWeapons.Add(weapon);
 			}
