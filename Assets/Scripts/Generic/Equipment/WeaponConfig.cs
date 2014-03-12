@@ -72,8 +72,8 @@ public class WeaponConfig
 	private void RebuildEquipedArray() {
 
 		List<IWeapon> newEquipedWeapons = new List<IWeapon>();
-
-		foreach (IIWeapon weapon in mWeaponSlots) {
+		
+		foreach (IWeapon weapon in mWeaponSlots) {
 			if(weapon != Weapon.EMPTY_WEAPON) {
 				newEquipedWeapons.Add(weapon);
 			}
