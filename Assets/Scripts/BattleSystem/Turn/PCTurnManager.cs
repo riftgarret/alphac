@@ -26,7 +26,7 @@ public class PCTurnManager {
 	/// Gets the current selected skill. Will be null if not selected
 	/// </summary>
 	/// <value>The current selected skill.</value>
-	public CombatSkill currentSelectedSkill {
+	public ICombatSkill currentSelectedSkill {
 		private set;
 		get;
 	}
@@ -76,7 +76,7 @@ public class PCTurnManager {
 	/// Set the action to the current top battle entity selected.
 	/// </summary>
 	/// <param name="action">Action.</param>
-	public void SelectSkill(CombatSkill skill) {
+	public void SelectSkill(ICombatSkill skill) {
 		if( turnQueue.Count == 0 ) {
 			// do nothing bad state
 			Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");

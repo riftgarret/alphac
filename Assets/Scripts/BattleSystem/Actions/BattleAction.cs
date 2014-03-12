@@ -1,14 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class BattleAction : IBattleAction {		
+public class BattleAction : IBattleAction {		
 
 	// time it takes to prepare, configured and set
-	public float timePrepare { get { return combatSkill.combatSkillConfig.timePrepare; } } 
-	public float timeAction { get { return combatSkill.combatSkillConfig.timeAction; } }  
-	public float timeRecover { get { return combatSkill.combatSkillConfig.timeRecover; } } 
+	public float timePrepare { get { return combatSkill.TimePrepare; } } 
+	public float timeAction { get { return combatSkill.TimeAction; } }  
+	public float timeRecover { get { return combatSkill.TimeRecover; } } 
 
-	public readonly CombatSkill combatSkill;
+	public readonly ICombatSkill combatSkill;
+
+	private int mCombatRoundCount;
+	private int mCombatRoundIndex;
 			
 	/// <summary>
 	/// The target entity. This may be null if we are targeting a group.
@@ -17,13 +20,42 @@ public abstract class BattleAction : IBattleAction {
 
 	public readonly BattleEntity sourceEntity;
 	
-	protected BattleAction(CombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver) {
+	public BattleAction(ICombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver) {
 		this.combatSkill = skill;
 		this.sourceEntity = sourceEntity;
 		this.targetResolver = targetResolver;
+		this.mCombatRoundIndex = 0;
+		this.mCombatRoundCount = skill.CombatRounds.Length;
 	}
 
-	public abstract void OnExecuteAction(float actionClock, BattleEventManager eventManager);
+	/// <summary>
+	/// Important to note action clock should always be called even when the delta time has passed.
+	/// the action time threshold, it will be called one last time
+	/// </summary>
+	/// <param name="actionClock">Action clock.</param>
+	public void OnExecuteAction(float actionClock) {
+		float triggerValue = timeAction *(float)(mCombatRoundIndex + 1) / (float)mCombatRoundCount;
+
+		// if we have passed next click for the action clock
+		if(triggerValue <= actionClock) {
+			DoCombatRound(mCombatRoundIndex);
+			mCombatRoundIndex++;
+		}
+	}
+
+	/// <summary>
+	/// Dos the combat round. For each target, create a execution of attack or action
+	/// </summary>
+	/// <param name="index">Index.</param>
+	private void DoCombatRound(int index) {
+		CombatRound combatRound = combatSkill.CombatRounds[index];
+
+		foreach(BattleEntity targetEntity in targetResolver.GetTargets(combatSkill)) {
+			BattleSystem.combatExecutor.Execute(this.sourceEntity, targetEntity, combatSkill, combatRound);
+		}
+
+	}
+
 
 	/// <summary>
 	/// To complete action, not useful in current stage.
@@ -32,12 +64,6 @@ public abstract class BattleAction : IBattleAction {
 	public float TotalTime {
 		get {
 			return timeAction + timePrepare + timeRecover;
-		}
-	}
-
-	public StatModifier [] statModifiers {
-		get {
-			return combatSkill.statModifiers;
 		}
 	}
 }

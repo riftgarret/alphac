@@ -26,13 +26,13 @@ public class TargetResolverSingle : ITargetResolver
 		this.mTargetEntity = new BattleEntity[]{ entity };
 	}	
 	
-	public bool isValidTarget (CombatSkill skill)
+	public bool HasValidTargets (ICombatSkill skill)
 	{
-		return TargetConditionFilter.PassesFilter(mTargetEntity[0], skill.combatSkillConfig.targetFilter);
+		return skill.TargetRule.IsValidTarget(mTargetEntity[0]);
 	}
 
-	public BattleEntity[] GetTargets(CombatSkill skill) {
-		if(isValidTarget(skill)) {
+	public BattleEntity[] GetTargets(ICombatSkill skill) {
+		if(HasValidTargets(skill)) {
 			return mTargetEntity;
 		}
 		return new BattleEntity[0];

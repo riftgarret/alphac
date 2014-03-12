@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 
+[Serializable]
 public class ResistProperties
 {
 	// physical

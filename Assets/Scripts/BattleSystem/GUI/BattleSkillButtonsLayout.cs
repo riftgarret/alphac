@@ -23,9 +23,9 @@ public class BattleSkillButtonsLayout {
 			Rect buttonRect = new Rect(0, 0, config.layoutSize.width, config.layoutSize.height);
 			GUI.Box(buttonRect, GUIContent.none);
 
-			if(hotkey.skill != null && hotkey.skill is CombatSkill) {
-				if(GUI.Button(buttonRect, hotkey.skill.combatSkillConfig.displayName)) {
-					Debug.Log("Skill Picked : " + hotkey.skill.combatSkillConfig.displayName);
+			if(hotkey.skill != null && hotkey.skill is ICombatSkill) {
+				if(GUI.Button(buttonRect, hotkey.skill.DisplayName)) {
+					Debug.Log("Skill Picked : " + hotkey.skill.DisplayName);
 					turnManager.SelectSkill(hotkey.skill);
 				}
 			}

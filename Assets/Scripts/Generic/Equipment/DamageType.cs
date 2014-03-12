@@ -19,7 +19,8 @@ public enum DamageType
 	FIRE,
 	WATER,
 	EARTH,
-	WIND
+	WIND,
+	COUNT // number of damage types
 }
 
 

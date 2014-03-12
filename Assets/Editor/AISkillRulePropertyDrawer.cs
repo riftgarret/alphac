@@ -83,7 +83,7 @@ public class AISkillRulePropertyDrawer : PropertyDrawer {
 			}
 		}
 
-//		EditorGUI.indentLevel = indent;
+		EditorGUI.indentLevel = indent;
 		
 	}
 

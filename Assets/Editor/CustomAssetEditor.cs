@@ -10,27 +10,32 @@ public class CustomAssetEditor {
 
 	[MenuItem("Assets/Create/Character Class")]	
 	public static void CreateClassAsset() {		
-		CompleteAssetCreation(X.CreateInstance<CharacterClassConfig>(), "CharacterClass");
+		CompleteAssetCreation(X.CreateInstance<CharacterClassSO>(), "CharacterClass");
 	}
 
 	[MenuItem("Assets/Create/Equipment/Weapon")]	
 	public static void CreateWeaponAsset() {		
-		CompleteAssetCreation(X.CreateInstance<WeaponConfig>(), "Weapon");
+		CompleteAssetCreation(X.CreateInstance<WeaponSO>(), "Weapon");
+	}
+
+	[MenuItem("Assets/Create/Equipment/Armor")]	
+	public static void CreateArmorAsset() {		
+		CompleteAssetCreation(X.CreateInstance<ArmorSO>(), "Armor");
 	}
 
 	[MenuItem("Assets/Create/Enemy/Enemy Character Config")]	
 	public static void CreateNPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemyCharacterConfig>(), "EnemyConfig");
+		CompleteAssetCreation(X.CreateInstance<EnemyCharacterSO>(), "EnemyConfig");
 	}	
 
 	[MenuItem("Assets/Create/Enemy/Enemy Party")]	
 	public static void CreateEnemyPartyAsset() {		
-		CompleteAssetCreation(X.CreateInstance<EnemyParty>(), "Enemy Party");
+		CompleteAssetCreation(X.CreateInstance<EnemyPartySO>(), "Enemy Party");
 	}
 
 	[MenuItem("Assets/Create/Enemy/Enemy Skill Set")]	
 	public static void CreateEnemySkillSetSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<EnemySkillSetConfig>(), "EnemySkillSet");
+		CompleteAssetCreation(X.CreateInstance<EnemySkillSetSO>(), "EnemySkillSet");
 	}
 	/*
 	[MenuItem("Assets/Create/Enemy/Enemy AI Rule")]	
@@ -39,19 +44,34 @@ public class CustomAssetEditor {
 	}
 	*/
 
-	[MenuItem("Assets/Create/Skill/Combat Skill Config")]	
+	[MenuItem("Assets/Create/Skill/Combat Skill")]	
 	public static void CreateCombatSkillAsset() {
-		CompleteAssetCreation(X.CreateInstance<CombatSkillConfig>(), "CombatSkill");
-	}	
+		CompleteAssetCreation(X.CreateInstance<CombatSkillSO>(), "CombatSkill");
+	}
+
+	[MenuItem("Assets/Create/Skill/Target Condition/Life")]	
+	public static void CreateTargetConditionLifeAsset() {
+		CompleteAssetCreation(X.CreateInstance<TargetLifeConditionSO>(), "TargetConditionLife");
+	}
+
+	[MenuItem("Assets/Create/Skill/Status Effect")]	
+	public static void CreateStatusEffectAsset() {
+		CompleteAssetCreation(X.CreateInstance<StatusEffectSO>(), "StatusEffect");
+	}
+
+	[MenuItem("Assets/Create/Skill/Status Effect Group")]	
+	public static void CreateStatusEffectGroupAsset() {
+		CompleteAssetCreation(X.CreateInstance<StatusEffectGroupSO>(), "StatusEffectGroup");
+	}
 
 	[MenuItem("Assets/Create/PC/PC Skill Set Config")]	
 	public static void CreatePCSkillSetAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCSkillSetConfig>(), "SkillSet");
+		CompleteAssetCreation(X.CreateInstance<PCSkillSetSO>(), "SkillSet");
 	}
 
 	[MenuItem("Assets/Create/Test/PC Character Config")]	
 	public static void CreateTestPCAsset() {
-		CompleteAssetCreation(X.CreateInstance<PCCharacterConfig>(), "NPC");
+		CompleteAssetCreation(X.CreateInstance<PCCharacterSO>(), "NPC");
 	}	
 
 
@@ -65,9 +85,9 @@ public class CustomAssetEditor {
 			path = path.Replace(Path.GetFileName (AssetDatabase.GetAssetPath (Selection.activeObject)), "");		
 		}		
 		AssetDatabase.CreateAsset (asset, AssetDatabase.GenerateUniqueAssetPath (path + "/New " + entityName + ".asset"));
-
-		Selection.activeObject = asset;  
 		EditorUtility.FocusProjectWindow();		
+		Selection.activeObject = asset;  
+
 		//StartRenameSelectedAsset();
 	}
 

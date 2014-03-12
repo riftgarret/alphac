@@ -13,6 +13,7 @@ public enum ArmorPosition
 	HEAD,
 	TORSO,
 	LEGS,
-	ARMS
+	ARMS,
+	SHIELD,
 }
 
