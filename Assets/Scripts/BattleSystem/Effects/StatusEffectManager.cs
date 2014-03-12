@@ -18,8 +18,8 @@ using UnityEngine;
 public class StatusEffectManager
 {
 	// for fast access to get those effects
-	private Dictionary<EffectType, LinkedList<IStatusEffect>> mSkillTypeEffectMap;
-	private Dictionary<string, IStatusEffect> mKeyedEffectMap;
+	private Dictionary<StatusEffectGroupSO, StatusEffectNode> mEffectNodeMap;
+	// TODO should have a sorted list of status effects for sake of loading GUI
 	private BattleEntity mBattleEntity;
 
 	/// <summary>
@@ -28,81 +28,141 @@ public class StatusEffectManager
 	/// <param name="entity">The Entity to manage. </param>
 	public StatusEffectManager (BattleEntity entity)
 	{
-		mSkillTypeEffectMap = new Dictionary<EffectType, LinkedList<IStatusEffect>>();
-		mKeyedEffectMap = new Dictionary<string, IStatusEffect>();
+		mEffectNodeMap = new Dictionary<StatusEffectGroupSO, StatusEffectNode>();
 		mBattleEntity = entity;
 	}
-
-	/// <summary>
-	/// Gets the effect list. If one does not exist, it will be made.
-	/// </summary>
-	/// <returns>The effect list.</returns>
-	/// <param name="type">Type.</param>
-	private LinkedList<IStatusEffect> GetEffectList(EffectType type) {
-		if(! mSkillTypeEffectMap.ContainsKey(type)) {
-			mSkillTypeEffectMap[type] = new LinkedList<IStatusEffect>();
-		}
-		return mSkillTypeEffectMap[type];
-	}
-
+	
 	/// <summary>
 	/// Handles the add status.
 	/// </summary>
 	/// <param name="effect">Effect.</param>
 	/// <param name="printLog">If set to <c>true</c> print log.</param>
-	public void HandleAddStatus(IStatusEffect effect) {
-		// check to see if this already exists
-		if(mKeyedEffectMap.ContainsKey(effect.statusKey)) {
-			// lets see if this is a reversable action, as in, lets remove the debuff / buff
-			IStatusEffect currentEffect = mKeyedEffectMap[effect.statusKey];
-			// lets remove it, either action we will do will be to replace it or keep it removed
-			RemoveEffect(currentEffect, false);
-			// if these were opposite effects, lets not readd it
-			if(currentEffect.sourceType != effect.sourceType) {
-				return; 
-			}
+	public void HandleAddStatus(IStatusEffectExecutor effect) {
+		StatusEffectNode node = mEffectNodeMap[effect.statusEffectGroup];
+		if(node == null) {
+			node = new StatusEffectNode(this);
+			mEffectNodeMap[effect.statusEffectGroup] = node;
 		}
 
-		// Add the effect
-		AddEffect(effect, true);
+		node.ApplyEffect(effect);
 	}
 
-
-	private void AddEffect(IStatusEffect effect, bool printLog) {
-		mSkillTypeEffectMap[effect.effectType].AddLast(effect);
-		mKeyedEffectMap[effect.statusKey] = effect;
-	}
-
-	private void RemoveEffect(IStatusEffect effect, bool printLog) {
-		// remove from all lists
-		mSkillTypeEffectMap[effect.effectType].Remove(effect);
-		mKeyedEffectMap.Remove(effect.statusKey);
-
-		if(printLog) {
-			Debug.Log(effect.GetTextOnDettach(mBattleEntity));
-		}
-	}
-
+	/// <summary>
+	/// Raises the time increment event.
+	/// </summary>
+	/// <param name="timeDelta">Time delta.</param>
 	public void OnTimeIncrement(float timeDelta) {
-		LinkedList<IStatusEffect> removalQueue = null; // lazy init this if it needs to be made
-		foreach(IStatusEffect effect in mKeyedEffectMap.Values) {
-			effect.IncrementDurationTime(timeDelta);
-
-			if(effect.currentDurationLength <= 0) {
-				// add to queue
-				if(removalQueue == null) {
-					removalQueue = new LinkedList<IStatusEffect>();
-				}
-				removalQueue.AddLast(effect);
-			}
-		}
-
-		if(removalQueue != null) {
-			foreach(IStatusEffect effect in removalQueue) {
-				RemoveEffect(effect, true);
-			}
+		foreach(StatusEffectGroupSO key in mEffectNodeMap.Keys) {
+			mEffectNodeMap[key].IncrementTime(timeDelta);
 		}
 	}	
+
+	// An internal data structure to manage the possible single instance types of these types of
+	// buffs and debuffs being applied. Using a Chain of Responsibility pattern to delegate its rules
+	// for clearing, and rebuffing.
+	class StatusEffectNode {
+		// TODO return node type, so we can easily grab attributes from 
+
+		// even though we cant have a magical debuff and magical buff at the same time
+		// its a lot less tedious to debug if we just have separate pointers
+		private IStatusEffectExecutor [] executors;
+
+		private StatusEffectManager parent;
+
+		public StatusEffectNode(StatusEffectManager manager) {
+			this.parent = manager;
+			executors = new IStatusEffectExecutor[(int)StatusEffectType.COUNT];
+		}
+
+		public void ApplyEffect(IStatusEffectExecutor effect) {
+			StatusEffectType type = effect.effectType;
+
+			switch(type) {
+			case StatusEffectType.MAGICAL_BUFF:
+				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_DEBUFF]);
+				break;
+			case StatusEffectType.MAGICAL_DEBUFF:
+				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_BUFF]);
+				break;
+			case StatusEffectType.PHYSICAL_DEBUFF:
+				ApplyEffect(effect, null);
+				break;
+			}
+
+		}
+
+		/// <summary>
+		/// Applies the magical buff effect. If we have a debuff, lets remove it instead.
+		/// </summary>
+		/// <param name="effect">Effect.</param>
+		private void ApplyEffect(IStatusEffectExecutor effect, IStatusEffectExecutor oppositeEffect) {
+			if(oppositeEffect != null) {
+				RemoveEffect(oppositeEffect.effectType, StatusEffectEvent.StatusEventType.REMOVED);
+			}
+			else {
+				AddEffect(effect);
+			}
+		}
+
+		/// <summary>
+		/// If this execotor slot exists, remove it and fire the event type to the EventManager
+		/// </summary>
+		/// <param name="effectType">Effect type.</param>
+		/// <param name="eventType">Event type.</param>
+		private void RemoveEffect(StatusEffectType effectType, StatusEffectEvent.StatusEventType eventType) {
+			IStatusEffectExecutor oldEffect = executors[(int)effectType];
+			if(oldEffect != null) {
+				executors[(int)effectType] = null;
+				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, oldEffect, eventType));
+			}
+		}
+
+		/// <summary>
+		/// Adds the effect. Then notify the EventManager
+		/// </summary>
+		/// <param name="effect">Effect.</param>
+		private void AddEffect(IStatusEffectExecutor effect) {
+			if(effect != null) {
+				// if existing effect exists, lets replace it using that eventType
+				StatusEffectType effectType = effect.effectType;
+				StatusEffectEvent.StatusEventType eventType = executors[(int)effectType] != null? 
+					StatusEffectEvent.StatusEventType.REPLACED 
+						: StatusEffectEvent.StatusEventType.NEW;
+
+				executors[(int)effectType] = effect;
+				// notify listeners
+				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, effect, eventType));
+			}
+		}
+
+
+		/// <summary>
+		/// Increments the time. Potential place for expiring an event
+		/// </summary>
+		/// <param name="timeDelta">Time delta.</param>
+		public void IncrementTime(float timeDelta) {
+			foreach(IStatusEffectExecutor executor in executors) {
+				if(executor != null) {
+					executor.IncrementDurationTime(timeDelta);
+
+					if(executor.isExpired) {
+						RemoveEffect(executor.effectType, StatusEffectEvent.StatusEventType.EXPIRED);
+					}
+				}
+			}
+		}
+
+		bool isEmpty {
+			get { 
+				foreach(IStatusEffectExecutor executor in executors) {
+					if(executor != null) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+	}
 }
 
 

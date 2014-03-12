@@ -22,9 +22,3 @@ public enum TargetStart {
 	SELF,
 	DEAD
 }
-
-public enum TargetFilter {
-	REQUIRE_ALIVE,
-	REQUIRE_DEAD,
-	REQUIRE_BLIND
-}

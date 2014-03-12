@@ -17,7 +17,7 @@ public class AISkillResolver
 	// for caching our skill rules, wont save to our scripted objects
 	private List<AISkillComposite> mSkillComposites;
 
-	public AISkillResolver(EnemySkillSetConfig skillConfig) {
+	public AISkillResolver(EnemySkillSetSO skillConfig) {
 		mSkillComposites = new List<AISkillComposite>();
 		LazyCheck(skillConfig);
 	}
@@ -112,10 +112,10 @@ public class AISkillResolver
 
 
 
-	private void LazyCheck(EnemySkillSetConfig skillSet) {
+	private void LazyCheck(EnemySkillSetSO skillSet) {
 		foreach(AISkillRule rule in skillSet.skillRules) {
 				AISkillComposite composite = new AISkillComposite();
-				composite.skill = rule.skill.CreateCombatSkill(1); // temp lvl 1 skill, probably stay like that
+				composite.skill = rule.skill; // temp lvl 1 skill, probably stay like that
 				composite.skillRule = rule;
 				composite.conditionFilter = rule.CreateConditionFilter();
 				composite.targetFilter = rule.CreateTargetFilter();
@@ -130,7 +130,7 @@ public class AISkillResolver
 	}
 
 	public class AISkillComposite {
-		public CombatSkill skill;
+		public ICombatSkill skill;
 		public AISkillRule skillRule;
 		public IAIFilter targetFilter;
 		public IAIFilter conditionFilter;

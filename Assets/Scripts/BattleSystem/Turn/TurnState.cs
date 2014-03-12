@@ -92,14 +92,14 @@ public class TurnState {
 	/// Increment Game states
 	/// </summary>
 	/// <param name="gameClockDelta">Game clock delta.</param>
-	public void IncrementGameClock(float gameClockDelta, BattleManager manager) {
+	public void IncrementGameClock(float gameClockDelta) {
 		if(phase != Phase.REQUIRES_INPUT) {
 			turnClock += gameClockDelta;
 			// important if we go over our clock complete we still
 			// call on execute so if there were any actions that were calculated
 			// to happen at the end of the turn, it will still execute
 			if(phase == Phase.EXECUTE) {
-				entity.OnExecuteTurn(this, manager.eventManager);
+				entity.OnExecuteTurn(this);
 			}
 			if(turnClock > turnComplete) {
 				// increment turn

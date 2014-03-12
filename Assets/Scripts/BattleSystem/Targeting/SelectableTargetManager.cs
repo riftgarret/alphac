@@ -22,7 +22,7 @@ public class SelectableTargetManager {
 	/// <param name="origin">Origin.</param>
 	/// <param name="entityManager">Entity manager.</param>`
 	/// <param name="skill">Skill.</param>
-	public static SelectableTargetManager CreateAllowedTargets(BattleEntity origin, BattleEntityManager entityManager, CombatSkill skill) {
+	public static SelectableTargetManager CreateAllowedTargets(BattleEntity origin, BattleEntityManager entityManager, ICombatSkill skill) {
 		HashSet<BattleEntity> entitySet = new HashSet<BattleEntity>(entityManager.allEntities);
 		List<SelectableTarget> targetList = new List<SelectableTarget>();
 		Dictionary<BattleEntity, SelectableTarget> targetMap = new Dictionary<BattleEntity, SelectableTarget>();
@@ -56,11 +56,11 @@ public class SelectableTargetManager {
 	/// </summary>
 	/// <param name="entitySet">Entity set.</param>
 	/// <param name="skill">Skill.</param>
-	private static void FilterSkill(HashSet<BattleEntity> entitySet, CombatSkill skill) {
+	private static void FilterSkill(HashSet<BattleEntity> entitySet, ICombatSkill skill) {
 		// if we assigned a predicate, lets remove those entities
-		TargetFilter filter = skill.combatSkillConfig.targetFilter;
+
 		entitySet.RemoveWhere(delegate(BattleEntity obj) {
-			return !TargetConditionFilter.PassesFilter(obj, filter);
+			return !skill.TargetRule.IsValidTarget(obj);			
 		});
 
 	}
@@ -75,8 +75,8 @@ public class SelectableTargetManager {
 	private static void PopulateSelectableTargets(List<SelectableTarget> entityList, 
 	                                              EnemyBattleEntity origin, 
 	                                              HashSet<BattleEntity> entitySet, 
-	                                              CombatSkill skill) {
-		switch(skill.combatSkillConfig.primaryTargetType) {
+	                                              ICombatSkill skill) {
+		switch(skill.TargetRule.primaryTargetType) {
 		case TargetingType.SELF_ROW:
 		case TargetingType.ALL:
 			PopulateAllTargets(entityList, entitySet);
@@ -103,8 +103,8 @@ public class SelectableTargetManager {
 	private static void PopulateSelectableTargets(List<SelectableTarget> entityList, 
 	                                              PCBattleEntity origin, 
 	                                              HashSet<BattleEntity> entitySet, 
-	                                              CombatSkill skill) {
-		switch(skill.combatSkillConfig.primaryTargetType) {
+	                                              ICombatSkill skill) {
+		switch(skill.TargetRule.primaryTargetType) {
 		case TargetingType.ALL:
 			PopulateAllTargets(entityList, entitySet);
 			break;
@@ -251,7 +251,7 @@ public class SelectableTargetManager {
 	/// Gets the skill.
 	/// </summary>
 	/// <value>The skill.</value>
-	public CombatSkill skill {
+	public ICombatSkill skill {
 		private set;
 		get;
 	}
@@ -268,7 +268,7 @@ public class SelectableTargetManager {
 	}
 	
 
-	private SelectableTargetManager(CombatSkill skill, List<SelectableTarget> targetList, Dictionary<BattleEntity, SelectableTarget> targetMap ) {
+	private SelectableTargetManager(ICombatSkill skill, List<SelectableTarget> targetList, Dictionary<BattleEntity, SelectableTarget> targetMap ) {
 		this.skill = skill;
 		this.targetList = targetList;
 		this.mTargetMap = targetMap;

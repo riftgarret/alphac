@@ -10,11 +10,15 @@
 using System;
 public enum BattleEventType
 {
-	ATTACK,
-	MAGIC,
+	DAMAGE,
+	NON_DAMAGE,
+	DODGE,
+	RESIST,
 	ITEM,
 	MOVE,
-	DEATH
+	DEATH,
+	STATUS_EFFECT,
+	COUNT
 }
 
 

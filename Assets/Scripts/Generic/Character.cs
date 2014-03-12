@@ -41,32 +41,39 @@ public abstract class Character  {
 	// level and class
 	public int level;
 
-	[SerializeField]
-	public CharacterClassConfig charClass;
+
+	public CharacterClassSO charClass;
 
 	// equipment
-	public Weapon mainHandWeapon;
-	public ArmorSlot armorHelmet;
-	public ArmorSlot armorTorso;
-	public ArmorSlot armorLegs;
-	public ArmorSlot armorArms;
+	private WeaponConfig mWeaponConfig;
+	private ArmorConfig mArmorConfig;
 
+	public IWeapon [] equipedWeapons {
+		get { 
+			if(mWeaponConfig.equipedWeapons.Length == 0) 
+				Debug.Log ("empty equipedWeapons"); 
+			return mWeaponConfig.equipedWeapons; }
+	}
 
+	public Armor [] equipedArmor {
+		get { return mArmorConfig.equipedArmor; }
+	}
 	// armor, accessory
-	
+
 	// empty constructor
 	public Character() {}
 
 	// used for cloning
-	public static Character CreateFromConfig(CharacterConfig config) {
-		if(config is EnemyCharacterConfig) {
-			return new EnemyCharacter((EnemyCharacterConfig)config);
+	public static Character CreateFromConfig(CharacterSO config) {
+		if(config is EnemyCharacterSO) {
+			return new EnemyCharacter((EnemyCharacterSO)config);
 		}
 		else {
-			return new PCCharacter((PCCharacterConfig)config);
+			return new PCCharacter((PCCharacterSO)config);
 		}
 	}
-	protected Character(CharacterConfig other) {
+
+	protected Character(CharacterSO other) {
 		// name
 		displayName = other.displayName;
 
@@ -84,24 +91,23 @@ public abstract class Character  {
 		level = other.level;
 		charClass = other.charClass;
 
-		mainHandWeapon = other.mainHandWeapon;
+		// create armor and weapon configs from class rules
+		mWeaponConfig = charClass.CreateWeaponConfig();
+		mArmorConfig = charClass.CreateArmorConfig ();
+
+
+		for (int i=0; i < other.weapons.Length; i++) {
+			mWeaponConfig.EquipWeapon(other.weapons[i], i);
+		}
+		/*
+		for (int i=0; i < other.weapons.Length; i++) {
+			mArmorConfig.EquipArmor(other.armors[i], other.armors[i].slot);
+		}
+*/
 
 		curHP = maxHP;
 	}
-
-
-
-	// TODO tune for balance for dual weild
-	public float physicalAttack {
-	 get {
-			float atk = 1;
-			if(mainHandWeapon != null) {
-				atk += mainHandWeapon.CalculateAttack(this);
-			}
-
-			return strength + atk;
-		}
-	}
+			
 	// TODO
 	public float magicAttack {
 		get { return 0; }
@@ -159,9 +165,8 @@ public abstract class Character  {
 
 
 	public float GetResist(DamageType dmg) {
-		float armorResist = GetTotalArmorResists(dmg);
 		float classResist = GetClassArmorResists(dmg);
-		return armorResist + classResist;
+		return classResist;
 	}
 
 	private float GetClassArmorResists(DamageType type) {
@@ -190,44 +195,9 @@ public abstract class Character  {
 		}
 	}
 
-	/// <summary>
-	/// Gets the total armor resists. for the armor set
-	/// </summary>
-	/// <returns>The total armor resists.</returns>
-	/// <param name="type">Type.</param>
-	private float GetTotalArmorResists(DamageType type) {
-		float total = 0f;
-		total += GetArmorResist(type, armorArms);
-		total += GetArmorResist(type, armorHelmet);
-		total += GetArmorResist(type, armorTorso);
-		total += GetArmorResist(type, armorLegs);
-		return total;
+	public override string ToString ()
+	{
+		return string.Format ("[Character: displayName={0}]", displayName);
 	}
-
-	private float GetArmorResist(DamageType type, ArmorSlot armor) {
-		if(armor == null) {
-			return 0f;
-		}
-		switch(type) {
-		case DamageType.CRUSH:
-			return armor.config.resists.crush;
-		case DamageType.PIERCE:
-			return armor.config.resists.pierce;
-		case DamageType.SLASH:
-			return armor.config.resists.slash;
-		case DamageType.DARK:
-			return armor.config.resists.dark;
-		case DamageType.LIGHT:
-			return armor.config.resists.light;
-		case DamageType.WIND:
-			return armor.config.resists.wind;
-		case DamageType.EARTH:
-			return armor.config.resists.earth;
-		case DamageType.FIRE:
-			return armor.config.resists.fire;
-		case DamageType.WATER:
-			return armor.config.resists.water;
-		}
-		return 0f;
-	}
+	
 }
