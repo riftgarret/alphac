@@ -13,37 +13,46 @@ using UnityEngine;
 
 // TODO separate PhysicalWeapon from MagicalWeapon (for caster reasons)
 [Serializable]
-public class Weapon
+public class Weapon : IWeapon
 {
-	// weapon config to setup in the data module
-	[SerializeField]
-	private WeaponConfig mWeaponConfig;
-
-	// TODO add 'inscriptions'
-
-	public Weapon() {}
-
-	public Weapon (WeaponConfig config) {
-		this.mWeaponConfig = config;
-	}
-
+	public static readonly Weapon EMPTY_WEAPON = new Weapon();
 	/// <summary>
-	/// Calculates the attack. based on modifiers and base damasge
+	/// Not to be mistaken with EMPTY weapon, unarmed is default for first weapon slot if none
 	/// </summary>
-	/// <returns>The attack.</returns>
-	/// <param name="character">Character.</param>
-	public float CalculateAttack(Character character) {
-		float atk = mWeaponConfig.baseDamage;
-		if(mWeaponConfig.offensiveModifiers != null) {
-			foreach(StatModifier stat in mWeaponConfig.statModifiers) {
-				atk += character.GetStat(stat.stat) * stat.mod;
-			}
-		}
-		return atk;
+	public static readonly Weapon UNARMED_WEAPON = new Weapon();
+
+	// weapon config to setup in the data module
+
+	public Weapon() {
+		DamageType = DamageType.SLASH;
+		WeaponType = WeaponType.AXE;
+		DisplayName = "Uninitialized";
+		combatNode = new WeaponCombatNode(this);
 	}
 
-	public WeaponConfig weaponConfig {
-		get { return mWeaponConfig; } 
+	public DamageType DamageType {
+		get;
+		set;
+	}
+
+	public WeaponType WeaponType {
+		get; 
+		set;
+	}
+
+	public string DisplayName {
+		get;
+		set;
+	}
+
+	public Texture2D Icon {
+		get;
+		set;
+	}
+
+	public ICombatNode combatNode {
+		get;
+		set;
 	}
 }
 

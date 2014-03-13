@@ -5,5 +5,5 @@ using System.Collections;
 public class PCSkillSet {
 	public HotKey [] hotKeys;
 	
-	public CombatSkill [] skills;
+	public ICombatSkill [] skills;
 }

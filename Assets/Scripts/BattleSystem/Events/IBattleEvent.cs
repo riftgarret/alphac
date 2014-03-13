@@ -17,9 +17,5 @@ public interface IBattleEvent
 	BattleEventType eventType {
 		get;
 	}
-
-	string  eventText {
-		get;
-	}
 }
 

@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class HotKey {
-	public CombatSkill skill {
+	public ICombatSkill skill {
 		get;
 		set;
 	}
 
 	public HotKey() {}
-	public HotKey(CombatSkill skill) {
+	public HotKey(ICombatSkill skill) {
 		this.skill = skill;
 	}
 

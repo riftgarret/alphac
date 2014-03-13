@@ -9,7 +9,7 @@ public class BattleActionInitiative : IBattleAction {
 		mRecoverTime = initiativeTime;
 	}
 
-	public void OnExecuteAction (float actionClock, BattleEventManager eventManager)
+	public void OnExecuteAction (float actionClock)
 	{
 		throw new System.NotImplementedException ();
 	}

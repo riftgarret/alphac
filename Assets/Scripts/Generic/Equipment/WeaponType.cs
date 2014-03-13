@@ -23,5 +23,6 @@ public enum WeaponType
 	GUN,
 	STAVE,
 	ROD,
-	WAND
+	WAND,
+	COUNT
 }

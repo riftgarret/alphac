@@ -28,4 +28,10 @@ public class EnemyBattleEntity : BattleEntity {
 			return false;
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[EnemyBattleEntity: enemyCharacter={0}, hp={1}/{2}]", enemyCharacter, currentHP, maxHP);
+	}
+	
 }

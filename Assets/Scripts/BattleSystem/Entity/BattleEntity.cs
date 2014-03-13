@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Battle entity. Main class that contains all current effects and state of this character in battle.
+/// </summary>
 public abstract class BattleEntity {
 
 	// turn phase
@@ -18,13 +21,26 @@ public abstract class BattleEntity {
 		protected set;
 	}
 
+	/// <summary>
+	/// The status effect manager. Manages status effects so when a new effect is added, 
+	/// we can tell if its refresh, new, or canceling something else.
+	/// </summary>
 	private StatusEffectManager mStatusEffectManager;
+
+	/// <summary>
+	/// The combat node factory. Used to generate a NodeBuilder which will bring together
+	/// an offensive combat nodes for stat aggregation
+	/// </summary>
+	private CombatNodeFactory mCombatNodeFactory;
 
 	// setup variables
 	public BattleEntity(Character character) {
 		mStatusEffectManager = new StatusEffectManager(this);
+		mCombatNodeFactory = new CombatNodeFactory (this);
 		turnState = new TurnState(this);
 		this.character = character;
+		this.maxHP = character.maxHP;
+		this.currentHP = character.curHP;
 	}
 
 
@@ -32,7 +48,7 @@ public abstract class BattleEntity {
 		turnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
 	}
 
-	public void ApplyStatusEffect(IStatusEffect statusEffect) {
+	public void ApplyStatusEffect(IStatusEffectExecutor statusEffect) {
 		mStatusEffectManager.HandleAddStatus(statusEffect);
 	}
 
@@ -52,9 +68,9 @@ public abstract class BattleEntity {
 	/// <param name="state">State.</param>
 	public abstract void OnRequiresInput(TurnState state);
 
-	public void IncrementGameClock(float gameClockDelta, BattleTimeQueue timeQueue) {
+	public void IncrementGameClock(float gameClockDelta) {
 		// TODO, we can modify time if we have that buff here
-		turnState.IncrementGameClock(gameClockDelta, timeQueue.manager);
+		turnState.IncrementGameClock(gameClockDelta);
 		mStatusEffectManager.OnTimeIncrement(gameClockDelta);
 	}
 
@@ -62,126 +78,39 @@ public abstract class BattleEntity {
 		return turnState.phase == TurnState.Phase.REQUIRES_INPUT;
 	}
 
-	public void OnExecuteTurn(TurnState state, BattleEventManager eventManager) {
+	public void OnExecuteTurn(TurnState state) {
 		// do action against character
-		state.action.OnExecuteAction(state.turnClock, eventManager);
+		state.action.OnExecuteAction(state.turnClock);
 	}
 
-	
-	///////////////////
-	// proxy all character attributes / abilities so they can be adjusted by status effects
-	///////////////////////
+	/// <summary>
+	/// Creates the combat node builder. This will have references to most of the 
+	/// Battle Entity, that includes, character, equipment, weapon, status effects
+	/// </summary>
+	/// <returns>The combat node builder.</returns>
+	public CombatNodeBuilder CreateCombatNodeBuilder() {
+		return new CombatNodeBuilder(mCombatNodeFactory);
+	}
 
-	// attributes
-	// current stats
-	public float curHP {
-		get { return this.character.curHP; }
-		set { this.character.curHP = value; }
+	/// <summary>
+	/// Create a default assimilation of the CombatNode, this will choose the first single weapon.
+	/// </summary>
+	/// <returns>The default combat node.</returns>
+	public CompositeCombatNode CreateDefaultCombatNode() {
+		return CreateCombatNodeBuilder().Build();
 	}
-	public float curResource {
-		get { return this.character.curResource; }
-		set { this.character.curResource = value; }
+
+	public IWeapon [] equipedWeapons {
+		get { return character.equipedWeapons; }
 	}
-	
-	//
+
+	public float currentHP {
+		get;
+		set;
+	}
+
 	public float maxHP {
-		get { return this.character.maxHP; }
-	}
-
-	public float maxResource {
-		get { return this.character.maxResource; }
-	}
-	
-	// character name
-	public string displayName {
-		get { return this.character.displayName; }
-	}
-	
-	// stats
-	public float strength {
-		get { return this.character.strength; }
-	}
-
-	public float vitality {
-		get { return this.character.vitality; }
-	}
-
-	public float dexerity {
-		get { return this.character.dexerity; }
-	}
-
-	public float agility  {
-		get { return this.character.agility; }
-	}
-
-	public float inteligence {
-		get { return this.character.inteligence; }
-	}
-
-	public float wisdom {
-		get { return this.character.wisdom; }
-	}
-
-	public float luck {
-		get { return this.character.luck; }
-	}
-
-
-	// calculated attributes
-
-	public float physicalAttack {
-		get {
-			return this.character.physicalAttack;
-		}
-	}
-
-	public float magicAttack {
-		get { return this.character.magicAttack; }
-	}
-	
-	public float accuracy {
-		get {
-			return this.character.accuracy;
-		}
-	}
-	
-	public float relfex {
-		get {
-			return this.character.relfex;
-		}
-	}
-
-	public float critChance {
-		get { return this.character.critChance; }
-	}
-	
-	public float critDefense {
-		get { return this.character.critDefense; }
-	}
-
-	public float GetStat(StatType stat) {
-		return this.character.GetStat(stat);
-	}
-
-	public float GetResist(DamageType dmg) {
-		return this.character.GetResist(dmg);
-	}
-
-	public float GetResist(ElementResistType resistType) {
-		switch(resistType) {
-		case ElementResistType.DARK:
-			return GetResist(DamageType.DARK);
-		case ElementResistType.EARTH:
-			return GetResist(DamageType.EARTH);
-		case ElementResistType.FIRE:
-			return GetResist(DamageType.FIRE);
-		case ElementResistType.LIGHT:
-			return GetResist(DamageType.LIGHT);
-		case ElementResistType.WATER:
-			return GetResist(DamageType.WATER);
-		case ElementResistType.WIND:
-			return GetResist(DamageType.WIND);
-		}
-		return 0;
+		get;
+		set;
 	}
 }

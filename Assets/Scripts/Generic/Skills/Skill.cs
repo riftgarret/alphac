@@ -13,7 +13,7 @@ using UnityEngine;
 [Serializable]
 public abstract class Skill
 {
-	public Skill(SkillConfig config, int level) {
+	public Skill(SkillSO config, int level) {
 		mLevel = level;
 		mSkillConfig = config;
 	}
@@ -27,9 +27,9 @@ public abstract class Skill
 	}	
 
 	[SerializeField]
-	protected SkillConfig mSkillConfig;
+	protected SkillSO mSkillConfig;
 
-	public SkillConfig skillConfig { 
+	public SkillSO skillConfig { 
 		get { return mSkillConfig; } 
 		set { mSkillConfig = value; }
 	} 

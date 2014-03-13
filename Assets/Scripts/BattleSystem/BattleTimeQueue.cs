@@ -5,19 +5,15 @@ using System.Collections.Generic;
 public class BattleTimeQueue {
 	private float mUnitOfTime;
 	private float mInGameClock;
-	private BattleManager mManager;
-	public BattleManager manager {
-		get { return mManager; }
-	}
+
 
 	// unit queue
 	private BattleEntity [] unitArray;
 
 	// buff queues
 
-	public BattleTimeQueue(float unitOfTime, BattleManager manager) {
-		this.mUnitOfTime = unitOfTime;
-		this.mManager = manager;
+	public BattleTimeQueue(float unitOfTime) {
+		this.mUnitOfTime = unitOfTime;	
 		mInGameClock = 0f;
 	}
 
@@ -45,7 +41,7 @@ public class BattleTimeQueue {
 		mInGameClock += gameClockTic;
 
 		foreach(BattleEntity unit in unitArray) {
-			unit.IncrementGameClock(gameClockTic, this);
+			unit.IncrementGameClock(gameClockTic);
 		}
 	}
 
