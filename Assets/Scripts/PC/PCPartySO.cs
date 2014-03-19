@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 [System.Serializable]
-public class PCParty : ScriptableObject {
+public class PCPartySO : ScriptableObject {
 	
 	public PCCharacterSO[] characterConfigs;
 

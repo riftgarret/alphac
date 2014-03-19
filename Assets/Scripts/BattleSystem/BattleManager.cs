@@ -49,11 +49,14 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 	}
 
 	public EnemyPartySO enemyParty;
-	public PCParty pcParty;
+	public PCPartySO pcParty;
 
 	private bool mOnBattleChangedFlag;
 
 	void Awake() {
+		// override parameters
+		LoadSceneParameters();
+
 		// first create our battle system for other components to initialize
 		BattleSystem.Instance ().Init (this);
 		BattleSystem.eventManager.battleEventListener = this;
@@ -72,12 +75,17 @@ public class BattleManager : MonoBehaviour, PCBattleEntity.IPCActionListener, En
 		mBattleTimeQueue.InitEntities(mEntityManager.allEntities);
 	}
 
-	//private PriorityQueue
-	// Use this for initialization
-	void Start () {
-
+	/// <summary>
+	/// Check the BattleSceneLoader to see if we need to load any parameters
+	/// </summary>
+	private void LoadSceneParameters() {
+		BattleSceneLoader.BattleSceneParameters p = BattleSceneLoader.ConsumeParameters();
+		if(p != null) {
+			this.enemyParty = p.enemyParty;
+			this.pcParty = p.pcParty;
+		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		UpdateInGameClock();
