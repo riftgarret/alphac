@@ -10,7 +10,7 @@ public class PCTurnManager {
 		TARGET
 	}
 
-	private BattleManager manager;
+	private BattleController manager;
 	private Queue<PCBattleEntity> turnQueue;
 
 	/// <summary>
@@ -40,7 +40,7 @@ public class PCTurnManager {
 		get;
 	}
 		
-	public PCTurnManager(BattleManager manager) {
+	public PCTurnManager(BattleController manager) {
 		turnQueue = new Queue<PCBattleEntity>();
 		this.manager = manager;
 		this.currentSelectedSkill = null;
@@ -100,7 +100,7 @@ public class PCTurnManager {
 		PCBattleEntity sourceEntity = turnQueue.Dequeue();
 		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(target, manager.entityManager);
 		IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, targetResolver);
-		manager.OnPCAction(sourceEntity, action);
+        manager.PostActionSelected(sourceEntity, action);		
 		currentSelectedSkill = null;
 		decisionState = (turnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);
 	}

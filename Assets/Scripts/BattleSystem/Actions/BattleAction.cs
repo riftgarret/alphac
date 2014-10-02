@@ -51,7 +51,7 @@ public class BattleAction : IBattleAction {
 		CombatRound combatRound = combatSkill.CombatRounds[index];
 
 		foreach(BattleEntity targetEntity in targetResolver.GetTargets(combatSkill)) {
-			BattleSystem.combatExecutor.Execute(this.sourceEntity, targetEntity, combatSkill, combatRound);
+			BattleSystem.Instance.ExecuteCombat(this.sourceEntity, targetEntity, combatSkill, combatRound);
 		}
 
 	}

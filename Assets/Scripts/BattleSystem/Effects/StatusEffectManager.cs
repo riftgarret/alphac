@@ -113,7 +113,7 @@ public class StatusEffectManager
 			IStatusEffectExecutor oldEffect = executors[(int)effectType];
 			if(oldEffect != null) {
 				executors[(int)effectType] = null;
-				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, oldEffect, eventType));
+				BattleSystem.Instance.PostBattleEvent(new StatusEffectEvent(parent.mBattleEntity, oldEffect, eventType));
 			}
 		}
 
@@ -131,7 +131,7 @@ public class StatusEffectManager
 
 				executors[(int)effectType] = effect;
 				// notify listeners
-				BattleSystem.eventManager.NotifyEvent(new StatusEffectEvent(parent.mBattleEntity, effect, eventType));
+                BattleSystem.Instance.PostBattleEvent(new StatusEffectEvent(parent.mBattleEntity, effect, eventType));
 			}
 		}
 

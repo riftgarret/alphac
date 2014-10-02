@@ -6,6 +6,13 @@ using System.Collections;
 /// </summary>
 public abstract class BattleEntity {
 
+    public interface OnDecisionRequiredListener {
+        void OnDecisionRequired(BattleEntity entity);
+    }
+
+    // listenener for battle entity upated
+    private OnDecisionRequiredListener mListener;
+
 	// turn phase
 	public TurnState turnState {
 		get;
@@ -34,9 +41,10 @@ public abstract class BattleEntity {
 	private CombatNodeFactory mCombatNodeFactory;
 
 	// setup variables
-	public BattleEntity(Character character) {
+	public BattleEntity(Character character, OnDecisionRequiredListener listener) {
 		mStatusEffectManager = new StatusEffectManager(this);
 		mCombatNodeFactory = new CombatNodeFactory (this);
+        mListener = listener;
 		turnState = new TurnState(this);
 		this.character = character;
 		this.maxHP = character.maxHP;
@@ -66,7 +74,9 @@ public abstract class BattleEntity {
 	/// 
 	/// </summary>
 	/// <param name="state">State.</param>
-	public abstract void OnRequiresInput(TurnState state);
+    public void OnRequiresInput(TurnState state) {
+        mListener.OnDecisionRequired(this);
+    }
 
 	public void IncrementGameClock(float gameClockDelta) {
 		// TODO, we can modify time if we have that buff here

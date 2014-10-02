@@ -3,19 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BattleTimeQueue {
-	private float mUnitOfTime;
 	private float mInGameClock;
 
 
 	// unit queue
 	private BattleEntity [] unitArray;
 
-	// buff queues
-
-	public BattleTimeQueue(float unitOfTime) {
-		this.mUnitOfTime = unitOfTime;	
-		mInGameClock = 0f;
-	}
 
 	/// <summary>
 	/// Sets the entities that are used for turn based combat
@@ -35,13 +28,11 @@ public class BattleTimeQueue {
 	/// </summary>
 	/// <param name="deltaTime">Delta time.</param>
 	public void IncrementTimeDelta(float deltaTime) {
-		// reset input counter, we can see which players dont have commands
-
-		float gameClockTic = deltaTime * mUnitOfTime;
-		mInGameClock += gameClockTic;
+		// reset input counter, we can see which players dont have commands		
+		mInGameClock += deltaTime;
 
 		foreach(BattleEntity unit in unitArray) {
-			unit.IncrementGameClock(gameClockTic);
+            unit.IncrementGameClock(deltaTime);
 		}
 	}
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class BattleNormalGUI : MonoBehaviour {
 
 	// overarching system that manages the battle system
-	private BattleManager manager;
+	private IBattleController manager;
 
 	// Configuration of how to layout character portraits
 	public BattleCharacterConfig pcCharacterLayoutConfig;
@@ -26,7 +26,7 @@ public class BattleNormalGUI : MonoBehaviour {
 		skillButtonLayout = new BattleSkillButtonsLayout();
 		targetLayout = new BattleTargetingLayout();
 
-		manager = GetComponent<BattleManager>();
+		manager = GetComponent<BattleController>();
 
 	}
 

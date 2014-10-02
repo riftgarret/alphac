@@ -14,7 +14,7 @@ using System.Collections.Generic;
 /// <summary>
 /// A class to manage the different combinations of entities in fast native arrays
 /// </summary>
-public class BattleEntityManager
+public class BattleEntityManager : BattleEntity.OnDecisionRequiredListener
 {
 	private EnemyBattleEntity[] mEnemyEntities;
 	public EnemyBattleEntity[] enemyEntities {
@@ -73,19 +73,19 @@ public class BattleEntityManager
 	}
 
 
-	public BattleEntityManager (BattleManager manager, PCCharacter[] pcChars, EnemyCharacter[] enemyChars) {
+	public BattleEntityManager (PCCharacter[] pcChars, EnemyCharacter[] enemyChars) {
 		// combine 
 		mAllEntities = new BattleEntity[pcChars.Length + enemyChars.Length];		
 		mPcEntities = new PCBattleEntity[pcChars.Length];
 		mEnemyEntities = new EnemyBattleEntity[enemyChars.Length];
 
 		for(int i=0; i < mPcEntities.Length; i++) {
-			mPcEntities[i] = new PCBattleEntity(pcChars[i], manager);
+			mPcEntities[i] = new PCBattleEntity(pcChars[i], this);
 			mAllEntities[i] = mPcEntities[i];
 		}
 
 		for(int i=0; i < mEnemyEntities.Length; i++) {
-			mEnemyEntities[i] = new EnemyBattleEntity(enemyChars[i], manager);
+			mEnemyEntities[i] = new EnemyBattleEntity(enemyChars[i], this);
 			mAllEntities[pcChars.Length + i] = mEnemyEntities[i];
 		}
 		// create row specifics
@@ -120,4 +120,8 @@ public class BattleEntityManager
 	}
 
 
+
+    public void OnDecisionRequired(BattleEntity entity) {
+        BattleSystem.Instance.PostActionRequired(entity);
+    }
 }

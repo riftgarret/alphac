@@ -62,7 +62,7 @@ public class CombatOperationExecutor
 	/// <param name="statusList">Status list.</param>
 	/// <param name="damageType">Damage type.</param>
 	/// <param name="physicalCombatNode">Physical combat node.</param>
-	public void ExecutePhysicalAttack(BattleEntity src, BattleEntity dest,                     	
+	private void ExecutePhysicalAttack(BattleEntity src, BattleEntity dest,                     	
 	                                StatusEffectRule [] effectRules,
 	                                DamageType damageType,
 	                                CombatResolver srcResolver) {
@@ -81,7 +81,7 @@ public class CombatOperationExecutor
 	/// <param name="statusList">Status list.</param>
 	/// <param name="damageType">Damage type.</param>
 	/// <param name="magicalCombatNode">Magical combat node.</param>
-	public void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
+	private void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
 	                                 StatusEffectRule [] effectRules,
 	                                 DamageType damageType,
 	                                 CombatResolver srcResolver) {
@@ -100,7 +100,7 @@ public class CombatOperationExecutor
 	/// <param name="src">Source.</param>
 	/// <param name="dest">Destination.</param>
 	/// <param name="options">Options.</param>
-	public void ExecuteHealing(BattleEntity src, BattleEntity dest, 
+	private void ExecuteHealing(BattleEntity src, BattleEntity dest, 
 	                           StatusEffectRule [] effectRules,
 	                           CombatResolver srcResolver) {
 		CombatResolver destResolver = new CombatResolver (dest);
@@ -110,7 +110,7 @@ public class CombatOperationExecutor
 		IBattleEvent battleEvent = healOperation.Execute (srcResolver, destResolver);
 
 		// notify resulting battle event
-		BattleSystem.eventManager.NotifyEvent (battleEvent);
+        BattleSystem.Instance.PostBattleEvent(battleEvent);
 
 		// since we execute everything, lets just do whatever execute positive to finish the workflow
 		ExecutePositive (src, dest, effectRules);
@@ -123,7 +123,7 @@ public class CombatOperationExecutor
 	/// <param name="dest">Destination.</param>
 	/// <param name="action">Action.</param>
 	/// <param name="statusList">Status list.</param>
-	public void ExecutePositive(BattleEntity src, BattleEntity dest, 
+	private void ExecutePositive(BattleEntity src, BattleEntity dest, 
 	                            StatusEffectRule [] effectRules) {
 		foreach (StatusEffectRule combatStatusEffect in effectRules) {
 			ApplyEffect(combatStatusEffect, src);
@@ -147,13 +147,13 @@ public class CombatOperationExecutor
 		BattleEventType eventType = battleEvent.eventType;
 
 		// notify resulting battle event
-		BattleSystem.eventManager.NotifyEvent (battleEvent);
+		BattleSystem.Instance.PostBattleEvent(battleEvent);
 
 		// check to see if it was a damage event to see if we killed them
 		if (eventType == BattleEventType.DAMAGE && wasAlive && destEntity.currentHP <= 0) {
 			destEntity.character.curHP = 0;
 			DeathEvent deathEvent = new DeathEvent(destEntity);
-			BattleSystem.eventManager.NotifyEvent(deathEvent);		
+            BattleSystem.Instance.PostBattleEvent(deathEvent);		
 		}
 
 		// lets see if we hit the target or not
