@@ -51,7 +51,7 @@ public class ConfigurableCombatNode : ICombatNode
 		}
 	}
 
-	public void Load(ResistProperties resists) {
+	public void Load(ElementProperties resists) {
 		if(resists != null) {
 			mPropertyAdd[(int)CombatPropertyType.RESIST_CRUSH] = resists.crush;
 			mPropertyAdd[(int)CombatPropertyType.RESIST_SLASH] = resists.slash;

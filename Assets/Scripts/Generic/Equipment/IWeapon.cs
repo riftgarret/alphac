@@ -12,7 +12,6 @@ using UnityEngine;
 
 public interface IWeapon : IEquipment
 {
-	DamageType DamageType {get;}
-	WeaponType WeaponType {get;}
+	
 }
 

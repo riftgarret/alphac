@@ -10,7 +10,7 @@
 using System;
 
 [Serializable]
-public class ResistProperties
+public class ElementProperties
 {
 	// physical
 	public float slash;

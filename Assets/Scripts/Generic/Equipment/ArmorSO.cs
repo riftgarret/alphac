@@ -15,7 +15,7 @@ public class ArmorSO : EquipmentSO, IArmor
 
 	public ArmorPosition armorPosition = ArmorPosition.TORSO;
 	public ArmorType armorType = ArmorType.LIGHT;
-	public ResistProperties resists = new ResistProperties();
+	public ElementProperties resists = new ElementProperties();
 	public CombatProperty [] additionalCombatProperties;
 
 	protected override void SanityCheck ()

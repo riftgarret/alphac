@@ -18,6 +18,16 @@ public abstract class EquipmentSO : SanitySO, IEquipment
 	// lazy initialized
 	private ICombatNode mCachedCombatNode;
 
+    // elemental offense and defense abilities
+    public ElementProperties elementOffenseScaling = new ElementProperties();
+    public ElementProperties elementDefenseScaling = new ElementProperties();
+
+    // attribute bonuses
+    public AttributeProperties attributeExtra = new AttributeProperties();
+
+    // allow user to wear
+    public EquipmentRestriction equipmentRestriction = new EquipmentRestriction();
+
 	protected abstract ICombatNode CreateCombatNode();
 
 	protected override void SanityCheck ()
