@@ -16,13 +16,10 @@ public class CharacterSO : SanitySO
 	public string displayName;
 	
 	// stats
-	public float strength;
-	public float vitality;
-	public float dexerity;
-	public float agility;
-	public float inteligence;
-	public float wisdom;
-	public float luck;
+    public AttributeVector attributes = new AttributeVector();
+    public CombatStatsVector combatStats = new CombatStatsVector();
+    public ElementVector elementDefense = new ElementVector();
+    public ElementVector elementAttack = new ElementVector();    
 	
 	// level and class
 	public int level;

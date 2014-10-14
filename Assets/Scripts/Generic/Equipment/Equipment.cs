@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public abstract class EquipmentSO : SanitySO, IEquipment
+public abstract class Equipment : IEquipment
 {
 	public string displayName;
 	public Texture2D icon;
@@ -23,18 +23,8 @@ public abstract class EquipmentSO : SanitySO, IEquipment
     public AttributeVector attributeExtra = new AttributeVector();
 
     // allow user to wear
-    public EquipmentRestriction equipmentRestriction = new EquipmentRestriction();	
+    public EquipmentRestriction equipmentRestriction = new EquipmentRestriction();
 
-	protected override void SanityCheck ()
-	{
-		if(string.IsNullOrEmpty(displayName)) {
-			LogNull("displayName");
-		}
-
-		if(icon == null) {
-			LogNull("icon");
-		}
-	}
 
 	public string DisplayName {
 		get {

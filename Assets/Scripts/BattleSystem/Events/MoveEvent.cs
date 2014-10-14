@@ -22,13 +22,13 @@ public class MoveEvent : IBattleEvent
 		this.mDestRow = destRow;
 	}
 
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		get {
 			return mSrcEntity;
 		}
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
 			return BattleEventType.MOVE;
 		}

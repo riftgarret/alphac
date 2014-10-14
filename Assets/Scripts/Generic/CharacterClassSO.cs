@@ -70,7 +70,7 @@ public class CharacterClassSO : SanitySO
 	/// <returns>The hitpoints.</returns>
 	/// <param name="character">Character.</param>
 	public float CalculateHitpoints(Character character) {
-		return character.level * hitpointsPerLevel + (character.vitality);
+		return character.level * hitpointsPerLevel + (character.attributes.vitality);
 	}
 
 	/// <summary>

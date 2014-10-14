@@ -18,13 +18,13 @@ public class DeathEvent : IBattleEvent
 		mSrcEntity = entity;
 	}
 
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		get {
 			return mSrcEntity;
 		}
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
 			return BattleEventType.DEATH;
 		}
@@ -32,6 +32,6 @@ public class DeathEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[DeathEvent: srcEntity={0}]", srcEntity.character.displayName);
+		return string.Format ("[DeathEvent: srcEntity={0}]", SrcEntity.character.displayName);
 	}
 }

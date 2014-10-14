@@ -11,26 +11,21 @@ using System;
 
 public enum CombatPropertyType
 {
-	NONE,	// since cannot be null, lets make sure when we customize this we can select none
+	NONE,	// since cannot be null, lets make sure when we customize this we can select none    
 
 	// OFFENSIVE
 	TOTAL_DAMAGE,
-	CRIT_CHANCE,
-	RESIST_IGNORE,
-	PHY_SCALE_STR, // by default there shouldnt be any scaling, unless on weapon or buff
-	PHY_SCALE_VIT,
-	PHY_SCALE_DEX,
-	PHY_SCALE_AGI,
-	PHY_SCALE_INT,
-	PHY_SCALE_WIS,
-	PHY_SCALE_LUCK,
-	MAG_SCALE_STR, // by default there shouldnt be any scaling, unless on weapon or buff
-	MAG_SCALE_VIT,
-	MAG_SCALE_DEX,
-	MAG_SCALE_AGI,
-	MAG_SCALE_INT,
-	MAG_SCALE_WIS,
-	MAG_SCALE_LUCK,
+
+    EVASION,
+    ACCURACY,
+
+    CRIT_EVASION,
+	CRIT_ACCURACY,		    
+
+    CRIT_POWER,
+    CRIT_DEFENSE,
+
+    // attributes
 	STR,
 	VIT,
 	DEX,
@@ -38,25 +33,75 @@ public enum CombatPropertyType
 	INT,
 	WIS,
 	LUCK,
-	// magic
-	POWER_MAGIC,
-	// physical
-	POWER_PHYSICAL,
-	REFLEX_IGNORE,
-	ACCURACY,
 
-	// DEFENSIVE
-	REFLEX,
-	CRIT_DEFENSE,
-	RESIST_SLASH,
-	RESIST_CRUSH,
-	RESIST_PIERCE,
-	RESIST_DARK,
-	RESIST_LIGHT,
-	RESIST_WIND,
-	RESIST_EARTH,
-	RESIST_WATER,
-	RESIST_FIRE,
-	COUNT
+	// magic
+	MAGICAL_POWER,
+    MAGICAL_DEFENSE,
+    
+	// physical
+	PHYSICAL_POWER,
+    PHYSICAL_DEFENSE,
+	
+	// elements
+	SLASH_DEFENSE,
+	CRUSH_DEFENSE,
+	PIERCE_DEFENSE,
+	DARK_DEFENSE,
+    LIGHT_DEFENSE,
+    WIND_DEFENSE,
+    EARTH_DEFENSE,
+    WATER_DEFENSE,
+    FIRE_DEFENSE,
+
+    SLASH_ATTACK,
+    CRUSH_ATTACK,
+    PIERCE_ATTACK,
+    DARK_ATTACK,
+    LIGHT_ATTACK,
+    WIND_ATTACK,
+    EARTH_ATTACK,
+    WATER_ATTACK,
+    FIRE_ATTACK,
+
+    // weapon / skill scaling
+
+    SCALE_STR,
+    SCALE_VIT,
+    SCALE_DEX,
+    SCALE_AGI,
+    SCALE_INT,
+    SCALE_WIS,
+    SCALE_LUCK,
+
+    SLASH_MIN,
+    CRUSH_MIN,
+    PIERCE_MIN,
+    DARK_MIN,
+    LIGHT_MIN,
+    WIND_MIN,
+    EARTH_MIN,
+    WATER_MIN,
+    FIRE_MIN,
+
+    SLASH_MAX,
+    CRUSH_MAX,
+    PIERCE_MAX,
+    DARK_MAX,
+    LIGHT_MAX,
+    WIND_MAX,
+    EARTH_MAX,
+    WATER_MAX,
+    FIRE_MAX,
+
+    COUNT
 }
 
+public enum CombatFlag {
+    NONE, 
+    ALWAYS_HIT,
+    NEVER_HIT,
+    ALWAYS_CRIT,
+    NEVER_CRIT,
+    // etc..
+    COUNT
+}

@@ -30,13 +30,10 @@ public abstract class Character  {
 	public string displayName;
 
 	// stats
-	public float strength;
-	public float vitality;
-	public float dexerity;
-	public float agility;
-	public float inteligence;
-	public float wisdom;
-	public float luck;
+    public AttributeVector attributes = new AttributeVector();
+    public CombatStatsVector combatStats = new CombatStatsVector();
+    public ElementVector elementDefense = new ElementVector();
+    public ElementVector elementAttack = new ElementVector();    
 
 	// level and class
 	public int level;
@@ -52,7 +49,8 @@ public abstract class Character  {
 		get { 
 			if(mWeaponConfig.equipedWeapons.Length == 0) 
 				Debug.Log ("empty equipedWeapons"); 
-			return mWeaponConfig.equipedWeapons; }
+			return mWeaponConfig.equipedWeapons; 
+        }
 	}
 
 	public Armor [] equipedArmor {
@@ -78,13 +76,10 @@ public abstract class Character  {
 		displayName = other.displayName;
 
 		// stats
-		strength = other.strength;
-		vitality = other.vitality;
-		dexerity = other.dexerity;
-		agility = other.agility;
-		inteligence = other.inteligence;
-		wisdom = other.wisdom;
-		luck = other.luck;
+        attributes = other.attributes;
+        elementAttack = other.elementAttack;
+        elementDefense = other.elementDefense;
+        combatStats = other.combatStats;
 
 
 		// level and class
@@ -104,96 +99,8 @@ public abstract class Character  {
 			mArmorConfig.EquipArmor(other.armors[i], other.armors[i].slot);
 		}
 */
-
 		curHP = maxHP;
-	}
-			
-	// TODO
-	public float magicAttack {
-		get { return 0; }
-	}
-
-	public float accuracy {
-		get {
-			return dexerity;
-		}
-	}
-
-	public float relfex {
-		get {
-			return agility;
-		}
-	}
-
-	// TODO armor based on equipment + 10% vit
-	// TODO physical resistance: product of armor and vit
-
-	// TODO elemental resist
-
-	public float critChance {
-		get { return luck; }
-	}
-
-	public float critDefense {
-		get { return luck + vitality / 2; }
-	}
-
-	/// <summary>
-	/// Gets the stat value.
-	/// </summary>
-	/// <returns>The stat.</returns>
-	/// <param name="stat">Stat.</param>
-	public float GetStat(StatType stat) {
-		switch(stat) {
-		case StatType.STR:
-			return strength;
-		case StatType.VIT:
-			return vitality;
-		case StatType.AGI:
-			return agility;
-		case StatType.DEX:
-			return dexerity;
-		case StatType.INT:
-			return inteligence;
-		case StatType.WIS:
-			return wisdom;
-		case StatType.LUCK:
-		default:
-			return luck;
-		}
-	}
-
-
-	public float GetResist(DamageType dmg) {
-		float classResist = GetClassArmorResists(dmg);
-		return classResist;
-	}
-
-	private float GetClassArmorResists(DamageType type) {
-		switch(type) {
-		case DamageType.CRUSH:
-			// get crush armor stats
-			return (vitality / 2f);
-		case DamageType.PIERCE:
-			return (agility / 2f);
-		case DamageType.SLASH:
-			return (dexerity / 2f);
-		case DamageType.DARK:
-			return (luck / 2f);
-		case DamageType.LIGHT:
-			return (wisdom / 2f);
-		case DamageType.EARTH:
-			return (strength / 2f);
-		case DamageType.WIND:
-			return (agility / 2f);
-		case DamageType.FIRE:
-			return (vitality / 2f);
-		case DamageType.WATER:
-			return (wisdom / 2f);
-		default:
-			return 1;
-		}
-	}
+	}    				
 
 	public override string ToString ()
 	{

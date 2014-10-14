@@ -20,7 +20,7 @@ public class NonDamageEvent : IBattleEvent
 		mDestEntity = destEntity;
 	}
 
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		get {
 			return mSrcEntity;
 		}
@@ -32,7 +32,7 @@ public class NonDamageEvent : IBattleEvent
 		}
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
 			return BattleEventType.NON_DAMAGE;
 		}

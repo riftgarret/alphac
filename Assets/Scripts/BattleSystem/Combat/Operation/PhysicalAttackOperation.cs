@@ -11,34 +11,39 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PhysicalAttackOperation : AbstractCombatOperation
+public class PhysicalAttackOperation : ICombatOperation
 {
-	private BattleEntity mSrcEntity;
-	private BattleEntity mDestEntity;
+	private CombatResolver mSrc;
+	private CombatResolver mDest;
 	private DamageType mDamageType;
 
-	public PhysicalAttackOperation (BattleEntity src, 
-	                            BattleEntity dest, 
-	                            DamageType damageType)
+	public PhysicalAttackOperation (CombatResolver src, CombatResolver dest)
 	{
-		this.mSrcEntity = src;
-		this.mDestEntity = dest;
-		mDamageType = damageType;
+        this.mSrc = src;
+        this.mDest = dest;		
 	}
 	
-	public override IBattleEvent Execute (CombatResolver srcResolver, CombatResolver destResolver)
+	public void Execute (List<IBattleEvent> eventList)
 	{
-		// check dodge before anything
-		float srcChanceToHit = srcResolver.GetAccuracy ();
-		float reflex = destResolver.GetReflex();
-		float chanceToHit = srcChanceToHit / (srcChanceToHit + reflex); 
-		
+		// check dodge before anything		        
+        bool hitSuccess = CombatUtil.HitSuccess(mSrc, mDest);
 		// TODO add chanceToHit increase
 		// if we missed
-		if(UnityEngine.Random.Range(0f, 1f) > chanceToHit) {
-			return new DodgeEvent(mSrcEntity, mDestEntity);
+		if(!hitSuccess) {
+            eventList.Add(new DodgeEvent(mSrc.entity, mDest.entity));
+            return;
 		}
+
+        ElementVector damage = CombatUtil.CalculateDamage(mSrc, mDest);
 		
+        // did we crit?
+        bool isCrit = CombatUtil.CritSuccess(mSrc, mDest);
+
+        if (isCrit) {
+            eventList.Add(new CritHitEvent(mSrc.entity, mDest.entity));
+        }
+
+        ElementVector dmgProperties = CombatUtil.CalculateDamage(mSrc, mDest, isCrit);
 		// TODO set base damage in damage node or use total damage
 		float dmg = srcResolver.GetPhysicalDamage ();
 		

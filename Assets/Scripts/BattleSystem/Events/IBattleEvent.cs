@@ -10,11 +10,11 @@
 using System;
 public interface IBattleEvent
 {
-	BattleEntity srcEntity {
+	BattleEntity SrcEntity {
 		get;
 	}
 
-	BattleEventType eventType {
+	BattleEventType EventType {
 		get;
 	}
 }

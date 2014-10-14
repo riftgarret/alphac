@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Armor : IArmor
+public class Armor : Equipment, IArmor 
 {
 	public static readonly Armor EMPTY_ARMOR = new Armor();
 
@@ -30,22 +30,5 @@ public class Armor : IArmor
 		get;
 	}
 
-	public string DisplayName {
-		get {
-			throw new NotImplementedException ();
-		}
-	}
-
-	public Texture2D Icon {
-		get {
-			throw new NotImplementedException ();
-		}
-	}
-
-	public ICombatNode combatNode {
-		get {
-			throw new NotImplementedException ();
-		}
-	}
 }
 

@@ -14,26 +14,32 @@ public class ConfigurableCombatNode : ICombatNode
 {
 	protected float [] mPropertyAdd;
 	protected float [] mPropertyMultiply;
+    protected bool[] mFlags;
 
 	public ConfigurableCombatNode ()
 	{
 		mPropertyAdd = new float[(int)CombatPropertyType.COUNT];
 		mPropertyMultiply = new float[(int)CombatPropertyType.COUNT];
+        mFlags = new bool[(int)CombatFlag.COUNT];
 
 		for(int i=0; i < (int)CombatPropertyType.COUNT; i++) {
 			mPropertyMultiply[i] = 1f;
 		}
 	}
 
-	public float GetPropertyAdd (CombatPropertyType property)
+	public float GetProperty (CombatPropertyType property)
 	{
 		return mPropertyAdd[(int)property];
 	}
 
-	public float GetPropertyMultiply (CombatPropertyType property)
+	public float GetPropertyScalar (CombatPropertyType property)
 	{
 		return mPropertyMultiply[(int)property];
 	}
+
+    public bool HasFlag(CombatFlag flag) {
+        return mFlags[(int)flag];
+    }
 
 	/// <summary>
 	/// Load the specified combatProperties.
@@ -51,19 +57,155 @@ public class ConfigurableCombatNode : ICombatNode
 		}
 	}
 
-	public void Load(ElementProperties resists) {
-		if(resists != null) {
-			mPropertyAdd[(int)CombatPropertyType.RESIST_CRUSH] = resists.crush;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_SLASH] = resists.slash;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_PIERCE] = resists.pierce;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_LIGHT] = resists.light;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_DARK] = resists.dark;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_EARTH] = resists.earth;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_WIND] = resists.wind;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_FIRE] = resists.fire;
-			mPropertyAdd[(int)CombatPropertyType.RESIST_WATER] = resists.water;
+    public void LoadAttribute(AttributeVector attributes) {
+        if (attributes != null) {
+            mPropertyAdd[(int)CombatPropertyType.STR] = attributes.strength;
+            mPropertyAdd[(int)CombatPropertyType.VIT] = attributes.vitality;
+            mPropertyAdd[(int)CombatPropertyType.DEX] = attributes.dexerity;
+            mPropertyAdd[(int)CombatPropertyType.AGI] = attributes.agility;            
+            mPropertyAdd[(int)CombatPropertyType.WIS] = attributes.wisdom;
+            mPropertyAdd[(int)CombatPropertyType.INT] = attributes.inteligence;
+            mPropertyAdd[(int)CombatPropertyType.LUCK] = attributes.luck;            
+        }
+    }
+
+    public void LoadAttributeScalar(AttributeVector attributes) {
+        if (attributes != null) {
+            mPropertyMultiply[(int)CombatPropertyType.STR] = attributes.strength;
+            mPropertyMultiply[(int)CombatPropertyType.VIT] = attributes.vitality;
+            mPropertyMultiply[(int)CombatPropertyType.DEX] = attributes.dexerity;
+            mPropertyMultiply[(int)CombatPropertyType.AGI] = attributes.agility;
+            mPropertyMultiply[(int)CombatPropertyType.WIS] = attributes.wisdom;
+            mPropertyMultiply[(int)CombatPropertyType.INT] = attributes.inteligence;
+            mPropertyMultiply[(int)CombatPropertyType.LUCK] = attributes.luck;
+        }
+    }
+
+    public void LoadElementAttack(ElementVector elements) {
+        if (elements != null) {
+            mPropertyAdd[(int)CombatPropertyType.CRUSH_ATTACK] = elements.crush;
+            mPropertyAdd[(int)CombatPropertyType.SLASH_ATTACK] = elements.slash;
+            mPropertyAdd[(int)CombatPropertyType.PIERCE_ATTACK] = elements.pierce;
+            mPropertyAdd[(int)CombatPropertyType.LIGHT_ATTACK] = elements.light;
+            mPropertyAdd[(int)CombatPropertyType.DARK_ATTACK] = elements.dark;
+            mPropertyAdd[(int)CombatPropertyType.EARTH_ATTACK] = elements.earth;
+            mPropertyAdd[(int)CombatPropertyType.WIND_ATTACK] = elements.wind;
+            mPropertyAdd[(int)CombatPropertyType.FIRE_ATTACK] = elements.fire;
+            mPropertyAdd[(int)CombatPropertyType.WATER_ATTACK] = elements.water;
+        }
+    }
+
+    public void LoadElementAttackScalar(ElementVector elements) {
+        if (elements != null) {
+            mPropertyMultiply[(int)CombatPropertyType.CRUSH_ATTACK] = elements.crush;
+            mPropertyMultiply[(int)CombatPropertyType.SLASH_ATTACK] = elements.slash;
+            mPropertyMultiply[(int)CombatPropertyType.PIERCE_ATTACK] = elements.pierce;
+            mPropertyMultiply[(int)CombatPropertyType.LIGHT_ATTACK] = elements.light;
+            mPropertyMultiply[(int)CombatPropertyType.DARK_ATTACK] = elements.dark;
+            mPropertyMultiply[(int)CombatPropertyType.EARTH_ATTACK] = elements.earth;
+            mPropertyMultiply[(int)CombatPropertyType.WIND_ATTACK] = elements.wind;
+            mPropertyMultiply[(int)CombatPropertyType.FIRE_ATTACK] = elements.fire;
+            mPropertyMultiply[(int)CombatPropertyType.WATER_ATTACK] = elements.water;
+        }
+    }
+
+	public void LoadElementDefense(ElementVector elements) {
+		if(elements != null) {
+			mPropertyAdd[(int)CombatPropertyType.CRUSH_DEFENSE] = elements.crush;
+			mPropertyAdd[(int)CombatPropertyType.SLASH_DEFENSE] = elements.slash;
+			mPropertyAdd[(int)CombatPropertyType.PIERCE_DEFENSE] = elements.pierce;
+			mPropertyAdd[(int)CombatPropertyType.LIGHT_DEFENSE] = elements.light;
+			mPropertyAdd[(int)CombatPropertyType.DARK_DEFENSE] = elements.dark;
+			mPropertyAdd[(int)CombatPropertyType.EARTH_DEFENSE] = elements.earth;
+			mPropertyAdd[(int)CombatPropertyType.WIND_DEFENSE] = elements.wind;
+			mPropertyAdd[(int)CombatPropertyType.FIRE_DEFENSE] = elements.fire;
+			mPropertyAdd[(int)CombatPropertyType.WATER_DEFENSE] = elements.water;
 		}
 	}
+
+    public void LoadElementDefenseScalar(ElementVector elements) {
+        if (elements != null) {
+            mPropertyMultiply[(int)CombatPropertyType.CRUSH_DEFENSE] = elements.crush;
+            mPropertyMultiply[(int)CombatPropertyType.SLASH_DEFENSE] = elements.slash;
+            mPropertyMultiply[(int)CombatPropertyType.PIERCE_DEFENSE] = elements.pierce;
+            mPropertyMultiply[(int)CombatPropertyType.LIGHT_DEFENSE] = elements.light;
+            mPropertyMultiply[(int)CombatPropertyType.DARK_DEFENSE] = elements.dark;
+            mPropertyMultiply[(int)CombatPropertyType.EARTH_DEFENSE] = elements.earth;
+            mPropertyMultiply[(int)CombatPropertyType.WIND_DEFENSE] = elements.wind;
+            mPropertyMultiply[(int)CombatPropertyType.FIRE_DEFENSE] = elements.fire;
+            mPropertyMultiply[(int)CombatPropertyType.WATER_DEFENSE] = elements.water;
+        }
+    }
+
+    public void LoadCombatStats(CombatStatsVector combatStats) {
+        if (combatStats != null) {
+            mPropertyAdd[(int)CombatPropertyType.PHYSICAL_POWER] = combatStats.physicalPower;
+            mPropertyAdd[(int)CombatPropertyType.PHYSICAL_DEFENSE] = combatStats.physicalDefense;
+            mPropertyAdd[(int)CombatPropertyType.MAGICAL_POWER] = combatStats.magicPower;
+            mPropertyAdd[(int)CombatPropertyType.MAGICAL_DEFENSE] = combatStats.magicDefense;
+            mPropertyAdd[(int)CombatPropertyType.EVASION] = combatStats.evasion;
+            mPropertyAdd[(int)CombatPropertyType.ACCURACY] = combatStats.accuracy;
+            mPropertyAdd[(int)CombatPropertyType.CRIT_EVASION] = combatStats.critEvasion;
+            mPropertyAdd[(int)CombatPropertyType.CRIT_ACCURACY] = combatStats.critAccuracy;
+            mPropertyAdd[(int)CombatPropertyType.CRIT_DEFENSE] = combatStats.critDefense;
+            mPropertyAdd[(int)CombatPropertyType.CRIT_POWER] = combatStats.critPower;
+        }
+    }
+
+    public void LoadCombatStatsScalar(CombatStatsVector combatStats) {
+        if (combatStats != null) {
+            mPropertyMultiply[(int)CombatPropertyType.PHYSICAL_POWER] = combatStats.physicalPower;
+            mPropertyMultiply[(int)CombatPropertyType.PHYSICAL_DEFENSE] = combatStats.physicalDefense;
+            mPropertyMultiply[(int)CombatPropertyType.MAGICAL_POWER] = combatStats.magicPower;
+            mPropertyMultiply[(int)CombatPropertyType.MAGICAL_DEFENSE] = combatStats.magicDefense;
+            mPropertyMultiply[(int)CombatPropertyType.EVASION] = combatStats.evasion;
+            mPropertyMultiply[(int)CombatPropertyType.ACCURACY] = combatStats.accuracy;
+            mPropertyMultiply[(int)CombatPropertyType.CRIT_EVASION] = combatStats.critEvasion;
+            mPropertyMultiply[(int)CombatPropertyType.CRIT_ACCURACY] = combatStats.critAccuracy;
+            mPropertyMultiply[(int)CombatPropertyType.CRIT_DEFENSE] = combatStats.critDefense;
+            mPropertyMultiply[(int)CombatPropertyType.CRIT_POWER] = combatStats.critPower;
+        }
+    }
+
+    public void LoadDamageMin(ElementVector elements) {
+        if (elements != null) {
+            mPropertyAdd[(int)CombatPropertyType.CRUSH_MIN] = elements.crush;
+            mPropertyAdd[(int)CombatPropertyType.SLASH_MIN] = elements.slash;
+            mPropertyAdd[(int)CombatPropertyType.PIERCE_MIN] = elements.pierce;
+            mPropertyAdd[(int)CombatPropertyType.LIGHT_MIN] = elements.light;
+            mPropertyAdd[(int)CombatPropertyType.DARK_MIN] = elements.dark;
+            mPropertyAdd[(int)CombatPropertyType.EARTH_MIN] = elements.earth;
+            mPropertyAdd[(int)CombatPropertyType.WIND_MIN] = elements.wind;
+            mPropertyAdd[(int)CombatPropertyType.FIRE_MIN] = elements.fire;
+            mPropertyAdd[(int)CombatPropertyType.WATER_MIN] = elements.water;
+        }
+    }
+
+    public void LoadDamageMax(ElementVector elements) {
+        if (elements != null) {
+            mPropertyAdd[(int)CombatPropertyType.CRUSH_MAX] = elements.crush;
+            mPropertyAdd[(int)CombatPropertyType.SLASH_MAX] = elements.slash;
+            mPropertyAdd[(int)CombatPropertyType.PIERCE_MAX] = elements.pierce;
+            mPropertyAdd[(int)CombatPropertyType.LIGHT_MAX] = elements.light;
+            mPropertyAdd[(int)CombatPropertyType.DARK_MAX] = elements.dark;
+            mPropertyAdd[(int)CombatPropertyType.EARTH_MAX] = elements.earth;
+            mPropertyAdd[(int)CombatPropertyType.WIND_MAX] = elements.wind;
+            mPropertyAdd[(int)CombatPropertyType.FIRE_MAX] = elements.fire;
+            mPropertyAdd[(int)CombatPropertyType.WATER_MAX] = elements.water;
+        }
+    }
+
+    public void LoadDamageScalingAttributes(AttributeVector attributes) {
+        if (attributes != null) {
+            mPropertyAdd[(int)CombatPropertyType.SCALE_STR] = attributes.strength;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_VIT] = attributes.vitality;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_DEX] = attributes.dexerity;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_AGI] = attributes.agility;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_WIS] = attributes.wisdom;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_INT] = attributes.inteligence;
+            mPropertyAdd[(int)CombatPropertyType.SCALE_LUCK] = attributes.luck;
+        }
+    }
 }
 
 

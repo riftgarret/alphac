@@ -13,7 +13,7 @@ using UnityEngine;
 
 // TODO separate PhysicalWeapon from MagicalWeapon (for caster reasons)
 [Serializable]
-public class Weapon : IWeapon
+public class Weapon : Equipment, IWeapon
 {
 	public static readonly Weapon EMPTY_WEAPON = new Weapon();
 	/// <summary>
@@ -24,36 +24,26 @@ public class Weapon : IWeapon
 	// weapon config to setup in the data module
 
 	public Weapon() {
-		DamageType = DamageType.SLASH;
-		WeaponType = WeaponType.AXE;
-		DisplayName = "Uninitialized";
-		combatNode = new WeaponCombatNode(this);
+		WeaponType = WeaponType.AXE;		
 	}
-
-	public DamageType DamageType {
-		get;
-		set;
-	}
+	
 
 	public WeaponType WeaponType {
 		get; 
 		set;
 	}
 
-	public string DisplayName {
-		get;
-		set;
-	}
+    public ElementVector DamageMin {
+        get { return new ElementVector(); }
+    }
 
-	public Texture2D Icon {
-		get;
-		set;
-	}
+    public ElementVector DamageMax {
+        get { return new ElementVector(); }
+    }
 
-	public ICombatNode combatNode {
-		get;
-		set;
-	}
+    public AttributeVector AttributeScaling {
+        get { return new AttributeVector(); }
+    }
 }
 
 

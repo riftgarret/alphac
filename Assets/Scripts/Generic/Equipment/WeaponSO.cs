@@ -13,11 +13,11 @@ using UnityEngine;
 [Serializable]
 public class WeaponSO : EquipmentSO, IWeapon
 {
-    public ElementProperties damageMin = new ElementProperties();
-    public ElementProperties damageMax = new ElementProperties();
+    public ElementVector damageMin = new ElementVector();
+    public ElementVector damageMax = new ElementVector();
 
     // weapon scaling
-    public AttributeProperties attributeScaling = new AttributeProperties();
+    public AttributeVector attributeScaling = new AttributeVector();
 
     public GameConstants.WeaponHand weaponHand = GameConstants.WeaponHand.MAIN;
 
@@ -26,12 +26,17 @@ public class WeaponSO : EquipmentSO, IWeapon
 		base.SanityCheck ();		
 	}
 
-
-	protected override ICombatNode CreateCombatNode ()
-	{
-		WeaponCombatNode node = new WeaponCombatNode(this);		
-		return node;
-	}
-
 	// TODO build combat node to pull values from for UI
+
+    public ElementVector DamageMin {
+        get { return damageMin; }
+    }
+
+    public ElementVector DamageMax {
+        get { return damageMax; }
+    }
+
+    public AttributeVector AttributeScaling {
+        get { return attributeScaling; }
+    }
 }

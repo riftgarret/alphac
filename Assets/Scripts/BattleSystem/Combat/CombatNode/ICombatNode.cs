@@ -10,11 +10,9 @@
 using System;
 public interface ICombatNode
 {
-
-	float GetPropertyAdd(CombatPropertyType property);
-
-	float GetPropertyMultiply(CombatPropertyType property);
-
+    float GetProperty(CombatPropertyType property);
+    float GetPropertyScalar(CombatPropertyType property);
+    bool HasFlag(CombatFlag flag);
 }
 
 

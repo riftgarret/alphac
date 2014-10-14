@@ -12,6 +12,8 @@ using UnityEngine;
 
 public interface IWeapon : IEquipment
 {
-	
+    ElementVector DamageMin { get; }
+    ElementVector DamageMax { get; }
+    AttributeVector AttributeScaling { get; }
 }
 

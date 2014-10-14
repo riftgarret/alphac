@@ -15,7 +15,7 @@ public class ArmorSO : EquipmentSO, IArmor
 
 	public ArmorPosition armorPosition = ArmorPosition.TORSO;
 	public ArmorType armorType = ArmorType.LIGHT;
-	public ElementProperties resists = new ElementProperties();
+	public ElementVector resists = new ElementVector();
 	public CombatProperty [] additionalCombatProperties;
 
 	protected override void SanityCheck ()
@@ -41,14 +41,6 @@ public class ArmorSO : EquipmentSO, IArmor
 		get {
 			return armorType;
 		}
-	}
-
-	protected override ICombatNode CreateCombatNode ()
-	{
-		ArmorCombatNode node =  new ArmorCombatNode(this);
-		node.Load(additionalCombatProperties);
-		node.Load(resists);
-		return node;
 	}
 }
  

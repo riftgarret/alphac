@@ -25,7 +25,7 @@ public class DodgeEvent : IBattleEvent
 	/// Gets the source entity. This is the attacker
 	/// </summary>
 	/// <value>The source entity.</value>
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		get {
 			return mSrcEntity;
 		}
@@ -41,7 +41,7 @@ public class DodgeEvent : IBattleEvent
 		}
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
 			return BattleEventType.DODGE;
 		}

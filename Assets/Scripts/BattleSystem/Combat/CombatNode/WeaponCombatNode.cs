@@ -9,11 +9,23 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class WeaponCombatNode : ConfigurableCombatNode
+public class WeaponCombatNode : EquipmentCombatNode
 {
-
-	public WeaponCombatNode(IWeapon weapon) : base() {
-
+    private IWeapon mWeapon;
+	public WeaponCombatNode(IWeapon weapon) : base(weapon) {
+        mWeapon = weapon;
 	}
+
+    public AttributeVector AttributeScalar {
+        get { return mWeapon.AttributeScaling; }
+    }
+
+    public ElementVector DamageMin {
+        get { return mWeapon.DamageMin; }
+    }
+
+    public ElementVector DamageMax {
+        get { return mWeapon.DamageMax; }
+    }
 }
 

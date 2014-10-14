@@ -12,66 +12,77 @@ public class DamageEvent : IBattleEvent
 {
 	private BattleEntity mSrcEntity;
 	private BattleEntity mDestEntity;
-	private float mDamage;
-	private float mCritDamage;
+    private ElementVector mDefense;
+	private ElementVector mDamage;
+	private ElementVector mCritDamage;        
 
-	private DamageType mDamageType;
-
-	public DamageEvent (BattleEntity srcEntity, BattleEntity destEntity, float damage, float critDamage, DamageType damageType) 
+    public DamageEvent(BattleEntity srcEntity, BattleEntity destEntity, ElementVector damage, ElementVector critDamage, ElementVector defense) 
 	{
 		this.mSrcEntity = srcEntity;
 		this.mDestEntity = destEntity;
-		this.mDamage = damage;
-		this.mCritDamage = critDamage;
-		this.mDamageType = damageType;
+		this.mDamage = damage;        
+        this.mCritDamage = critDamage;
+        this.mDefense = defense;
 	}
 
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		get {
 			return mSrcEntity;
 		}
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
-			return BattleEventType.MOVE;
+			return BattleEventType.DAMAGE;
 		}
-	}
+	}    
 
-	public DamageType damageType {
-		get {
-			return mDamageType;
-		}
-	}
-
-	public BattleEntity destEntity {
+	public BattleEntity DestEntity {
 		get {
 			return mDestEntity;
 		}
 	}
 
-	public float totalDamage {
+	public float TotalDamage {
 		get {
-			return mDamage + mCritDamage;
+			return (mDamage + mCritDamage - mDefense).Max(0).Sum;
 		}
 	}
 
-	public float damage {
+	public float DamageSum {
 		get {
-			return mDamage;
+			return mDamage.Sum;
 		}
 	}
 
-	public float critDamage {
+	public float CritDamageSum {
 		get {
-			return mCritDamage;
+			return mCritDamage.Sum;
 		}
 	}
+
+    public ElementVector Damage {
+        get {
+            return mDamage;
+        }
+    }
+
+    public ElementVector CritDamage {
+        get {
+            return mCritDamage;
+        }
+    }
+    
+    public bool IsCrit {
+        get {
+            return mCritDamage.Sum > 0;
+        }
+    }
 
 	public override string ToString ()
 	{
-		return string.Format ("[DamageEvent: srcEntity={0}, destEntity={1}, damageType={2}, totalDamage={3}, damage={4}, critDamage={5}]", 
-		                      srcEntity, destEntity, TextUtils.DmgToString(damageType), totalDamage, damage, critDamage);
+		return string.Format ("[DamageEvent: srcEntity={0}, destEntity={1}, totalDamage={2}, damage={3}, critDamage={4}]", 
+		                      SrcEntity, DestEntity, TotalDamage, DamageSum, CritDamageSum);
 	}
 }
 

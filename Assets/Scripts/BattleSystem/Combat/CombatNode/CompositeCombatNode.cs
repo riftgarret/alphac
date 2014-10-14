@@ -23,27 +23,33 @@ public class CompositeCombatNode : ICombatNode
 		mChildren.Add (combatNode);
 	}
 
-	public float GetPropertyAdd(CombatPropertyType property) {
+	public float GetProperty(CombatPropertyType property) {
 
 		float total = 0;
 		foreach(ICombatNode mod in mChildren) {
-			total += mod.GetPropertyAdd(property);
+			total += mod.GetProperty(property);
 		}
 		return total;
 
 	}
 
-	public float GetPropertyMultiply(CombatPropertyType property) {
+	public float GetPropertyScalar(CombatPropertyType property) {
 
 		float total = 1;
 		foreach(ICombatNode mod in mChildren) {
-			total *= mod.GetPropertyMultiply(property);
+			total *= mod.GetPropertyScalar(property);
 		}
 		return total;
-
 	}
 
-
+    public bool HasFlag(CombatFlag flag) {
+        foreach (ICombatNode mod in mChildren) {
+            if (mod.HasFlag(flag)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

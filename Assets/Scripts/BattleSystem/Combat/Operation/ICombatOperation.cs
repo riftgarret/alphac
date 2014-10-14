@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 public interface ICombatOperation
 {
-
-	IBattleEvent Execute(CombatResolver srcResolver, CombatResolver destResolver);
+	void Execute(List<IBattleEvent> listEvent);
 }
 

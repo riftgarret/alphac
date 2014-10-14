@@ -20,12 +20,12 @@ public class StatusEffectEvent : IBattleEvent
 	
 	public StatusEffectEvent (BattleEntity srcEntity, IStatusEffectExecutor statusEffect, StatusEventType statusEventType) 
 	{
-		this.srcEntity = srcEntity;
+		this.SrcEntity = srcEntity;
 		this.statusEffect = statusEffect;
 		this.statusEventType = statusEventType;
 	}
 
-	public BattleEntity srcEntity {
+	public BattleEntity SrcEntity {
 		private set;
 		get;
 	}
@@ -40,7 +40,7 @@ public class StatusEffectEvent : IBattleEvent
 		get;
 	}
 
-	public BattleEventType eventType {
+	public BattleEventType EventType {
 		get {
 			return BattleEventType.STATUS_EFFECT;
 		}
@@ -48,7 +48,7 @@ public class StatusEffectEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[StatusEffectEvent: srcEntity={0}, statusEventType={1}, statusEffect={2}, eventType={3}]", srcEntity, statusEventType, statusEffect, eventType);
+		return string.Format ("[StatusEffectEvent: srcEntity={0}, statusEventType={1}, statusEffect={2}, eventType={3}]", SrcEntity, statusEventType, statusEffect, EventType);
 	}
 	
 }

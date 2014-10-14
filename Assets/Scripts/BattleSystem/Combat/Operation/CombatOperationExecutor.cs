@@ -144,7 +144,7 @@ public class CombatOperationExecutor
 
 		// execute and apply damage
 		IBattleEvent battleEvent = operation.Execute (srcResolver, destResolver);
-		BattleEventType eventType = battleEvent.eventType;
+		BattleEventType eventType = battleEvent.EventType;
 
 		// notify resulting battle event
 		BattleSystem.Instance.PostBattleEvent(battleEvent);

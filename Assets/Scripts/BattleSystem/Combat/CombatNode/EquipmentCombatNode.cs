@@ -9,20 +9,14 @@
 //------------------------------------------------------------------------------
 using System;
 
-[Serializable]
-public class ElementProperties
+public class EquipmentCombatNode : ConfigurableCombatNode
 {
-	// physical
-	public float slash;
-	public float pierce;
-	public float crush;
-
-	public float dark;
-	public float light;
-	public float wind;
-	public float earth;
-	public float fire;
-	public float water;
+	public EquipmentCombatNode(IEquipment equipment) {
+        LoadElementAttackScalar(equipment.OffensiveScalar);
+        LoadElementDefenseScalar(equipment.DefensiveScalar);
+        LoadAttribute(equipment.AttributeExtra);
+	}
+ 
+   
 }
-
 

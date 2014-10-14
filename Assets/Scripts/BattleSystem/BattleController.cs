@@ -29,9 +29,9 @@ public class BattleController : BattleService, IBattleController {
         // TODO forward to combat log
 
         // evaluate if the game is over, or we have won
-        switch (e.eventType) {
+        switch (e.EventType) {
             case BattleEventType.DEATH:
-                CheckForVictoryOrAnnilate(!e.srcEntity.isPC); // 
+                CheckForVictoryOrAnnilate(!e.SrcEntity.isPC); // 
                 break;
         }
 

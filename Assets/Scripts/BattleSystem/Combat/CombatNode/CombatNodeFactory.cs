@@ -31,7 +31,7 @@ public class CombatNodeFactory
 	}
 
 	public ICombatNode CreateWeaponConfigNode(IWeapon config) {
-		return config.combatNode;
+		return new WeaponCombatNode(config);
 	}
 
 	public ICombatNode CreateCharacterNode() {

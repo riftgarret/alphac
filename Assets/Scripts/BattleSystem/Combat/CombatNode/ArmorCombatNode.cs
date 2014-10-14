@@ -9,10 +9,9 @@
 //------------------------------------------------------------------------------
 using System;
 
-public class ArmorCombatNode : ConfigurableCombatNode
-{
-	public ArmorCombatNode(IArmor armor) : base() {
-
-	}
+public class ArmorCombatNode : EquipmentCombatNode
+{    
+	public ArmorCombatNode(IArmor armor) : base(armor) {        
+	}    
 }
 

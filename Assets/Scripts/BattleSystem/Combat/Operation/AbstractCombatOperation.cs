@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public abstract class AbstractCombatOperation : ICombatOperation
+public abstract class AbstractCombatOperation 
 {
 
 	protected const float CRIT_MULTIPLIER_LOW = 0.5f;
