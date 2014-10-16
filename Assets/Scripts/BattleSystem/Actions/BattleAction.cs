@@ -47,13 +47,11 @@ public class BattleAction : IBattleAction {
 	/// Dos the combat round. For each target, create a execution of attack or action
 	/// </summary>
 	/// <param name="index">Index.</param>
-	private void DoCombatRound(int index) {
-		CombatRound combatRound = combatSkill.CombatRounds[index];
-
+	private void DoCombatRound(int index) {		
 		foreach(BattleEntity targetEntity in targetResolver.GetTargets(combatSkill)) {
-			BattleSystem.Instance.ExecuteCombat(this.sourceEntity, targetEntity, combatSkill, combatRound);
+            ICombatOperation combatOperation = CombatOperationFactory.createOperation(sourceEntity, targetEntity, combatSkill.CombatRounds[index]);
+            BattleSystem.Instance.ExecuteCombat(combatOperation);
 		}
-
 	}
 
 

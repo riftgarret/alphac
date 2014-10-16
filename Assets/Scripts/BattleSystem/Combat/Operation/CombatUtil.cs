@@ -104,5 +104,16 @@ public class CombatUtil {
         float value = (critPower - critDefense) / critPower;
         return Math.Max(0, value);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dmgEvent"></param>
+    public static void ExecuteDamage(DamageEvent dmgEvent) {
+        BattleEntity src = dmgEvent.SrcEntity;
+        BattleEntity dest = dmgEvent.DestEntity;
+
+        src.currentHP -= dmgEvent.TotalDamage;
+    }
 } 
 

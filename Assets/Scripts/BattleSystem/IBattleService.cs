@@ -8,5 +8,5 @@ public interface IBattleService {
     void PostBattleEvent(IBattleEvent e);
     void PostActionRequired(BattleEntity entity);
     void PostActionSelected(BattleEntity entity, IBattleAction action);
-    void ExecuteCombat(BattleEntity src, BattleEntity dest, ICombatSkill combatSkill, CombatRound combatRound); // TODO put in logic to pass damage event
+    void ExecuteCombat(ICombatOperation combatOperation); // TODO put in logic to pass damage event
 }

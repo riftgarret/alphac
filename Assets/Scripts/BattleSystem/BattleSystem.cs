@@ -70,9 +70,9 @@ public class BattleSystem : IBattleService
         }
     }
 
-    public void ExecuteCombat(BattleEntity src, BattleEntity dest, ICombatSkill combatSkill, CombatRound combatRound) {
+    public void ExecuteCombat(ICombatOperation combatOperation) {
         if (mService != null) {
-            mService.ExecuteCombat(src, dest, combatSkill, combatRound);
+            mService.ExecuteCombat(combatOperation);
         }
     }
 }

@@ -8,127 +8,41 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class CombatOperationExecutor
-{
-	public void Execute(BattleEntity src, BattleEntity dest, ICombatSkill combatSkill, CombatRound combatRound) {
-		// figure out damage type
-		IWeapon equipedWeapon = src.equipedWeapons[combatRound.weaponIndex];
-		if(equipedWeapon == null) {
-			Debug.Log("No equiped weapon, aborting");
-			return;
-		}
+{    
 
-		DamageType damageType = equipedWeapon.DamageType;
-		if(!combatRound.useWeaponDamageType) {
-			damageType = combatRound.damageTypeOverride;
-		}
+	public void Execute(ICombatOperation combatOperation) {
+        // prepare list
+        List<IBattleEvent> events = new List<IBattleEvent>();
 
-		// get source combat node
-		SkillCombatNode skillNode = new SkillCombatNode(combatSkill, combatRound);
+        // execute
+        combatOperation.Execute(events);
 
-		CombatResolver srcResolver = src.CreateCombatNodeBuilder()
-			.SetSkillCombatNode(skillNode)
-			.SetWeapon(equipedWeapon)
-			.BuildResolver();
-
-
-		switch(combatRound.operationType) {
-		case CombatOperationType.MAGICAL_ATTACK:
-			ExecuteMagicalAttack(src, dest, combatRound.statusEffectRules, damageType, srcResolver);
-			break;
-		case CombatOperationType.PHYSICAL_ATTACK:
-			ExecutePhysicalAttack(src, dest, combatRound.statusEffectRules, damageType, srcResolver);
-			break;
-		case CombatOperationType.MAGICAL_DEBUFF:
-			ExecuteMagicalAttack(src, dest, combatRound.statusEffectRules, damageType, srcResolver);
-			break;
-		case CombatOperationType.POSITIVE_BUFF:
-			ExecutePositive(src, dest, combatRound.statusEffectRules);
-			break;
-		case CombatOperationType.POSITIVE_HEALING:
-			ExecuteHealing(src, dest, combatRound.statusEffectRules, srcResolver);
-			break;
-		}
+        // process events
+        ProcessEvents(events);
 	}
 
-	/// <summary>
-	/// Executes the physical attack. This will apply the damage and execute the status effects according to the specified Rules.
-	/// </summary>
-	/// <param name="src">Source.</param>
-	/// <param name="dest">Destination.</param>
-	/// <param name="statusList">Status list.</param>
-	/// <param name="damageType">Damage type.</param>
-	/// <param name="physicalCombatNode">Physical combat node.</param>
-	private void ExecutePhysicalAttack(BattleEntity src, BattleEntity dest,                     	
-	                                StatusEffectRule [] effectRules,
-	                                DamageType damageType,
-	                                CombatResolver srcResolver) {
+    private void ProcessEvents(List<IBattleEvent> events) {
+        // do stuff with leftovers?
+        List<IBattleEvent> processedEvents = new List<IBattleEvent>();
+        foreach (IBattleEvent e in events) {
+            PostEvent(e);
+        }
+    }        
 
-		CombatResolver destResolver = new CombatResolver (dest);
-		PhysicalAttackOperation attackOperation = new PhysicalAttackOperation(src, dest, damageType);
+    /// <summary>
+    /// Post battle event
+    /// </summary>
+    /// <param name="e"></param>
+    private void PostEvent(IBattleEvent e) {
+        BattleSystem.Instance.PostBattleEvent(e);
+    }
 
-		ExecuteAttackOperation (attackOperation, srcResolver, destResolver, effectRules);
-	}
 
-	/// <summary>
-	/// Executes the magical attack. This will apply the damage and execute the status effects according to the specified Rules.
-	/// </summary>
-	/// <param name="src">Source.</param>
-	/// <param name="dest">Destination.</param>
-	/// <param name="statusList">Status list.</param>
-	/// <param name="damageType">Damage type.</param>
-	/// <param name="magicalCombatNode">Magical combat node.</param>
-	private void ExecuteMagicalAttack(BattleEntity src, BattleEntity dest, 
-	                                 StatusEffectRule [] effectRules,
-	                                 DamageType damageType,
-	                                 CombatResolver srcResolver) {
-		// TODO, move src, dest to resolver type actions exposing raw battle entity
-		// remove battle action from event
-		// damage type ok
-		CombatResolver destResolver = new CombatResolver (dest);
-		MagicAttackOperation magicOperation = new MagicAttackOperation (src, dest, damageType);
-
-		ExecuteAttackOperation (magicOperation, srcResolver, destResolver, effectRules);
-	}
-
-	/// <summary>
-	/// Executes the healing. This will not be ignored and will execute all status effects
-	/// </summary>
-	/// <param name="src">Source.</param>
-	/// <param name="dest">Destination.</param>
-	/// <param name="options">Options.</param>
-	private void ExecuteHealing(BattleEntity src, BattleEntity dest, 
-	                           StatusEffectRule [] effectRules,
-	                           CombatResolver srcResolver) {
-		CombatResolver destResolver = new CombatResolver (dest);
-		HealingOperation healOperation = new HealingOperation (src, dest);
-
-		// execute and do the healing
-		IBattleEvent battleEvent = healOperation.Execute (srcResolver, destResolver);
-
-		// notify resulting battle event
-        BattleSystem.Instance.PostBattleEvent(battleEvent);
-
-		// since we execute everything, lets just do whatever execute positive to finish the workflow
-		ExecutePositive (src, dest, effectRules);
-	}
-
-	/// <summary>
-	/// Executes the positive. No damage happens here, we just apply the status effects.
-	/// </summary>
-	/// <param name="src">Source.</param>
-	/// <param name="dest">Destination.</param>
-	/// <param name="action">Action.</param>
-	/// <param name="statusList">Status list.</param>
-	private void ExecutePositive(BattleEntity src, BattleEntity dest, 
-	                            StatusEffectRule [] effectRules) {
-		foreach (StatusEffectRule combatStatusEffect in effectRules) {
-			ApplyEffect(combatStatusEffect, src);
-		}
-	}
 
 	/// <summary>
 	/// Execute an operation and manage check resulting event with CombatStatusEffect Rules if any
@@ -143,7 +57,7 @@ public class CombatOperationExecutor
 		bool wasAlive = destEntity.currentHP > 0;
 
 		// execute and apply damage
-		IBattleEvent battleEvent = operation.Execute (srcResolver, destResolver);
+		IBattleEvent battleEvent = null;
 		BattleEventType eventType = battleEvent.EventType;
 
 		// notify resulting battle event

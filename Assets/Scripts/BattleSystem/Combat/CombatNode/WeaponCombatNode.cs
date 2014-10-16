@@ -12,20 +12,21 @@ using System;
 public class WeaponCombatNode : EquipmentCombatNode
 {
     private IWeapon mWeapon;
-	public WeaponCombatNode(IWeapon weapon) : base(weapon) {
+
+    /// <summary>
+    /// if weapon is active weapon, we will include the damage scaling stats
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <param name="isActiveWeapon"></param>
+	public WeaponCombatNode(IWeapon weapon, bool isActiveWeapon) : base(weapon) {
         mWeapon = weapon;
+
+        // 
+        if (isActiveWeapon) {
+            LoadAttributeScalar(mWeapon.AttributeScaling);
+            LoadDamageMin(mWeapon.DamageMin);
+            LoadDamageMax(mWeapon.DamageMax);
+        }
 	}
-
-    public AttributeVector AttributeScalar {
-        get { return mWeapon.AttributeScaling; }
-    }
-
-    public ElementVector DamageMin {
-        get { return mWeapon.DamageMin; }
-    }
-
-    public ElementVector DamageMax {
-        get { return mWeapon.DamageMax; }
-    }
 }
 

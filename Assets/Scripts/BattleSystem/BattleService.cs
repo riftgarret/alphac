@@ -81,8 +81,8 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
         OnActionSelected(entity, action);
     }
 
-    public void ExecuteCombat(BattleEntity src, BattleEntity dest, ICombatSkill combatSkill, CombatRound combatRound) {
-        mCombatExecutor.Execute(src, dest, combatSkill, combatRound);
+    public void ExecuteCombat(ICombatOperation combatOperation) {
+        mCombatExecutor.Execute(combatOperation);
     }
 
     protected abstract void OnInitialize();

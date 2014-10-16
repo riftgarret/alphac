@@ -51,7 +51,6 @@ public abstract class BattleEntity {
 		this.currentHP = character.curHP;
 	}
 
-
 	public void InitializeBattlePhase() {
 		turnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
 	}

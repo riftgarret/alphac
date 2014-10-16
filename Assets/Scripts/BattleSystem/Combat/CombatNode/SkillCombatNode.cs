@@ -18,7 +18,7 @@ public class SkillCombatNode : ConfigurableCombatNode
 	/// skill level which isnt put into place.
 	/// </summary>
 	/// <param name="skillOrigin">Skill origin.</param>
-	public SkillCombatNode(ICombatSkill skillOrigin, CombatRound round) : base() {
+	public SkillCombatNode(CombatRound round) : base() {
 		Load (round.combatProperties);
 	}
 }

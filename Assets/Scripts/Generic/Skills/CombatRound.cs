@@ -15,14 +15,7 @@ using System;
 [Serializable]
 public class CombatRound
 {
-	/// <summary>
-	/// if we should just use the equiped selected weapon for our damage type
-	/// </summary>
-	public bool useWeaponDamageType = true;
-	public int weaponIndex = 0;
-	public DamageType damageTypeOverride = DamageType.CRUSH;
-
-
+    public int weaponIndex;
 	public CombatOperationType operationType = CombatOperationType.PHYSICAL_ATTACK;
 	public StatusEffectRule [] statusEffectRules = new StatusEffectRule[0];
 	public CombatProperty [] combatProperties = new CombatProperty[0];

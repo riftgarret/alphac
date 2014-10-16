@@ -25,14 +25,19 @@ public class CombatNodeFactory
 		mEntity = entity;
 	}
 
-	public ICombatNode CreateWeaponConfigNode(int equipedWeaponIndex) {
+	public ICombatNode CreateWeaponConfigNode(int equipedWeaponIndex, bool isActiveWeapon) {
 		IWeapon weapon = mEntity.equipedWeapons [equipedWeaponIndex];
-		return CreateWeaponConfigNode (weapon);
+		return CreateWeaponConfigNode (weapon, isActiveWeapon);
 	}
 
-	public ICombatNode CreateWeaponConfigNode(IWeapon config) {
-		return new WeaponCombatNode(config);
+	public ICombatNode CreateWeaponConfigNode(IWeapon config, bool isActiveWeapon) {
+		return new WeaponCombatNode(config, isActiveWeapon);
 	}
+
+    public ICombatNode CreateArmorNode(int armorPosition) {
+        IArmor armor = mEntity.character.equipedArmor[armorPosition];
+        return new ArmorCombatNode(armor);
+    }
 
 	public ICombatNode CreateCharacterNode() {
 		if (mCachedCharacterNode == null) {

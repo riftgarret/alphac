@@ -34,46 +34,12 @@ public class PhysicalAttackOperation : ICombatOperation
             return;
 		}
 
-        ElementVector damage = CombatUtil.CalculateDamage(mSrc, mDest);
-		
         // did we crit?
         bool isCrit = CombatUtil.CritSuccess(mSrc, mDest);
+        DamageEvent damageEvent = CombatUtil.CalculateDamage(mSrc, mDest, isCrit);
+        eventList.Add(damageEvent);
 
-        if (isCrit) {
-            eventList.Add(new CritHitEvent(mSrc.entity, mDest.entity));
-        }
-
-        ElementVector dmgProperties = CombatUtil.CalculateDamage(mSrc, mDest, isCrit);
-		// TODO set base damage in damage node or use total damage
-		float dmg = srcResolver.GetPhysicalDamage ();
-		
-		float damageSum = UnityEngine.Random.Range(dmg * 0.8f, dmg * 1.2f); // tmp
-		
-		
-		// calculate crit chance
-		float srcCritChance = srcResolver.GetCritChance();
-		float critDefense = destResolver.GetCritDefense();
-		float critChance = srcCritChance / (srcCritChance + critDefense); 
-		float critDamage = 0f;
-		// TODO factor in other chances
-		// Note: crit damage will not be resisted then
-		if(UnityEngine.Random.Range(0f, 1f) <= critChance) {
-			critDamage = Mathf.Ceil(UnityEngine.Random.Range(CRIT_MULTIPLIER_LOW, CRIT_MULTIPLIER_HIGH)); // crit
-		}
-		
-		// now calculate damage reduction from opponent
-		// TODO override dmg type if special attack
-		float resistValue = destResolver.GetResist(mDamageType);
-		
-		// result damage should be same type of calculation
-		damageSum = damageSum * damageSum / (damageSum + resistValue);
-		damageSum = Mathf.Ceil(damageSum);
-
-		float totalDamage = damageSum + critDamage;
-		ExecuteDamage (totalDamage, mDestEntity);
-
-		return new DamageEvent (mSrcEntity, mDestEntity, damageSum, critDamage, mDamageType);
-
+        CombatUtil.ExecuteDamage(damageEvent);			
 	}
 }
 

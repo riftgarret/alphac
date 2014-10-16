@@ -14,7 +14,8 @@ public class DamageEvent : IBattleEvent
 	private BattleEntity mDestEntity;
     private ElementVector mDefense;
 	private ElementVector mDamage;
-	private ElementVector mCritDamage;        
+	private ElementVector mCritDamage;
+    private bool mWasAliveBeforeDamage;
 
     public DamageEvent(BattleEntity srcEntity, BattleEntity destEntity, ElementVector damage, ElementVector critDamage, ElementVector defense) 
 	{
@@ -23,6 +24,7 @@ public class DamageEvent : IBattleEvent
 		this.mDamage = damage;        
         this.mCritDamage = critDamage;
         this.mDefense = defense;
+        this.mWasAliveBeforeDamage = mDestEntity.currentHP > 0;
 	}
 
 	public BattleEntity SrcEntity {
@@ -77,6 +79,10 @@ public class DamageEvent : IBattleEvent
         get {
             return mCritDamage.Sum > 0;
         }
+    }
+
+    public bool wasAliveBeforeDamage {
+        get { return mWasAliveBeforeDamage; }
     }
 
 	public override string ToString ()

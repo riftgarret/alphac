@@ -12,16 +12,19 @@ public class CombatNodeBuilder
 {
 	private CombatNodeFactory mFactory;
 
-	// if weapon is provided, weapon index is ignored
-	private IWeapon mWeapon;
+	// if weapon is provided, weapon index is ignored	
 	private int mWeaponIndex;
+    private bool mUseEquipment;
+    private bool mUseBuffs;
 
 	private SkillCombatNode mSkillCombatNode;
 
 	public CombatNodeBuilder (CombatNodeFactory factory)
 	{
 		this.mFactory = factory;
-		this.mWeaponIndex = 0;
+		this.mWeaponIndex = -1;
+        this.mUseBuffs = true;
+        this.mUseEquipment = true;
 	}
 
 	/// <summary>
@@ -33,26 +36,46 @@ public class CombatNodeBuilder
 		return this;
 	}
 
-	public CombatNodeBuilder SetWeapon(IWeapon weapon) {
-		mWeapon = weapon;
+
+	public CombatNodeBuilder SetSkillCombatNode(CombatRound round) {
+        mSkillCombatNode = new SkillCombatNode(round);
 		return this;
 	}
 
-	public CombatNodeBuilder SetSkillCombatNode(SkillCombatNode skillCombatNode) {
-		mSkillCombatNode = skillCombatNode;
-		return this;
-	}
+    public CombatNodeBuilder SetUseEquipment(bool allow) {
+        mUseEquipment = allow;
+        return this;
+    }
+
+    public CombatNodeBuilder SetUseBuffs(bool allow) {
+        mUseBuffs = allow;
+        return this;
+    }
 
 	public CompositeCombatNode Build() {
 		// build composite for character
 		CompositeCombatNode rootNode = new CompositeCombatNode ();
 		// child node
 		rootNode.AddNode (mFactory.CreateCharacterNode());
-		if (mWeapon != null) {
-			rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeapon));
-		} else {
-			rootNode.AddNode (mFactory.CreateWeaponConfigNode (mWeaponIndex));
-		}
+
+        // use all equipment
+        if (mUseEquipment) {
+            // weaopns
+            for (int i = 0; i < mFactory.entity.equipedWeapons.Length; i++) {
+                rootNode.AddNode(mFactory.CreateWeaponConfigNode(i, i == mWeaponIndex));
+            }
+
+            // armor
+            for (int i = 0; i < mFactory.entity.character.equipedArmor.Length; i++) {
+                rootNode.AddNode(mFactory.CreateArmorNode(i));
+            }
+        }
+
+        if (mUseBuffs) {
+            // TOODO
+        }
+
+
 		if (mSkillCombatNode != null) {
 			rootNode.AddNode (mSkillCombatNode);
 		}
