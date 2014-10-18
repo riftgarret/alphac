@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+public class GameConstants {    
 
-public class GameConstants {
     public enum WeaponHand {
         MAIN,
         SUB,

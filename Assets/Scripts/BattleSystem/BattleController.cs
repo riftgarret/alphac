@@ -9,20 +9,11 @@ public class BattleController : BattleService, IBattleController {
     private EnemyPartySO enemyParty;
     private PCPartySO pcParty;
 
-    private BattleEntityManager mEntityManager;
+    
     private BattleTimeQueue mBattleTimeQueue;            
     private PCTurnManager mTurnManager;
 
-    /// <summary>
-    /// Check the BattleSceneLoader to see if we need to load any parameters
-    /// </summary>
-    private void LoadSceneParameters() {
-        BattleSceneLoader.BattleSceneParameters p = BattleSceneLoader.ConsumeParameters();
-        if (p != null) {
-            this.enemyParty = p.enemyParty;
-            this.pcParty = p.pcParty;
-        }
-    }
+    
 
     // BattleService required methods
     protected override void OnBattleEvent(IBattleEvent e) {        
@@ -38,9 +29,7 @@ public class BattleController : BattleService, IBattleController {
     }    
 
     protected override void OnInitialize() {
-        // override parameters
-        LoadSceneParameters();
-
+        // override parameters        
         mBattleTimeQueue = new BattleTimeQueue();
         mTurnManager = new PCTurnManager(this);
 

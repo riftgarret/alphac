@@ -13,7 +13,7 @@ using UnityEngine;
 /// <summary>
 /// Battle scene loader.
 /// </summary>
-public class BattleSceneLoader
+public class SceneLoader
 {
 	/// <summary>
 	/// The enemy party.

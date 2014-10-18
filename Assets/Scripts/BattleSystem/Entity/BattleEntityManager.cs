@@ -10,11 +10,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A class to manage the different combinations of entities in fast native arrays
 /// </summary>
-public class BattleEntityManager : BattleEntity.OnDecisionRequiredListener
+public class BattleEntityManager : MonoBehaviour, BattleEntity.OnDecisionRequiredListener
 {
 	private EnemyBattleEntity[] mEnemyEntities;
 	public EnemyBattleEntity[] enemyEntities {
@@ -46,6 +47,10 @@ public class BattleEntityManager : BattleEntity.OnDecisionRequiredListener
 		get { return mBackRowEntities; } 
 	}
 
+    void Awake() {
+        PCPartySO pcParty = GameObject.FindGameObjectWithTag(Tags.PARTY).GetComponent<PCPartySO>();
+    }
+
 	/// <summary>
 	/// Raises the row update event. Should be called upon listening to row changes.
 	/// </summary>
@@ -73,7 +78,7 @@ public class BattleEntityManager : BattleEntity.OnDecisionRequiredListener
 	}
 
 
-	public BattleEntityManager (PCCharacter[] pcChars, EnemyCharacter[] enemyChars) {
+	public void LoadCharacters(PCCharacter[] pcChars, EnemyCharacter[] enemyChars) {
 		// combine 
 		mAllEntities = new BattleEntity[pcChars.Length + enemyChars.Length];		
 		mPcEntities = new PCBattleEntity[pcChars.Length];

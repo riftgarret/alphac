@@ -10,7 +10,7 @@ public class FightTrigger : MonoBehaviour {
 		// if we enter this colider, lets start the battle
 
 		if(enemyParty != null) {
-			BattleSceneLoader.LoadScene(enemyParty, party);
+			SceneLoader.LoadScene(enemyParty, party);
 		}
 	}
 
