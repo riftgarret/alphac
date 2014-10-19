@@ -11,19 +11,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyComponent : MonoBehaviour
+public class PartyComponent : MonoBehaviour
 {
-	public EnemyPartySO enemyPartySO;
-
-	private List<Character> mCharacters;
-
-	void Awake() {
-		mCharacters = new List<Character> ();
-		mCharacters.AddRange (enemyPartySO.CreateUniqueCharacters ());
-	}
+	protected List<Character> mCharacters;
 
 	public List<Character> Characters {
-		get { return new List<Character>(mCharacters); }
+		get { return new List<Character> (mCharacters); }
 	}
 }
+
 

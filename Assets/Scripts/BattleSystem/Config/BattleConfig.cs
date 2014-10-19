@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class BattleConfig : MonoBehaviour, IBattleConfig {
 
-    public PCCharacter[] pcCharacters {
+    public virtual PCCharacter[] pcCharacters {
         get { throw new NotImplementedException(); }
     }
 
-    public EnemyCharacter[] enemyChracters {
+    public virtual EnemyCharacter[] enemyChracters {
         get { throw new NotImplementedException(); }
     }
 }

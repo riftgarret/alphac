@@ -33,12 +33,7 @@ public class BattleController : BattleService, IBattleController {
         mBattleTimeQueue = new BattleTimeQueue();
         mTurnManager = new PCTurnManager(this);
 
-        // initialize entities for other methods in start
-        EnemyCharacter[] npcChars = enemyParty.CreateUniqueCharacters();
-        PCCharacter[] pcChars = pcParty.CreateUniqueCharacters();
-
-        mEntityManager = new BattleEntityManager(pcChars, npcChars);
-
+        // initialize entities for other methods in start        
         mBattleTimeQueue.InitEntities(mEntityManager.allEntities);
     }    
 

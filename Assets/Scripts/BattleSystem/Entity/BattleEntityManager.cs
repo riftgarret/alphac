@@ -86,20 +86,24 @@ public class BattleEntityManager : MonoBehaviour, BattleEntity.OnDecisionRequire
 	}
 
 
-	public void LoadCharacters(PCCharacter[] pcChars, EnemyCharacter[] enemyChars) {
+	public void LoadCharacters(Character[] pcChars, Character[] enemyChars) {
 		// combine 
 		mAllEntities = new BattleEntity[pcChars.Length + enemyChars.Length];		
 		mPcEntities = new PCBattleEntity[pcChars.Length];
 		mEnemyEntities = new EnemyBattleEntity[enemyChars.Length];
 
 		for(int i=0; i < mPcEntities.Length; i++) {
-			mPcEntities[i] = new PCBattleEntity(pcChars[i], this);
-			mAllEntities[i] = mPcEntities[i];
+            if (pcChars[i] is PCCharacter) {
+                mPcEntities[i] = new PCBattleEntity((PCCharacter)pcChars[i], this);
+                mAllEntities[i] = mPcEntities[i];
+            }
 		}
 
 		for(int i=0; i < mEnemyEntities.Length; i++) {
-			mEnemyEntities[i] = new EnemyBattleEntity(enemyChars[i], this);
-			mAllEntities[pcChars.Length + i] = mEnemyEntities[i];
+            if (enemyChars[i] is EnemyCharacter) {
+                mEnemyEntities[i] = new EnemyBattleEntity((EnemyCharacter)enemyChars[i], this);
+                mAllEntities[pcChars.Length + i] = mEnemyEntities[i];
+            }
 		}
 		// create row specifics
 		BuildRowEntities();

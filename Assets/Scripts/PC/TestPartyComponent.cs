@@ -11,13 +11,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartyComponent : MonoBehaviour
+public class TestPartyComponent : PartyComponent
 {
-	private List<Character> mCharacters;
+    public PCPartySO pcParty;
 
-	public List<Character> Characters {
-		get { return new List<Character> (mCharacters); }
-	}
+    void Awake() {
+        mCharacters = new List<Character>(pcParty.CreateUniqueCharacters());
+    }
 }
 
 
