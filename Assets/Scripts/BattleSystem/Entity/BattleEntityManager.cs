@@ -48,8 +48,16 @@ public class BattleEntityManager : MonoBehaviour, BattleEntity.OnDecisionRequire
 	}
 
     void Awake() {
-        PCPartySO pcParty = GameObject.FindGameObjectWithTag(Tags.PARTY).GetComponent<PCPartySO>();
+        PartyComponent partyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
+		EnemyComponent enemyComponent = GameObject.FindGameObjectWithTag (Tags.ENEMY).GetComponent<EnemyComponent> ();
+
+
+		LoadCharacters (partyComponent.Characters.ToArray (), enemyComponent.Characters.ToArray ());
     }
+
+	void Start() {
+
+	}
 
 	/// <summary>
 	/// Raises the row update event. Should be called upon listening to row changes.
