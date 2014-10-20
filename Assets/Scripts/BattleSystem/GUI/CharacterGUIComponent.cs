@@ -19,6 +19,7 @@ public class CharacterGUIComponent : MonoBehaviour {
         get { return mBattleEntity; }
         set {
             mBattleEntity = value;
+			characterTitle.text = mBattleEntity.character.displayName;
             hpSlider.maxValue = mBattleEntity.maxHP;
             hpSlider.minValue = 0;
         }

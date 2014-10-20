@@ -19,46 +19,43 @@ public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.OnDecisi
 {
 	private EnemyBattleEntity[] mEnemyEntities;
 	public EnemyBattleEntity[] enemyEntities {
-		get { return mEnemyEntities; }
+        get { LazyInit(); return mEnemyEntities; }
 	}
 
 	private PCBattleEntity[] mPcEntities;
 	public PCBattleEntity[] pcEntities {
-		get { return mPcEntities; }
+        get { LazyInit(); return mPcEntities; }
 	}
 
 	private BattleEntity[] mAllEntities;
 	public BattleEntity[] allEntities {
-		get { return mAllEntities; }
+        get { LazyInit(); return mAllEntities; }
 	}
 
 	private PCBattleEntity[] mFrontRowEntities;
 	public PCBattleEntity[] frontRowEntities {
-		get { return mFrontRowEntities; } 
+        get { LazyInit(); return mFrontRowEntities; } 
 	}
 
 	private PCBattleEntity[] mMiddleRowEntities;
 	public PCBattleEntity[] middleRowEntities {
-		get { return mMiddleRowEntities; } 
+        get { LazyInit(); return mMiddleRowEntities; } 
 	}
 
 	private PCBattleEntity[] mBackRowEntities;
 	public PCBattleEntity[] backRowEntities {
-		get { return mBackRowEntities; } 
+        get { LazyInit(); return mBackRowEntities; } 
 	}
+
+
+    private PartyComponent mPartyComponent;
+    private EnemyComponent mEnemyComponent;
 
     void Awake() {
-        
+        mPartyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
+        mEnemyComponent = GameObject.FindGameObjectWithTag(Tags.ENEMY).GetComponent<EnemyComponent>();
     }
-
-	void Start() {
-        Debug.Log("Hello world");
-        PartyComponent partyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
-        EnemyComponent enemyComponent = GameObject.FindGameObjectWithTag(Tags.ENEMY).GetComponent<EnemyComponent>();
-
-        Debug.Log("partyComponent: " + partyComponent + ", enemy: " + enemyComponent);
-        LoadCharacters(partyComponent.Characters.ToArray(), enemyComponent.Characters.ToArray());
-	}
+	
 
 	/// <summary>
 	/// Raises the row update event. Should be called upon listening to row changes.
@@ -75,6 +72,7 @@ public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.OnDecisi
 	/// <returns>The row.</returns>
 	/// <param name="rowPos">Row position.</param>
 	public PCBattleEntity[] GetRow(PCCharacter.RowPosition rowPos) {
+        LazyInit();
 		switch(rowPos) {
 		case PCCharacter.RowPosition.FRONT:
 			return mFrontRowEntities;
@@ -86,8 +84,16 @@ public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.OnDecisi
 		return null;
 	}
 
+    private void LazyInit() {
+        if (mPcEntities != null) {
+            return;
+        }
 
-	public void LoadCharacters(Character[] pcChars, Character[] enemyChars) {
+        LoadCharacters(mPartyComponent.Characters.ToArray(), mEnemyComponent.Characters.ToArray());
+    }
+
+
+	private void LoadCharacters(Character[] pcChars, Character[] enemyChars) {
 		// combine 
 		mAllEntities = new BattleEntity[pcChars.Length + enemyChars.Length];		
 		mPcEntities = new PCBattleEntity[pcChars.Length];

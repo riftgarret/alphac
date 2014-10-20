@@ -43,6 +43,7 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
 
     void Start() {
         OnInitialize(); 
+		mGameState = GameState.ACTIVE;
     }
 
     void Update() {
@@ -50,7 +51,6 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
         // event queue
         while (mBattleEventQueue.Count > 0) {
             IBattleEvent battleEvent = mBattleEventQueue.Dequeue();
-
         }
 
         // tic game 
@@ -102,7 +102,7 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
     /// <value><c>true</c> if active game time; otherwise, <c>false</c>.</value>
     private bool activeGameTime {
         get {
-            bool isActive = mBattleEventQueue.Count() > 0;
+            bool isActive = mBattleEventQueue.Count() == 0;
             isActive &= mGameState == GameState.ACTIVE;
             return isActive;
         }
