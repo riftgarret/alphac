@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class BattleController : BattleService, IBattleController {
+public class BattleControllerComponent : BattleService, IBattleController {
 
     // test data
     private EnemyPartySO enemyParty;
@@ -80,7 +80,7 @@ public class BattleController : BattleService, IBattleController {
     }
 
     // implemented IBattleController to expose components
-    public BattleEntityManager entityManager {
+    public BattleEntityManagerComponent entityManager {
         get { return mEntityManager; }
     }
 

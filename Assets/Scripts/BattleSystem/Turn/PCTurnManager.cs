@@ -10,7 +10,7 @@ public class PCTurnManager {
 		TARGET
 	}
 
-	private BattleController manager;
+	private BattleControllerComponent manager;
 	private Queue<PCBattleEntity> turnQueue;
 
 	/// <summary>
@@ -40,7 +40,7 @@ public class PCTurnManager {
 		get;
 	}
 		
-	public PCTurnManager(BattleController manager) {
+	public PCTurnManager(BattleControllerComponent manager) {
 		turnQueue = new Queue<PCBattleEntity>();
 		this.manager = manager;
 		this.currentSelectedSkill = null;

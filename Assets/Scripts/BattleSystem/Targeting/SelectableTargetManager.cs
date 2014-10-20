@@ -22,7 +22,7 @@ public class SelectableTargetManager {
 	/// <param name="origin">Origin.</param>
 	/// <param name="entityManager">Entity manager.</param>`
 	/// <param name="skill">Skill.</param>
-	public static SelectableTargetManager CreateAllowedTargets(BattleEntity origin, BattleEntityManager entityManager, ICombatSkill skill) {
+	public static SelectableTargetManager CreateAllowedTargets(BattleEntity origin, BattleEntityManagerComponent entityManager, ICombatSkill skill) {
 		HashSet<BattleEntity> entitySet = new HashSet<BattleEntity>(entityManager.allEntities);
 		List<SelectableTarget> targetList = new List<SelectableTarget>();
 		Dictionary<BattleEntity, SelectableTarget> targetMap = new Dictionary<BattleEntity, SelectableTarget>();

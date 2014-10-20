@@ -5,7 +5,7 @@ using System.Text;
 
 
 public interface IBattleController {
-    BattleEntityManager entityManager { get; }
+    BattleEntityManagerComponent entityManager { get; }
     PCTurnManager turnManager { get; }
  }
 

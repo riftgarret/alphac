@@ -14,7 +14,7 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
     private Queue<IBattleEvent> mBattleEventQueue;
     private Queue<BattleEntity> mCharacterDecisionQueue;
     private CombatOperationExecutor mCombatExecutor;
-    protected BattleEntityManager mEntityManager;
+    protected BattleEntityManagerComponent mEntityManager;
 
     // a way to we can only be in a certain state when the game is active
     protected enum GameState {
@@ -31,7 +31,7 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
         mCharacterDecisionQueue = new Queue<BattleEntity>();
         mGameState = GameState.INTRO;
         mCombatExecutor = new CombatOperationExecutor();
-        mEntityManager = GetComponent<BattleEntityManager>();
+        mEntityManager = GetComponent<BattleEntityManagerComponent>();
 
         // first create our battle system for other components to initialize
         BattleSystem.OnServiceStart(this);

@@ -15,14 +15,14 @@ public class TargetResolverRow : ITargetResolver
 {
 	// only used when the target is single
 	private PCCharacter.RowPosition mRowPosition;	
-	private BattleEntityManager mBattleEntityManager;
+	private BattleEntityManagerComponent mBattleEntityManager;
 	
 	/// <summary>
 	/// For single targets
 	/// </summary>
 	/// <param name="targetEnum">Target enum.</param>
 	/// <param name="entityManager">Entity manager.</param>
-	public TargetResolverRow (PCCharacter.RowPosition rowPosition, BattleEntityManager manager)
+	public TargetResolverRow (PCCharacter.RowPosition rowPosition, BattleEntityManagerComponent manager)
 	{
 		mRowPosition = rowPosition;
 		mBattleEntityManager = manager;

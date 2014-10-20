@@ -16,7 +16,7 @@ public class TargetResolverFactory
 	/// <returns>The target resolver.</returns>
 	/// <param name="target">Target.</param>
 	/// <param name="manager">Manager.</param>
-	public static ITargetResolver CreateTargetResolver(SelectableTarget target, BattleEntityManager manager) {
+	public static ITargetResolver CreateTargetResolver(SelectableTarget target, BattleEntityManagerComponent manager) {
 		switch(target.resolvedTargetType) {
 		case ResolvedTargetEnum.SINGLE:
 			return new TargetResolverSingle(target.entities[0]);

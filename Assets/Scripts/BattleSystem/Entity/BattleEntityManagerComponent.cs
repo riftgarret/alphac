@@ -15,7 +15,7 @@ using UnityEngine;
 /// <summary>
 /// A class to manage the different combinations of entities in fast native arrays
 /// </summary>
-public class BattleEntityManager : MonoBehaviour, BattleEntity.OnDecisionRequiredListener
+public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.OnDecisionRequiredListener
 {
 	private EnemyBattleEntity[] mEnemyEntities;
 	public EnemyBattleEntity[] enemyEntities {
@@ -48,15 +48,16 @@ public class BattleEntityManager : MonoBehaviour, BattleEntity.OnDecisionRequire
 	}
 
     void Awake() {
-        PartyComponent partyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
-		EnemyComponent enemyComponent = GameObject.FindGameObjectWithTag (Tags.ENEMY).GetComponent<EnemyComponent> ();
-
-
-		LoadCharacters (partyComponent.Characters.ToArray (), enemyComponent.Characters.ToArray ());
+        
     }
 
 	void Start() {
+        Debug.Log("Hello world");
+        PartyComponent partyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
+        EnemyComponent enemyComponent = GameObject.FindGameObjectWithTag(Tags.ENEMY).GetComponent<EnemyComponent>();
 
+        Debug.Log("partyComponent: " + partyComponent + ", enemy: " + enemyComponent);
+        LoadCharacters(partyComponent.Characters.ToArray(), enemyComponent.Characters.ToArray());
 	}
 
 	/// <summary>
