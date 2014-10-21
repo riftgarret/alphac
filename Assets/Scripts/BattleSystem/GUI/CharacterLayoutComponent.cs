@@ -6,25 +6,24 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class BattleLayoutComponent: MonoBehaviour {
+public class CharacterLayoutComponent: MonoBehaviour {
 
     public GameObject characterPortraitPrefab;
     private BattleEntityManagerComponent mEntityManager;    
-    private GameObject mCharacterPanelObject;
+    private RectTransform mTransform;
 
     void Awake() {
-        mEntityManager = GetComponent<BattleEntityManagerComponent>();
-        mCharacterPanelObject = GameObject.FindGameObjectWithTag(Tags.UI_CHARACTER_PANEL);                        
+        mEntityManager = GameObject.FindGameObjectWithTag(Tags.BATTLE_CONTROLLER).GetComponent<BattleEntityManagerComponent>();
+		mTransform = GetComponent<RectTransform>();          
     }
 
     void Start() {
-        RectTransform layoutRect = mCharacterPanelObject.GetComponent<RectTransform>();
         foreach (PCBattleEntity pc in mEntityManager.pcEntities) {
             GameObject characterPortrait = (GameObject)Instantiate(characterPortraitPrefab);
             RectTransform rect = characterPortrait.GetComponent<RectTransform>();
             CharacterGUIComponent charGUI = characterPortrait.GetComponent<CharacterGUIComponent>();
             charGUI.BattleEntity = pc;
-            rect.SetParent(layoutRect);
+			rect.SetParent(mTransform);
         }
     }
 

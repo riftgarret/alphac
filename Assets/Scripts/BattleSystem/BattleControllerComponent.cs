@@ -11,7 +11,7 @@ public class BattleControllerComponent : BattleService, IBattleController {
 
     
     private BattleTimeQueue mBattleTimeQueue;            
-    private PCTurnManager mTurnManager;
+    private PCTurnManagerComponent mTurnManager;
 
     
 
@@ -25,13 +25,13 @@ public class BattleControllerComponent : BattleService, IBattleController {
                 CheckForVictoryOrAnnilate(!e.SrcEntity.isPC); // 
                 break;
         }
-
     }    
 
     protected override void OnInitialize() {
         // override parameters        
         mBattleTimeQueue = new BattleTimeQueue();
-        mTurnManager = new PCTurnManager(this);
+        mTurnManager = GetComponent<PCTurnManagerComponent>();
+		mTurnManager.OnCompleteDelegate += OnActionSelected;
 
         // initialize entities for other methods in start        
         mBattleTimeQueue.InitEntities(mEntityManager.allEntities);
@@ -47,11 +47,12 @@ public class BattleControllerComponent : BattleService, IBattleController {
         }
         else if(entity is EnemyBattleEntity) {
             EnemyBattleEntity npc = (EnemyBattleEntity)entity;
-            npc.enemyCharacter.skillResolver.ResolveAction(this, npc);
+            IBattleAction enemyAction = npc.enemyCharacter.skillResolver.ResolveAction(mEntityManager, npc);
+			mBattleTimeQueue.SetAction(entity, enemyAction);
         }
     }
 
-    protected override void OnActionSelected(BattleEntity entity, IBattleAction action) {
+    protected void OnActionSelected(BattleEntity entity, IBattleAction action) {
         mBattleTimeQueue.SetAction(entity, action);
     }
     
@@ -85,7 +86,13 @@ public class BattleControllerComponent : BattleService, IBattleController {
     }
 
 
-    public PCTurnManager turnManager {
+    public PCTurnManagerComponent turnManager {
         get { return mTurnManager; }
     }
+
+	protected override bool isTimeActive {
+		get {
+			return mTurnManager.currentEntity == null && base.isTimeActive;
+		}
+	}
 }

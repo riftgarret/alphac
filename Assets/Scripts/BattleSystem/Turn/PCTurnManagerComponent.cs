@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PCTurnManager {
+public class PCTurnManagerComponent : MonoBehaviour {
 
 	public enum DecisionState {
 		IDLE,
@@ -10,8 +10,20 @@ public class PCTurnManager {
 		TARGET
 	}
 
-	private BattleControllerComponent manager;
-	private Queue<PCBattleEntity> turnQueue;
+	private BattleEntityManagerComponent mEntityManager;
+	private Queue<PCBattleEntity> mTurnQueue;
+	public delegate void OnComplete(BattleEntity source, IBattleAction action);
+
+	public OnComplete OnCompleteDelegate;
+
+	void Awake() {
+		mTurnQueue = new Queue<PCBattleEntity>();
+		this.mEntityManager = GetComponent<BattleEntityManagerComponent> ();
+		this.currentSelectedSkill = null;
+		this.decisionState = DecisionState.IDLE;
+	}
+
+
 
 	/// <summary>
 	/// Gets the state of the decision. Either selecting a skill, or targeting with selected skill
@@ -39,21 +51,14 @@ public class PCTurnManager {
 		private set;
 		get;
 	}
-		
-	public PCTurnManager(BattleControllerComponent manager) {
-		turnQueue = new Queue<PCBattleEntity>();
-		this.manager = manager;
-		this.currentSelectedSkill = null;
-		this.decisionState = DecisionState.IDLE;
-	}
 
 	/// <summary>
 	/// Queues the PC into the turn list.
 	/// </summary>
 	/// <param name="pc">Pc.</param>
 	public void QueuePC(PCBattleEntity pc) {
-		bool isNewPC = (turnQueue.Count == 0);
-		turnQueue.Enqueue(pc);
+		bool isNewPC = (mTurnQueue.Count == 0);
+		mTurnQueue.Enqueue(pc);
 		// if we see we are the added new pc, lets make sure we are in
 		// the correct decision state
 		if(isNewPC) {
@@ -66,8 +71,8 @@ public class PCTurnManager {
 	/// Selects next character (if there are any) for the next turn
 	/// </summary>
 	public void NextTurn() {
-		PCBattleEntity cur = turnQueue.Dequeue();
-		turnQueue.Enqueue(cur);
+		PCBattleEntity cur = mTurnQueue.Dequeue();
+		mTurnQueue.Enqueue(cur);
 		decisionState = DecisionState.SKILL;
 		currentSelectedSkill = null;
 	}
@@ -77,32 +82,33 @@ public class PCTurnManager {
 	/// </summary>
 	/// <param name="action">Action.</param>
 	public void SelectSkill(ICombatSkill skill) {
-		if( turnQueue.Count == 0 ) {
+		if( mTurnQueue.Count == 0 ) {
 			// do nothing bad state
 			Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");
 			return;
 		}
 
 		currentSelectedSkill = skill;
-		currentTargetManager = SelectableTargetManager.CreateAllowedTargets(turnQueue.Peek(), manager.entityManager, skill);
+		currentTargetManager = SelectableTargetManager.CreateAllowedTargets(mTurnQueue.Peek(), mEntityManager, skill);
 		decisionState = DecisionState.TARGET;
 	}
 	
 	//
 	public void SelectTarget(SelectableTarget target) {
-		if( turnQueue.Count == 0) {
+		if( mTurnQueue.Count == 0) {
 			// do nothing bad state
 			Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");
 			return;
 		}
 
 
-		PCBattleEntity sourceEntity = turnQueue.Dequeue();
-		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(target, manager.entityManager);
+		PCBattleEntity sourceEntity = mTurnQueue.Dequeue();
+		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(target, mEntityManager);
 		IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, targetResolver);
-        manager.PostActionSelected(sourceEntity, action);		
+		OnCompleteDelegate.Invoke (sourceEntity, action);
+//        (sourceEntity, action);		
 		currentSelectedSkill = null;
-		decisionState = (turnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);
+		decisionState = (mTurnQueue.Count > 0? DecisionState.SKILL : DecisionState.IDLE);
 	}
 	
 	/// <summary>
@@ -111,8 +117,8 @@ public class PCTurnManager {
 	/// <value>The current entity.</value>
 	public PCBattleEntity currentEntity {
 		get {
-			if(turnQueue.Count > 0) {
-				return turnQueue.Peek();
+			if(mTurnQueue.Count > 0) {
+				return mTurnQueue.Peek();
 			}
 			return null;
 		}

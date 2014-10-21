@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 
 
-public abstract class BattleService : MonoBehaviour, IBattleService{
+public abstract class BattleService : MonoBehaviour, IBattleService {
 
     public float unitOfTime = 1f;
 
     protected GameState mGameState;
     private Queue<IBattleEvent> mBattleEventQueue;
-    private Queue<BattleEntity> mCharacterDecisionQueue;
+    private Queue<BattleEntity> mActionRequiredQueue;
     private CombatOperationExecutor mCombatExecutor;
     protected BattleEntityManagerComponent mEntityManager;
 
@@ -28,7 +28,7 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
 
     void Awake() {        
         mBattleEventQueue = new Queue<IBattleEvent>();
-        mCharacterDecisionQueue = new Queue<BattleEntity>();
+        mActionRequiredQueue = new Queue<BattleEntity>();
         mGameState = GameState.INTRO;
         mCombatExecutor = new CombatOperationExecutor();
         mEntityManager = GetComponent<BattleEntityManagerComponent>();
@@ -49,15 +49,34 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
     void Update() {
         // Life cycle order            
         // event queue
-        while (mBattleEventQueue.Count > 0) {
-            IBattleEvent battleEvent = mBattleEventQueue.Dequeue();
-        }
+		ProcessEventQueue ();
+
+		// actions required 
+		ProcessActionsRequireQueue ();
 
         // tic game 
-        if (activeGameTime) {
+        if (isTimeActive) {
             OnTimeDelta(unitOfTime * Time.deltaTime);
         }
     }
+
+
+	/// <summary>
+	/// Processes the event queue.
+	/// </summary>
+	private void ProcessEventQueue() {
+		while (mBattleEventQueue.Count > 0) {
+			IBattleEvent battleEvent = mBattleEventQueue.Dequeue();
+			Debug.Log("ProcessEventQueue: " + battleEvent);
+		}
+	}
+
+	private void ProcessActionsRequireQueue() {
+		while (mActionRequiredQueue.Count > 0) {
+			BattleEntity entity = mActionRequiredQueue.Dequeue();
+			OnActionRequired(entity);
+		}
+	}
 
     // INTERFACE CALLS TO DIGEST EVENTS
     
@@ -68,19 +87,9 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
 
     public void PostActionRequired(BattleEntity entity) {
         Debug.Log("entity decision required: " + entity);
-        if (!mCharacterDecisionQueue.Contains(entity)) {
-            mCharacterDecisionQueue.Enqueue(entity);
+        if (!mActionRequiredQueue.Contains(entity)) {
+            mActionRequiredQueue.Enqueue(entity);
         }
-    }
-
-    public void PostActionSelected(BattleEntity entity, IBattleAction action) {
-        Debug.Log("entity decision selected: " + entity + ", " + action);
-        if (mCharacterDecisionQueue.Peek() != entity) {
-            Debug.LogError("Entity decision did not match peek'd entity");
-        }
-
-        mCharacterDecisionQueue.Dequeue();
-        OnActionSelected(entity, action);
     }
 
     public void ExecuteCombat(ICombatOperation combatOperation) {
@@ -91,20 +100,16 @@ public abstract class BattleService : MonoBehaviour, IBattleService{
 
     protected abstract void OnTimeDelta(float delta);
 
-    protected abstract void OnActionRequired(BattleEntity entity);
-
-    protected abstract void OnActionSelected(BattleEntity entity, IBattleAction action);
+    protected abstract void OnActionRequired(BattleEntity entity);    
 
     protected abstract void OnBattleEvent(IBattleEvent e);    
-
+	
     /// <summary>
     /// in game clock thats handled on update when the user interface isnt stalled for current active character	/// </summary>
     /// <value><c>true</c> if active game time; otherwise, <c>false</c>.</value>
-    private bool activeGameTime {
+    protected virtual bool isTimeActive {
         get {
-            bool isActive = mBattleEventQueue.Count() == 0;
-            isActive &= mGameState == GameState.ACTIVE;
-            return isActive;
+			return mGameState == GameState.ACTIVE;
         }
     }
 

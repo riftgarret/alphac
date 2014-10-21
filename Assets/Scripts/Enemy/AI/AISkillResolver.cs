@@ -22,14 +22,14 @@ public class AISkillResolver
 		LazyCheck(skillConfig);
 	}
 
-	public void ResolveAction(BattleControllerComponent manager, EnemyBattleEntity enemyEntity) {
+	public IBattleAction ResolveAction(BattleEntityManagerComponent entityManager, EnemyBattleEntity enemyEntity) {
 
 		// for each skill, lets evaulate if we will use it
 		float totalWeight = 0;
 		List<AISkillResultSet> possibleSkills = new List<AISkillResultSet>();
 
 		foreach(AISkillComposite composite in mSkillComposites) {
-			SelectableTargetManager selectManager = SelectableTargetManager.CreateAllowedTargets(enemyEntity, manager.entityManager, composite.skill);
+			SelectableTargetManager selectManager = SelectableTargetManager.CreateAllowedTargets(enemyEntity, entityManager, composite.skill);
 			HashSet<BattleEntity> targetSet = new HashSet<BattleEntity>();
 			foreach(SelectableTarget target in selectManager.targetList) {
 				foreach(BattleEntity entity in target.entities) {
@@ -62,8 +62,7 @@ public class AISkillResolver
 		// first, if we have no items or 1 item, just use that instead of randoming to our skill
 		if(possibleSkills.Count == 1) {
 			AISkillResultSet result = possibleSkills[0];
-			ActivateSkill(manager, enemyEntity, result);
-			return;
+			return GenerateBattleAction(enemyEntity, result, entityManager);
 		}
 
 
@@ -73,8 +72,7 @@ public class AISkillResolver
 		// lets use that skill, we will iterate there adding weights to see if we lie within our weight
 		foreach(AISkillResultSet result in possibleSkills) {
 			if(calculatedValue <= result.composite.weight) {
-				ActivateSkill(manager, enemyEntity, result);
-				return;
+				return GenerateBattleAction(enemyEntity, result, entityManager);
 			}
 			// decrement the value, its the same as using a cursor
 			calculatedValue -= result.composite.weight;
@@ -83,7 +81,7 @@ public class AISkillResolver
 		throw new Exception("Failed to find an appropriate skill, random failed");
 	}
 
-	private void ActivateSkill(BattleControllerComponent manager, EnemyBattleEntity enemyEntity, AISkillResultSet result) {
+	private IBattleAction GenerateBattleAction(EnemyBattleEntity enemyEntity, AISkillResultSet result, BattleEntityManagerComponent entityManager) {
 		List<BattleEntity> possibleList = new List<BattleEntity>(result.possibleTargets);
 		AISkillComposite composite = result.composite;
 
@@ -105,9 +103,9 @@ public class AISkillResolver
 		}
 
 		// get the target resolver
-		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(selectableTarget, manager.entityManager);
+		ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(selectableTarget, entityManager);
 
-		BattleSystem.Instance.PostActionSelected(enemyEntity, BattleActionFactory.CreateBattleAction(composite.skill, enemyEntity, targetResolver));
+		return BattleActionFactory.CreateBattleAction (composite.skill, enemyEntity, targetResolver);
 	}
 
 

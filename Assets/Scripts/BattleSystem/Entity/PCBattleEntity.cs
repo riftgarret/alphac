@@ -11,6 +11,10 @@ public class PCBattleEntity : BattleEntity {
 		get { return (PCCharacter) character; }
 	}
 
+	public PCSkillSet SkillSet {
+		get { return pcCharacter.skillSet; }
+	}
+
 	public override bool isPC 
 	{
 		get { return true; }

@@ -64,12 +64,6 @@ public class BattleSystem : IBattleService
         }
     }
 
-    public void PostActionSelected(BattleEntity entity, IBattleAction action) {
-        if (mService != null) {
-            mService.PostActionSelected(entity, action);
-        }
-    }
-
     public void ExecuteCombat(ICombatOperation combatOperation) {
         if (mService != null) {
             mService.ExecuteCombat(combatOperation);
