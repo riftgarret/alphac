@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ActionLayoutComponent: MonoBehaviour {
+public class TargetLayoutComponent: MonoBehaviour {
 
 	[SerializeField]
-	private GameObject m_ActionPrefab;      
+	private GameObject m_TargetPrefab;      
 
     private RectTransform m_Transform;
 	private PCTurnManagerComponent m_TurnManager;
@@ -21,24 +21,26 @@ public class ActionLayoutComponent: MonoBehaviour {
     void Awake() {
 		m_TurnManager = GameObject.FindGameObjectWithTag(Tags.BATTLE_CONTROLLER).GetComponent<PCTurnManagerComponent>();
 		m_Transform = GetComponent<RectTransform>();          
+		m_CurrentEntity = null;
+		m_CurrentDecisionState = PCTurnManagerComponent.DecisionState.IDLE;
     }
 
     void Start() {
         
     }
 
-	void OnGUI() {
+    void OnGUI() {
 		PCBattleEntity entity = m_TurnManager.currentEntity;		
 		PCTurnManagerComponent.DecisionState decisionState = m_TurnManager.decisionState;
 		if (m_CurrentEntity != entity || m_CurrentDecisionState != decisionState) {
 			m_CurrentEntity = entity;
 			m_CurrentDecisionState = decisionState;
-			PopulateActions (entity, decisionState);
+			PopulateTargets (entity, decisionState);
 		}
-	}
-	
-	
-	void PopulateActions(PCBattleEntity entity, PCTurnManagerComponent.DecisionState state) {
+    }
+					
+
+	void PopulateTargets(PCBattleEntity entity, PCTurnManagerComponent.DecisionState state) {
 		// destroy old buttons
 		while (m_Transform.childCount > 0) {
 			Transform transform = m_Transform.GetChild(0);
@@ -47,16 +49,17 @@ public class ActionLayoutComponent: MonoBehaviour {
 		}
 
 
-		if (entity == null) {
+		if (entity == null || state != PCTurnManagerComponent.DecisionState.TARGET) {
 			return;
 		}
 
 
-		foreach (ICombatSkill skill in entity.SkillSet.skills) {
-			GameObject actionPrefabInstance = (GameObject)Instantiate(m_ActionPrefab);
+		List<SelectableTarget> selectableTargets = m_TurnManager.currentTargetManager.targetList;
+		foreach (SelectableTarget selectableTarget in selectableTargets) {
+			GameObject actionPrefabInstance = (GameObject)Instantiate(m_TargetPrefab);
 			RectTransform rect = actionPrefabInstance.GetComponent<RectTransform>();
-			ActionGUIComponent actionGUI = actionPrefabInstance.GetComponent<ActionGUIComponent>();
-			actionGUI.CombatSkill = skill;
+			TargetGUIComponent targetGUI = actionPrefabInstance.GetComponent<TargetGUIComponent>();
+			targetGUI.SelectableTarget = selectableTarget;
 			rect.SetParent(m_Transform);
 		}
 	}

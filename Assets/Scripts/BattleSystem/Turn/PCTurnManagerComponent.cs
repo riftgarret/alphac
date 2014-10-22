@@ -14,7 +14,7 @@ public class PCTurnManagerComponent : MonoBehaviour {
 	private Queue<PCBattleEntity> mTurnQueue;
 	public delegate void OnComplete(BattleEntity source, IBattleAction action);
 
-	public OnComplete OnCompleteDelegate;
+	public OnComplete OnCompleteDelegate { get; set; }
 
 	void Awake() {
 		mTurnQueue = new Queue<PCBattleEntity>();
