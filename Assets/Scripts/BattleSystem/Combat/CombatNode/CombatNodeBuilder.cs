@@ -66,7 +66,7 @@ public class CombatNodeBuilder
             }
 
             // armor
-            for (int i = 0; i < mFactory.entity.character.equipedArmor.Length; i++) {
+            for (int i = 0; i < mFactory.entity.equipedArmor.Length; i++) {
                 rootNode.AddNode(mFactory.CreateArmorNode(i));
             }
         }

@@ -113,6 +113,10 @@ public abstract class BattleEntity {
 		get { return character.equipedWeapons; }
 	}
 
+	public IArmor [] equipedArmor {
+		get { return character.equipedArmor; }
+	}
+
 	public float currentHP {
 		get;
 		set;

@@ -22,6 +22,9 @@ public abstract class SanitySO : ScriptableObject
 		if(data == null) {
 			LogNull(propertyName);
 		}
+		else if (data.Length == 0) {
+			LogMessage(propertyName, "0 elements");
+		}
 		else {
 			for(int i=0; i < data.Length; i++) {
 				if(data[i] == null) {

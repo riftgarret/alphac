@@ -35,5 +35,9 @@ public class CharacterSO : SanitySO
 		LogEmptyArray("weapons", weapons);
 		LogEmptyArray("armors", armors);
 	}
+
+	public Character GenerateCharacter() {
+		return null; // TODO Create BUILDER class for Character using Params
+	}
 }
 

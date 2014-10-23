@@ -16,7 +16,7 @@ public class CombatUtil {
         // TODO first check for flags to hit or miss
         float accuracy = src.CombatStats.accuracy;
         float evasion = dest.CombatStats.evasion;
-        float chanceToHit = accuracy / (accuracy + evasion);
+        float chanceToHit = accuracy / Math.Max(accuracy + evasion, 1);
         return chanceToHit;
     }
 
@@ -39,7 +39,7 @@ public class CombatUtil {
     public static float ChanceToCrit(CombatResolver src, CombatResolver dest) {
         float srcCritChance = src.CombatStats.critAccuracy;
 		float critDefense = dest.CombatStats.critEvasion;
-		float critChance = srcCritChance / (srcCritChance + critDefense); 
+		float critChance = srcCritChance / Math.Max(srcCritChance + critDefense, 1); 
         return critChance;
     }
 

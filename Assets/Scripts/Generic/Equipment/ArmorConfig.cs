@@ -9,76 +9,75 @@
 // ------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ArmorConfig 
 {	
-	/// <summary>
-	/// The m armor map. The initialization of this piece should determine
-	/// which sets of armor are available to equip to this configuration.
-	/// </summary>
-	private Dictionary<ArmorPosition, Armor> mArmorMap;
+	private ArmorSlot[] m_ArmorConfiguration;
 
-	/// <summary>
-	/// The m equiped armor.
-	/// </summary>
-	private Armor[] mEquipedArmor;
+	public ArmorConfig(ArmorPosition[] allowedArmorSlots) {
+		if (allowedArmorSlots == null) {
+			Debug.Log("null armorSlots");
+		}
 
-	public ArmorConfig(HashSet<ArmorPosition> allowedArmorSlots) {
-		mArmorMap = new Dictionary<ArmorPosition, Armor> ();
-		foreach (ArmorPosition position in allowedArmorSlots) {
-			mArmorMap[position] = Armor.EMPTY_ARMOR;
+		if (allowedArmorSlots.Length == 0) {
+			Debug.Log("zero armorSlots");
+		}
+
+		m_ArmorConfiguration = new ArmorSlot[allowedArmorSlots.Length];
+		for(int i=0; i < allowedArmorSlots.Length; i++) {		
+			m_ArmorConfiguration[i] = new ArmorSlot(allowedArmorSlots[i]);
+		}
+		
+	}
+
+	public IArmor[] equipedArmor {
+		get { 
+			List<IArmor> armor = new List<IArmor>();
+			ArmorSlot[] items = m_ArmorConfiguration;
+			foreach(ArmorSlot item in items) {
+				armor.Add(item.armor);
+			}
+			return armor.ToArray();
 		}
 	}
 
-	public Armor[] equipedArmor {
-		get { return mEquipedArmor; }
-	}
-
-	/// <summary>
-	/// Equips the armor.
-	/// </summary>
-	/// <param name="armor">Armor.</param>
-	/// <param name="position">Position.</param>
-	public void EquipArmor(Armor armor, ArmorPosition position) {
-		if (!mArmorMap.ContainsKey (position)) {
-			return; // ignore a position we should not have
-		}
-
+	public void EquipArmor(IArmor armor, int slotIndex) {
 		if (armor == null) {
 			armor = Armor.EMPTY_ARMOR;
 		}
 
-		mArmorMap [position] = armor;
-		RebuildEquipedArray ();
-	}
-
-	/// <summary>
-	/// Rebuilds the equiped array.
-	/// </summary>
-	private void RebuildEquipedArray() {
-		List<Armor> newEquipedArray = new List<Armor> ();
-		foreach (Armor armor in mArmorMap.Values) {
-			if(armor != Armor.EMPTY_ARMOR) {
-				newEquipedArray.Add(armor);
-			}
+		ArmorSlot slot = m_ArmorConfiguration [slotIndex];
+		if (armor != Armor.EMPTY_ARMOR && slot.position != armor.ArmorPosition) {
+			Debug.Log ("Invalid armor position for armor item: " + armor.DisplayName);
 		}
-
-		mEquipedArmor = newEquipedArray.ToArray ();
+		slot.armor = armor;
 	}
 
 	/// <summary>
 	/// Gets or sets the <see cref="ArmorConfig"/> with the specified position.
 	/// </summary>
 	/// <param name="position">Position.</param>
-	public Armor this[ArmorPosition position] {
+	public IArmor this[int position] {
 		get {
-			return mArmorMap[position];
+			return m_ArmorConfiguration[position].armor;
 		}
 
 		set {
-			EquipArmor(value, position);
+			if (value == null) {
+				value = Armor.EMPTY_ARMOR;
+			}
+			m_ArmorConfiguration[position].armor = value;
 		}
 	}
 
+	public class ArmorSlot {
+		public ArmorPosition position { get; set; }
+		public IArmor armor { get; set; }
+		public ArmorSlot(ArmorPosition pos) {
+			position = pos;
+			armor = Armor.EMPTY_ARMOR;
+		}
+	}
 }
 

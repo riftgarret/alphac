@@ -21,11 +21,6 @@ public abstract class Character  {
 		get { return 100f; }
 	}
 
-	//  override enable to set current HP to max HP
-	void OnEnable() {
-		curHP = maxHP;
-	}
-
 	// character name
 	public string displayName;
 
@@ -46,14 +41,10 @@ public abstract class Character  {
 	private ArmorConfig mArmorConfig;
 
 	public IWeapon [] equipedWeapons {
-		get { 
-			if(mWeaponConfig.equipedWeapons.Length == 0) 
-				Debug.Log ("empty equipedWeapons"); 
-			return mWeaponConfig.equipedWeapons; 
-        }
+		get { return mWeaponConfig.equipedWeapons; }
 	}
 
-	public Armor [] equipedArmor {
+	public IArmor [] equipedArmor {
 		get { return mArmorConfig.equipedArmor; }
 	}
 	// armor, accessory
@@ -88,17 +79,18 @@ public abstract class Character  {
 
 		// create armor and weapon configs from class rules
 		mWeaponConfig = charClass.CreateWeaponConfig();
-		mArmorConfig = charClass.CreateArmorConfig ();
+		mArmorConfig = charClass.CreateArmorConfig();
 
 
 		for (int i=0; i < other.weapons.Length; i++) {
 			mWeaponConfig.EquipWeapon(other.weapons[i], i);
 		}
-		/*
-		for (int i=0; i < other.weapons.Length; i++) {
-			mArmorConfig.EquipArmor(other.armors[i], other.armors[i].slot);
-		}
-*/
+
+		// TODO, this should be tightly coupled with SO implementation
+//		for (int i=0; i < other.weapons.Length; i++) {
+//			mArmorConfig.EquipArmor(other.armors[i], i);
+//		}
+
 		curHP = maxHP;
 	}    				
 

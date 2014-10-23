@@ -39,14 +39,19 @@ public class CharacterClassSO : SanitySO
 	/// </summary>
 	/// <returns>The weapon config.</returns>
 	public ArmorConfig CreateArmorConfig() {
-		HashSet<ArmorPosition> positionSet = new HashSet<ArmorPosition> ();
+		List<ArmorPosition> positionSet = new List<ArmorPosition> ();
 
-		if (hasArmorArms) {
-			positionSet.Add(ArmorPosition.ARMS);
+		// kind of in order
+		if (hasArmorHead) {
+			positionSet.Add(ArmorPosition.HEAD);
 		}
 
 		if (hasArmorTorso) {
 			positionSet.Add(ArmorPosition.TORSO);
+		}
+				
+		if (hasArmorArms) {
+			positionSet.Add(ArmorPosition.ARMS);
 		}
 
 		if (hasArmorLegs) {
@@ -57,11 +62,9 @@ public class CharacterClassSO : SanitySO
 			positionSet.Add(ArmorPosition.SHIELD);
 		}
 
-		if (hasArmorHead) {
-			positionSet.Add(ArmorPosition.HEAD);
-		}
 
-		return new ArmorConfig (positionSet);
+
+		return new ArmorConfig (positionSet.ToArray());
 	}
 
 	/// <summary>
