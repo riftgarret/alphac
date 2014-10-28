@@ -15,18 +15,20 @@ using UnityEngine;
 public class CombatOperationExecutor
 {    
 
-	public void Execute(ICombatOperation combatOperation) {
-        // prepare list
-        List<IBattleEvent> events = new List<IBattleEvent>();
+	public void Execute(ICombatOperation combatOperation) {        
 
         // execute
-        combatOperation.Execute(events);
+        combatOperation.Execute();
+
+		// prepare list
+		Queue<IBattleEvent> events = new Queue<IBattleEvent>();
+		combatOperation.GenerateEvents (events);
 
         // process events
         ProcessEvents(events);
 	}
 
-    private void ProcessEvents(List<IBattleEvent> events) {
+	private void ProcessEvents(Queue<IBattleEvent> events) {
         // do stuff with leftovers?
         List<IBattleEvent> processedEvents = new List<IBattleEvent>();
         foreach (IBattleEvent e in events) {

@@ -15,7 +15,7 @@ using UnityEngine;
 /// <summary>
 /// A class to manage the different combinations of entities in fast native arrays
 /// </summary>
-public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.OnDecisionRequiredListener
+public class BattleEntityManagerComponent : MonoBehaviour, BattleEntity.BattleEntityDelegate
 {
 	private EnemyBattleEntity[] mEnemyEntities;
 	public EnemyBattleEntity[] enemyEntities {

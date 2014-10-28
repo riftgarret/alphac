@@ -9,8 +9,13 @@ public class CombatOperationFactory {
     public static ICombatOperation createOperation(BattleEntity src, BattleEntity dest, CombatRound combatRound) {
         CombatResolver srcRes = CombatResolverFactory.CreateSource(src, combatRound);
         CombatResolver destRes = CombatResolverFactory.CreateDestination(dest);
-        PhysicalAttackOperation combatOperation = new PhysicalAttackOperation(srcRes, destRes);
-        return combatOperation;
+
+		CombatOperation.Builder builder = new CombatOperation.Builder ();
+
+		builder.AddCondition (new HitChanceConditionLogic ());
+		builder.AddLogic (new DamageLogic ());
+        
+        return builder.Build(srcRes, destRes);
     }
 
 }

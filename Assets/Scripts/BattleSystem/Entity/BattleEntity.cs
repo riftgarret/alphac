@@ -6,12 +6,12 @@ using System.Collections;
 /// </summary>
 public abstract class BattleEntity {
 
-    public interface OnDecisionRequiredListener {
+    public interface BattleEntityDelegate {
         void OnDecisionRequired(BattleEntity entity);
     }
 
     // listenener for battle entity upated
-    private OnDecisionRequiredListener mListener;
+    private BattleEntityDelegate mListener;
 
 	// turn phase
 	public TurnState turnState {
@@ -41,7 +41,7 @@ public abstract class BattleEntity {
 	private CombatNodeFactory mCombatNodeFactory;
 
 	// setup variables
-	public BattleEntity(Character character, OnDecisionRequiredListener listener) {
+	public BattleEntity(Character character, BattleEntityDelegate listener) {
 		mStatusEffectManager = new StatusEffectManager(this);
 		mCombatNodeFactory = new CombatNodeFactory (this);
         mListener = listener;

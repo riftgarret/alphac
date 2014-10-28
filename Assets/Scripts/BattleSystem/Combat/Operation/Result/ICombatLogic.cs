@@ -11,9 +11,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICombatOperation
-{
-	void Execute();
-	void GenerateEvents(Queue<IBattleEvent> queue);
-}
 
+public interface ICombatLogic {
+	void Execute(CombatResolver src, CombatResolver dest);
+	void GenerateEvents(CombatResolver src, CombatResolver dest, Queue<IBattleEvent> combatEvents);
+}

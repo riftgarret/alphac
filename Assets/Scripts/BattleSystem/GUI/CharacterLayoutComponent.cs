@@ -7,22 +7,34 @@ using UnityEngine.UI;
 
 
 public class CharacterLayoutComponent: MonoBehaviour {
+	[SerializeField]
+    private GameObject m_CharacterPortraitPrefab;
+	[SerializeField]
+	private bool m_IsPC = true;
 
-    public GameObject characterPortraitPrefab;
     private BattleEntityManagerComponent mEntityManager;    
     private RectTransform mTransform;
 
     void Awake() {
         mEntityManager = GameObject.FindGameObjectWithTag(Tags.BATTLE_CONTROLLER).GetComponent<BattleEntityManagerComponent>();
 		mTransform = GetComponent<RectTransform>();          
+		EnsureLayout ();
     }
 
     void Start() {
-        foreach (PCBattleEntity pc in mEntityManager.pcEntities) {
-            GameObject characterPortrait = (GameObject)Instantiate(characterPortraitPrefab);
+		BattleEntity[] entities;
+		if (m_IsPC) {
+			entities = mEntityManager.pcEntities;
+		}
+		else {
+			entities = mEntityManager.enemyEntities;
+		}
+
+        foreach (BattleEntity be in entities) {
+            GameObject characterPortrait = (GameObject)Instantiate(m_CharacterPortraitPrefab);
             RectTransform rect = characterPortrait.GetComponent<RectTransform>();
             CharacterGUIComponent charGUI = characterPortrait.GetComponent<CharacterGUIComponent>();
-            charGUI.BattleEntity = pc;
+            charGUI.BattleEntity = be;
 			rect.SetParent(mTransform);
         }
     }
@@ -30,6 +42,15 @@ public class CharacterLayoutComponent: MonoBehaviour {
     void OnGUI() {
         
     }
-
+	
+	private void EnsureLayout() {
+		LayoutGroup layout = GetComponent<LayoutGroup> ();
+		if (layout == null) {
+			VerticalLayoutGroup vlayout = gameObject.AddComponent<VerticalLayoutGroup>();
+			vlayout.childForceExpandHeight = false;
+			vlayout.spacing = 10f;
+			vlayout.childAlignment = TextAnchor.MiddleCenter;
+		}
+	}
 }
 

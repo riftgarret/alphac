@@ -11,9 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICombatOperation
-{
-	void Execute();
-	void GenerateEvents(Queue<IBattleEvent> queue);
-}
 
+public interface ICombatConditionLogic : ICombatLogic {
+	bool Passes { get; }
+}

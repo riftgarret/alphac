@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyBattleEntity : BattleEntity {
 		
 	// setup variables
-	public EnemyBattleEntity(EnemyCharacter character, OnDecisionRequiredListener listener) : base(character, listener) {
+	public EnemyBattleEntity(EnemyCharacter character, BattleEntityDelegate listener) : base(character, listener) {
 	
 	}	
 	

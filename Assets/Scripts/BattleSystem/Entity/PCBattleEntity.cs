@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PCBattleEntity : BattleEntity {
 
 	// setup variables
-	public PCBattleEntity(PCCharacter character, BattleEntity.OnDecisionRequiredListener listener) : base(character, listener) {		
+	public PCBattleEntity(PCCharacter character, BattleEntity.BattleEntityDelegate listener) : base(character, listener) {		
 	}
 
 	public PCCharacter pcCharacter {

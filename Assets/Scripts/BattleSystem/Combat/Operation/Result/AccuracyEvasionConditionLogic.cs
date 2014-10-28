@@ -11,9 +11,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICombatOperation
-{
-	void Execute();
-	void GenerateEvents(Queue<IBattleEvent> queue);
-}
 
+public abstract class AccuracyEvasionConditionLogic {
+
+	protected float m_Accuracy;
+	protected float m_Evasion;
+	protected float m_ChanceToHit;
+	protected float m_RandomValue;
+
+	public bool Passes { get { return m_ChanceToHit > m_RandomValue; } }		
+}
