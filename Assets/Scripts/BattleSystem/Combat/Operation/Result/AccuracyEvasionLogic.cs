@@ -12,12 +12,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class AccuracyEvasionConditionLogic {
-
+public abstract class AccuracyEvasionLogic : BaseCombatLogic {
 	protected float m_Accuracy;
 	protected float m_Evasion;
 	protected float m_ChanceToHit;
 	protected float m_RandomValue;
 
-	public bool Passes { get { return m_ChanceToHit > m_RandomValue; } }		
+	public bool Hits { get { return m_ChanceToHit > m_RandomValue; } }
+
+	public override string ToString ()
+	{
+		return string.Format ("[{5} s.acc:{0}, d.evas:{1}, cth:{2}, r:{3}, hit: {4}]",
+		                      m_Accuracy,
+		                      m_Evasion,
+		                      m_ChanceToHit,
+		                      m_RandomValue,
+		                      Hits,
+		                      GetType().Name);
+	}
 }

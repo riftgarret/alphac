@@ -10,12 +10,18 @@ public class CombatOperationFactory {
         CombatResolver srcRes = CombatResolverFactory.CreateSource(src, combatRound);
         CombatResolver destRes = CombatResolverFactory.CreateDestination(dest);
 
-		CombatOperation.Builder builder = new CombatOperation.Builder ();
 
-		builder.AddCondition (new HitChanceConditionLogic ());
-		builder.AddLogic (new DamageLogic ());
-        
-        return builder.Build(srcRes, destRes);
+
+		HitChanceLogic hitChanceLogic = new HitChanceLogic ();
+		DamageLogic damageLogic = new DamageLogic ();
+
+		return new CombatOperation.Builder ()
+			.AddLogic(damageLogic)
+			.Require(delegate(ICombatLogic [] conditions) {
+					HitChanceLogic hitChance = (HitChanceLogic) conditions[0];
+					return hitChance.Hits;
+				}, hitChanceLogic)			
+			.Build(srcRes, destRes);
     }
 
 }

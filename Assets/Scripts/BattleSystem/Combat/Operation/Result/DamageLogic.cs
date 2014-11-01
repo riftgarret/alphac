@@ -12,12 +12,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class DamageLogic : ICombatLogic {
+public class DamageLogic : BaseCombatLogic, ICombatLogic {
 
 	private ElementVector m_Defense;
 	private ElementVector m_Damage;
 
-	private CritChanceConditionLogic m_CritResult;
+	private CritChanceLogic m_CritResult;
 	private ElementVector m_CritDamage;
 
 	private float m_HpBefore;
@@ -26,6 +26,7 @@ public class DamageLogic : ICombatLogic {
 
 	public void Execute (CombatResolver src, CombatResolver dest)
 	{
+		CheckExecute ();
 		// pull out min and max damage and calculated 'rolled damage'
 		ElementVector min = src.DamageMin;        
 		ElementVector max = src.DamageMax;
@@ -49,10 +50,10 @@ public class DamageLogic : ICombatLogic {
 		// if is critical 
 		m_CritDamage = new ElementVector();
 
-		m_CritResult = new CritChanceConditionLogic ();
+		m_CritResult = new CritChanceLogic ();
 		m_CritResult.Execute (src, dest);
 
-		if (m_CritResult.Passes) {
+		if (m_CritResult.Hits) {
 			float critScale = CombatUtil.CalculateCritDamageScale(src, dest);
 			m_CritDamage = (m_Damage * critScale);
 		}
@@ -65,6 +66,8 @@ public class DamageLogic : ICombatLogic {
 		dest.entity.currentHP -= CombatUtil.CalculateDamage (m_Damage, m_CritDamage, m_Defense);
 		
 		m_HpAfter = dest.entity.currentHP;
+
+		Logger.d (this, this);
 	}
 
 	public void GenerateEvents (CombatResolver src, CombatResolver dest, Queue<IBattleEvent> combatEvents)
@@ -78,4 +81,10 @@ public class DamageLogic : ICombatLogic {
 			combatEvents.Enqueue(new DeathEvent(dest.entity));
 		}
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[DamageLogic: m_Defense={0}, m_Damage={1}, m_CritResult={2}, m_CritDamage={3}, m_HpBefore={4}, m_HpAfter={5}]", m_Defense, m_Damage, m_CritResult, m_CritDamage, m_HpBefore, m_HpAfter);
+	}
+	
 }

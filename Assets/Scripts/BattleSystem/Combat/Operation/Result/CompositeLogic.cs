@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CompositeLogic : ICombatLogic {
+public class CompositeLogic : BaseCombatLogic, ICombatLogic {
 	private List<ICombatLogic> m_CompositeResult;
 
 	public CompositeLogic() {
@@ -25,6 +25,7 @@ public class CompositeLogic : ICombatLogic {
 
 	public void Execute (CombatResolver src, CombatResolver dest)
 	{
+		CheckExecute ();
 		foreach (ICombatLogic result in m_CompositeResult) {
 			result.Execute(src, dest);
 		}

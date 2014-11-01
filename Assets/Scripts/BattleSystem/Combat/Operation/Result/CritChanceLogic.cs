@@ -12,20 +12,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HitChanceConditionLogic : AccuracyEvasionConditionLogic, ICombatConditionLogic {
-	
+public class CritChanceLogic : AccuracyEvasionLogic, ICombatLogic {
+
+
 	public void Execute (CombatResolver src, CombatResolver dest)
 	{
-		m_Accuracy = src.CombatStats.accuracy;
-		m_Evasion = dest.CombatStats.evasion;
+		CheckExecute ();
+		m_Accuracy = src.CombatStats.critAccuracy;
+		m_Evasion = dest.CombatStats.critDefense;
 		m_ChanceToHit =  m_Accuracy / Math.Max(m_Accuracy + m_Evasion, 1);
 		m_RandomValue = UnityEngine.Random.Range(0f, 1f);
+		Logger.d (this, this);
 	}
-
+	
 	public void GenerateEvents (CombatResolver src, CombatResolver dest, Queue<IBattleEvent> combatEvents)
 	{
-		if (!Passes) {
-			combatEvents.Enqueue(new DodgeEvent(src.entity, dest.entity));
-		}
+
 	}
+	
 }

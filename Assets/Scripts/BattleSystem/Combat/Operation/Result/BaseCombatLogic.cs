@@ -12,8 +12,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public interface ICombatLogic {
-	void Execute(CombatResolver src, CombatResolver dest);
-	void GenerateEvents(CombatResolver src, CombatResolver dest, Queue<IBattleEvent> combatEvents);
-	bool IsExecuted { get; }
+public class BaseCombatLogic {
+	private bool m_Executed = false;
+
+	protected void CheckExecute() {
+		if (m_Executed == true) {
+			Debug.LogError("Object has already been executed, illegal execute action: " + this);
+			throw new IllegalStateException("Object has already been executed, illegal execute action: " + this);
+		}
+		m_Executed = true;
+	}
+
+	public bool IsExecuted { get { return m_Executed; } }
 }
