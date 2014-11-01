@@ -15,7 +15,8 @@ public class CombatUtil {
 	/// <param name="critVec">Crit vec.</param>
 	/// <param name="defenseVec">Defense vec.</param>
 	public static float CalculateDamage (ElementVector dmgVec, ElementVector critVec, ElementVector defenseVec) {
-		return (dmgVec + critVec - defenseVec).Max(0).Sum;
+		ElementVector totalDmg = dmgVec + critVec;
+		return totalDmg * totalDmg / (totalDmg + defenseVec).Min(1);
 	}
 
     /// <summary>

@@ -19,4 +19,9 @@ public class PCBattleEntity : BattleEntity {
 	{
 		get { return true; }
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[PCBattleEntity: pcCharacter={0}, hp={1}/{2}]", pcCharacter, currentHP, maxHP);
+	}
 }

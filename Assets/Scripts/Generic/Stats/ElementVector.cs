@@ -79,6 +79,20 @@ public class ElementVector
         return result;
     }
 
+	public static ElementVector operator /(ElementVector e1, ElementVector e2) {
+		ElementVector result = new ElementVector();
+		result.crush = e1.crush / e2.crush;
+		result.slash = e1.slash / e2.slash;
+		result.pierce = e1.pierce / e2.pierce;
+		result.light = e1.light / e2.light;
+		result.dark = e1.dark / e2.dark;
+		result.fire = e1.fire / e2.fire;
+		result.water = e1.water / e2.water;
+		result.earth = e1.earth / e2.earth;
+		result.wind = e1.wind / e2.wind;
+		return result;
+	}
+
     public static ElementVector operator *(ElementVector e, float f) {
         ElementVector result = new ElementVector(e);
         result.crush *= f;
@@ -107,6 +121,20 @@ public class ElementVector
         return result;
     }
 
+	public ElementVector Min(float value) {
+		ElementVector result = new ElementVector(this);
+		result.crush = Math.Min(value, result.crush);
+		result.slash = Math.Min(value, result.slash);
+		result.pierce = Math.Min(value, result.pierce);
+		result.light = Math.Min(value, result.light);
+		result.dark = Math.Min(value, result.dark);
+		result.fire = Math.Min(value, result.fire);
+		result.water = Math.Min(value, result.water);
+		result.earth = Math.Min(value, result.earth);
+		result.wind = Math.Min(value, result.wind);
+		return result;
+	}
+
     public float Sum {
         get {
             float result = 0;
@@ -122,6 +150,12 @@ public class ElementVector
             return result;
         }
     }	
+
+	public override string ToString ()
+	{
+		return string.Format ("[ElementVector: S={0}, P={1}, C={2}, D={3}, L={4}, W={5}, E={6}, F={7}, W={8}, Sum={9}]", slash, pierce, crush, dark, light, wind, earth, fire, water, Sum);
+	}
+	
 }
 
 
