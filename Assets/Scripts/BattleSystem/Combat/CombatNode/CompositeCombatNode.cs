@@ -35,9 +35,9 @@ public class CompositeCombatNode : ICombatNode
 
 	public float GetPropertyScalar(CombatPropertyType property) {
 
-		float total = 1;
+		float total = 0;
 		foreach(ICombatNode mod in mChildren) {
-			total *= mod.GetPropertyScalar(property);
+			total += mod.GetPropertyScalar(property);
 		}
 		return total;
 	}

@@ -21,10 +21,6 @@ public class ConfigurableCombatNode : ICombatNode
 		mPropertyAdd = new float[(int)CombatPropertyType.COUNT];
 		mPropertyMultiply = new float[(int)CombatPropertyType.COUNT];
         mFlags = new bool[(int)CombatFlag.COUNT];
-
-		for(int i=0; i < (int)CombatPropertyType.COUNT; i++) {
-			mPropertyMultiply[i] = 1f;
-		}
 	}
 
 	public float GetProperty (CombatPropertyType property)

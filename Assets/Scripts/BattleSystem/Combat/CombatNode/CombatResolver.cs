@@ -29,8 +29,8 @@ public class CombatResolver
 	}
 
 	public float GetProperty(CombatPropertyType property) {
-		float ret = mRootNode.GetProperty (property);
-		ret *= mRootNode.GetPropertyScalar (property);
+		float ret = GetPropertyRaw (property);
+		ret *= GetPropertyScalar(property);
 		return ret;
 	}
 
@@ -39,7 +39,8 @@ public class CombatResolver
     }
 
     public float GetPropertyScalar(CombatPropertyType property) {
-        return mRootNode.GetPropertyScalar(property);
+		float scaleValue = mRootNode.GetPropertyScalar (property);
+		return 1 + (scaleValue / 100f);        
     }
 
     public ElementVector DamageMin {

@@ -22,6 +22,8 @@ public class DamageLogic : BaseCombatLogic, ICombatLogic {
 
 	private float m_HpBefore;
 	private float m_HpAfter;
+
+	private float m_TotalDamage;
 	
 
 	public void Execute (CombatResolver src, CombatResolver dest)
@@ -63,7 +65,8 @@ public class DamageLogic : BaseCombatLogic, ICombatLogic {
 		m_Defense = dest.ElementDefense;
 		
 		// apply dmg
-		dest.entity.currentHP -= CombatUtil.CalculateDamage (m_Damage, m_CritDamage, m_Defense);
+		m_TotalDamage = CombatUtil.CalculateDamage (m_Damage, m_CritDamage, m_Defense);
+		dest.entity.currentHP -= m_TotalDamage;
 		
 		m_HpAfter = dest.entity.currentHP;
 
@@ -84,7 +87,7 @@ public class DamageLogic : BaseCombatLogic, ICombatLogic {
 
 	public override string ToString ()
 	{
-		return string.Format ("[DamageLogic: m_Defense={0}, m_Damage={1}, m_CritResult={2}, m_CritDamage={3}, m_HpBefore={4}, m_HpAfter={5}]", m_Defense, m_Damage, m_CritResult, m_CritDamage, m_HpBefore, m_HpAfter);
+		return string.Format ("[DamageLogic: m_TotalDamage={6}, m_Defense={0}, m_Damage={1}, m_CritResult={2}, m_CritDamage={3}, m_HpBefore={4}, m_HpAfter={5}]", m_Defense, m_Damage, m_CritResult, m_CritDamage, m_HpBefore, m_HpAfter, m_TotalDamage);
 	}
 	
 }
