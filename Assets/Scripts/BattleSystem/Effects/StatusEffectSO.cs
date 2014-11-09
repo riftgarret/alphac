@@ -13,38 +13,9 @@ using UnityEngine;
 public class StatusEffectSO : ScriptableObject
 {
 	[SerializeField]
-	private StatusEffectGroupSO mStatusEffectGroup = null;
+	private StatusEffectParams m_StatusEffect;
 
-	[SerializeField]
-	private ValueModifier mValueModifier = new ValueModifier();
-
-	[SerializeField]
-	private StatusEffectType mStatusEffectType = StatusEffectType.MAGICAL_BUFF;
-
-	[SerializeField]
-	private float mDuration = 0;
-
-	public StatusEffectGroupSO statusEffectGroup {
-		get {
-			return this.mStatusEffectGroup;
-		}
-	}
-	
-	public ValueModifier valueModifier {
-		get {
-			return this.mValueModifier;
-		}
-	}
-	
-	public StatusEffectType statusEffectType {
-		get {
-			return this.mStatusEffectType;
-		}
-	}
-	
-	public float duration {
-		get {
-			return this.mDuration;
-		}
+	public StatusEffectParams statusEffect {
+		get { return m_StatusEffect; }
 	}
 }

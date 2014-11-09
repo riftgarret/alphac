@@ -29,15 +29,15 @@ public abstract class SOStatusEffectExecutor : IStatusEffectExecutor
 
 	public bool isDispellable {
 		get { 
-			StatusEffectType type = mStatusEffectSO.statusEffectType;
-			return type == StatusEffectType.MAGICAL_BUFF || type == StatusEffectType.MAGICAL_DEBUFF;
+			StatusEffectProperty type = mStatusEffectSO.statusEffectType;
+			return type == StatusEffectProperty.MAGICAL_BUFF || type == StatusEffectProperty.MAGICAL_DEBUFF;
 		}
 	}
 
 	public bool isCurable {
 		get { 
-			StatusEffectType type = mStatusEffectSO.statusEffectType;
-			return type == StatusEffectType.MAGICAL_DEBUFF || type == StatusEffectType.PHYSICAL_DEBUFF;
+			StatusEffectProperty type = mStatusEffectSO.statusEffectType;
+			return type == StatusEffectProperty.MAGICAL_DEBUFF || type == StatusEffectProperty.PHYSICAL_DEBUFF;
 		}
 	}
 
@@ -47,13 +47,13 @@ public abstract class SOStatusEffectExecutor : IStatusEffectExecutor
 		}
 	}
 
-	public StatusEffectType effectType {
+	public StatusEffectProperty effectType {
 		get {
 			return mStatusEffectSO.statusEffectType;
 		}
 	}
 
-	public StatusEffectType sourceType {
+	public StatusEffectProperty sourceType {
 		get {
 			return mStatusEffectSO.statusEffectType;
 		}

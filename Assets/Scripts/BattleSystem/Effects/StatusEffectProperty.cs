@@ -12,8 +12,10 @@ using System;
 /// <summary>
 /// DEPRECATED, but keep around so we can modify our other combat stats when we start to really polish this workflow
 /// </summary>
-public enum EffectType
+public enum StatusEffectProperty
 {
+	NONE,
+
 	// stat effects
 	STR_MOD,
 	VIT_MOD,
@@ -40,9 +42,9 @@ public enum EffectType
 	// turn / speed effects 
 	SPEED,
 	FATIGUE_COST,
-	LOSE_TURN 
+	LOSE_TURN ,
 
-
+	HP_REGEN
 
 
 

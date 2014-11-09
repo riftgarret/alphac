@@ -13,11 +13,6 @@ using System;
 public class ValueModifier
 {
 	public float add;
-	public float multiply;
-
-	public ValueModifier() {
-		add = 0;
-		multiply = 1f;
-	}
+	public float scalar;	
 }
 

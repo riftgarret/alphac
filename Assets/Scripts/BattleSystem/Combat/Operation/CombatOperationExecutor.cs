@@ -83,17 +83,17 @@ public class CombatOperationExecutor
 		// iterate through combnat effects to see what should apply
 		foreach (StatusEffectRule combatStatusEffect in effectRules) {
 			switch(combatStatusEffect.rule) {			
-			case StatusEffectRule.StatusEffectHitPredicate.ON_HIT:
+			case StatusEffectRule.StatusEffectRuleHitPredicate.ON_HIT:
 				if(hitTarget) {
 					ApplyEffect(combatStatusEffect, srcResolver.entity);
 				}
 				break;
-			case StatusEffectRule.StatusEffectHitPredicate.ON_MISS:
+			case StatusEffectRule.StatusEffectRuleHitPredicate.ON_MISS:
 				if(missedTarget) {
 					ApplyEffect(combatStatusEffect, srcResolver.entity);
 				}
 				break;
-			case StatusEffectRule.StatusEffectHitPredicate.ALWAYS:
+			case StatusEffectRule.StatusEffectRuleHitPredicate.ALWAYS:
 			default:
 				ApplyEffect(combatStatusEffect, srcResolver.entity);
 				break;

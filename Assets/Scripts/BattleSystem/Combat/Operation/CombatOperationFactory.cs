@@ -15,13 +15,27 @@ public class CombatOperationFactory {
 		HitChanceLogic hitChanceLogic = new HitChanceLogic ();
 		DamageLogic damageLogic = new DamageLogic ();
 
-		return new CombatOperation.Builder ()
-			.AddLogic(damageLogic)
+		CombatOperation.Builder builder = new CombatOperation.Builder ();
+		builder.AddLogic(damageLogic)
 			.Require(delegate(ICombatLogic [] conditions) {
 					HitChanceLogic hitChance = (HitChanceLogic) conditions[0];
 					return hitChance.Hits;
-				}, hitChanceLogic)			
-			.Build(srcRes, destRes);
+			}, hitChanceLogic);			
+
+		AddHitChanceStatusEffectRules(builder, hitChanceLogic, combatRound);
+
+
+		return builder.Build(srcRes, destRes);
     }
 
+
+	private static void AddHitChanceStatusEffectRules(CombatOperation.Builder builder, HitChanceLogic hitChance, CombatRound combatRound) {
+		if(combatRound.statusEffectRules == null) {
+			return;
+		}
+
+		foreach(StatusEffectRule rule in combatRound.statusEffectRules) {
+		//	builder.AddLogic(
+		}
+	}
 }

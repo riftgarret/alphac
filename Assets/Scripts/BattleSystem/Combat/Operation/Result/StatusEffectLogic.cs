@@ -8,15 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-/// <summary>
-/// DEPRECATED, but keep around so we can modify our other combat stats when we start to really polish this workflow
-/// </summary>
-public enum StatusEffectType
-{
-	POSITIVE,
-	NEGATIVE,
-	NULLIFY
+
+public abstract class StatusEffectLogic : BaseCombatLogic {
+
+	protected StatusEffectRule rule;
+
+	public override string ToString ()
+	{
+		return string.Format ("[StatusEffectRule: p={0}, e={1}]",
+		                      rule.rule,
+		                      rule.effect);
+	}
 }
-
-

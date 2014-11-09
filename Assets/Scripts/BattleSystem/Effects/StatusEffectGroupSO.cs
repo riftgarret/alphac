@@ -20,7 +20,7 @@ public class StatusEffectGroupSO : ScriptableObject
 {
 	// IF THIS IS A STAT GROUP, LETS SET IT HERE
 	[SerializeField]
-	private CombatPropertyType mCombatProperty = CombatPropertyType.NONE;
+	private StatusEffectProperty mCombatProperty = StatusEffectProperty.NONE;
 	// TODO special case status effect group: 
 	// ie: poison, haste, onEvent()
 
@@ -28,37 +28,30 @@ public class StatusEffectGroupSO : ScriptableObject
 
 	// icons
 	[SerializeField]
-	private StatusEffectGroupGUIProperty mMagicalBuffGUIProperty = null;
+	private StatusEffectGroupGUIProperty m_NegativeGUIProperty = null;
 
 	[SerializeField]
-	private StatusEffectGroupGUIProperty mMagicalDebuffGUIProperty = null;
-
-	[SerializeField]
-	private StatusEffectGroupGUIProperty mPhysicalDebuffGUIProperty = null;
+	private StatusEffectGroupGUIProperty m_PositiveGUIProperty = null;
+	
 
 
 	// accessors
-	public CombatPropertyType combatProperty {
+	public StatusEffectProperty statusEffectProperty {
 		get { return mCombatProperty; }
 	}
 
-	public StatusEffectGroupGUIProperty magicalBuffGUIProperty {
+	public StatusEffectGroupGUIProperty negativeGUIProperty {
 		get {
-			return this.mMagicalBuffGUIProperty;
+			return this.m_NegativeGUIProperty;
 		}
 	}
 
-	public StatusEffectGroupGUIProperty magicalDebuffGUIProperty {
+	public StatusEffectGroupGUIProperty positiveGUIProperty {
 		get {
-			return this.mMagicalDebuffGUIProperty;
+			return this.m_PositiveGUIProperty;
 		}
 	}
 
-	public StatusEffectGroupGUIProperty physicalDebuffGUIProperty {
-		get {
-			return this.mPhysicalDebuffGUIProperty;
-		}
-	}
 }
 
 

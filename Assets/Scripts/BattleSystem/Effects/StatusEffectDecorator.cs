@@ -15,7 +15,7 @@ using UnityEngine;
 /// <summary>
 /// Status effect manager. To manage buffs, debuffs and other states that may or may not be curable
 /// </summary>
-public class StatusEffectManager
+public class StatusEffectDecorator
 {
 	// for fast access to get those effects
 	private Dictionary<StatusEffectGroupSO, StatusEffectNode> mEffectNodeMap;
@@ -26,7 +26,7 @@ public class StatusEffectManager
 	/// Initializes a new instance of the <see cref="StatusEffectManager"/> class.
 	/// </summary>
 	/// <param name="entity">The Entity to manage. </param>
-	public StatusEffectManager (BattleEntity entity)
+	public StatusEffectDecorator (BattleEntity entity)
 	{
 		mEffectNodeMap = new Dictionary<StatusEffectGroupSO, StatusEffectNode>();
 		mBattleEntity = entity;
@@ -67,24 +67,24 @@ public class StatusEffectManager
 		// its a lot less tedious to debug if we just have separate pointers
 		private IStatusEffectExecutor [] executors;
 
-		private StatusEffectManager parent;
+		private StatusEffectDecorator parent;
 
-		public StatusEffectNode(StatusEffectManager manager) {
+		public StatusEffectNode(StatusEffectDecorator manager) {
 			this.parent = manager;
-			executors = new IStatusEffectExecutor[(int)StatusEffectType.COUNT];
+			executors = new IStatusEffectExecutor[(int)StatusEffectProperty.COUNT];
 		}
 
 		public void ApplyEffect(IStatusEffectExecutor effect) {
-			StatusEffectType type = effect.effectType;
+			StatusEffectProperty type = effect.effectType;
 
 			switch(type) {
-			case StatusEffectType.MAGICAL_BUFF:
-				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_DEBUFF]);
+			case StatusEffectProperty.MAGICAL_BUFF:
+				ApplyEffect(effect, executors[(int)StatusEffectProperty.MAGICAL_DEBUFF]);
 				break;
-			case StatusEffectType.MAGICAL_DEBUFF:
-				ApplyEffect(effect, executors[(int)StatusEffectType.MAGICAL_BUFF]);
+			case StatusEffectProperty.MAGICAL_DEBUFF:
+				ApplyEffect(effect, executors[(int)StatusEffectProperty.MAGICAL_BUFF]);
 				break;
-			case StatusEffectType.PHYSICAL_DEBUFF:
+			case StatusEffectProperty.PHYSICAL_DEBUFF:
 				ApplyEffect(effect, null);
 				break;
 			}
@@ -109,7 +109,7 @@ public class StatusEffectManager
 		/// </summary>
 		/// <param name="effectType">Effect type.</param>
 		/// <param name="eventType">Event type.</param>
-		private void RemoveEffect(StatusEffectType effectType, StatusEffectEvent.StatusEventType eventType) {
+		private void RemoveEffect(StatusEffectProperty effectType, StatusEffectEvent.StatusEventType eventType) {
 			IStatusEffectExecutor oldEffect = executors[(int)effectType];
 			if(oldEffect != null) {
 				executors[(int)effectType] = null;
@@ -124,7 +124,7 @@ public class StatusEffectManager
 		private void AddEffect(IStatusEffectExecutor effect) {
 			if(effect != null) {
 				// if existing effect exists, lets replace it using that eventType
-				StatusEffectType effectType = effect.effectType;
+				StatusEffectProperty effectType = effect.effectType;
 				StatusEffectEvent.StatusEventType eventType = executors[(int)effectType] != null? 
 					StatusEffectEvent.StatusEventType.REPLACED 
 						: StatusEffectEvent.StatusEventType.NEW;

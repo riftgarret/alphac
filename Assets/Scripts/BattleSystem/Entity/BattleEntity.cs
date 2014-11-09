@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -32,7 +32,7 @@ public abstract class BattleEntity {
 	/// The status effect manager. Manages status effects so when a new effect is added, 
 	/// we can tell if its refresh, new, or canceling something else.
 	/// </summary>
-	private StatusEffectManager mStatusEffectManager;
+	private StatusEffectDecorator mStatusEffectManager;
 
 	/// <summary>
 	/// The combat node factory. Used to generate a NodeBuilder which will bring together
@@ -42,7 +42,7 @@ public abstract class BattleEntity {
 
 	// setup variables
 	public BattleEntity(Character character, BattleEntityDelegate listener) {
-		mStatusEffectManager = new StatusEffectManager(this);
+		mStatusEffectManager = new StatusEffectDecorator(this);
 		mCombatNodeFactory = new CombatNodeFactory (this);
         mListener = listener;
 		turnState = new TurnState(this);

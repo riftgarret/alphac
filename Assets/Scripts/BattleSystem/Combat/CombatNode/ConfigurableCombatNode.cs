@@ -49,7 +49,7 @@ public class ConfigurableCombatNode : ICombatNode
 
 		foreach(CombatProperty property in combatProperties) {
 			this.mPropertyAdd[(int)property.propertyType] = property.add;
-			this.mPropertyMultiply[(int)property.propertyType] = property.multiply;
+			this.mPropertyMultiply[(int)property.propertyType] = property.scalar;
 		}
 	}
 

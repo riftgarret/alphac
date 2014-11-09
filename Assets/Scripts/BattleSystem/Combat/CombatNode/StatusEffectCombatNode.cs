@@ -21,7 +21,7 @@ public class StatusEffectCombatNode : ConfigurableCombatNode
 		StatusEffectSO so = statusEffectExecutor.statusEffectSO;
 		CombatPropertyType property = so.statusEffectGroup.combatProperty;
 		mPropertyAdd[(int)property] = so.valueModifier.add;
-		mPropertyMultiply[(int)property] = so.valueModifier.multiply;
+		mPropertyMultiply[(int)property] = so.valueModifier.scalar;
 	}
 }
 

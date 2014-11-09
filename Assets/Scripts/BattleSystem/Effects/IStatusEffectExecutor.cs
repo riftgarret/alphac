@@ -22,7 +22,7 @@ public interface IStatusEffectExecutor
 	/// the effect is resisted
 	/// </summary>
 	/// <value>The type of the source.</value>
-	StatusEffectType effectType {
+	StatusEffectProperty effectType {
 		get;
 	}
 	
