@@ -16,12 +16,8 @@ public class StatusEffectCombatNode : ConfigurableCombatNode
 	/// Initializes a new instance of the <see cref="StatusEffectCombatNode"/> class.
 	/// </summary>
 	/// <param name="statusEffectExecutor">Status effect executor.</param>
-	public StatusEffectCombatNode(CombatPropertyStatusEffectExecutor statusEffectExecutor) : base() {
-		// TODO track node meta
-		StatusEffectSO so = statusEffectExecutor.statusEffectSO;
-		CombatPropertyType property = so.statusEffectGroup.combatProperty;
-		mPropertyAdd[(int)property] = so.valueModifier.add;
-		mPropertyMultiply[(int)property] = so.valueModifier.scalar;
-	}
+	protected StatusEffectCombatNode(StatusEffectRunner statusEffect) : base() {
+
+	}	
 }
 

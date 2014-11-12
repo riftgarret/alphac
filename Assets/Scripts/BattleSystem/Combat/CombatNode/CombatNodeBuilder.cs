@@ -72,7 +72,7 @@ public class CombatNodeBuilder
         }
 
         if (mUseBuffs) {
-            // TOODO
+			rootNode.AddNode(mFactory.CreateStatusEffectNodes());
         }
 
 
@@ -80,7 +80,6 @@ public class CombatNodeBuilder
 			rootNode.AddNode (mSkillCombatNode);
 		}
 
-		// TODO iterate through buffs and equipment
 		return rootNode;
 	}
 

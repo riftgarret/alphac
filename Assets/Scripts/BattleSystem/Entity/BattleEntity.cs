@@ -32,7 +32,7 @@ public abstract class BattleEntity {
 	/// The status effect manager. Manages status effects so when a new effect is added, 
 	/// we can tell if its refresh, new, or canceling something else.
 	/// </summary>
-	private StatusEffectDecorator mStatusEffectManager;
+	private StatusEffectClient mStatusEffectManager;
 
 	/// <summary>
 	/// The combat node factory. Used to generate a NodeBuilder which will bring together
@@ -42,7 +42,7 @@ public abstract class BattleEntity {
 
 	// setup variables
 	public BattleEntity(Character character, BattleEntityDelegate listener) {
-		mStatusEffectManager = new StatusEffectDecorator(this);
+		mStatusEffectManager = new StatusEffectClient(this);
 		mCombatNodeFactory = new CombatNodeFactory (this);
         mListener = listener;
 		turnState = new TurnState(this);
@@ -55,8 +55,8 @@ public abstract class BattleEntity {
 		turnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
 	}
 
-	public void ApplyStatusEffect(IStatusEffectExecutor statusEffect) {
-		mStatusEffectManager.HandleAddStatus(statusEffect);
+	public void ApplyStatusEffect(BattleEntity sourceEntity, IStatusEffect statusEffect) {
+		mStatusEffectManager.HandleAddStatus(sourceEntity, statusEffect);
 	}
 
 	/// <summary>
@@ -125,5 +125,9 @@ public abstract class BattleEntity {
 	public float maxHP {
 		get;
 		set;
+	}
+
+	public StatusEffectClient statusEffectClient {
+		get { return mStatusEffectManager; }
 	}
 }

@@ -202,6 +202,55 @@ public class ConfigurableCombatNode : ICombatNode
             mPropertyAdd[(int)CombatPropertyType.SCALE_LUCK] = attributes.luck;
         }
     }
+
+	public void LoadStatusEffectProperty(StatusEffectProperty property, float strength) {
+		switch(property) {
+		case StatusEffectProperty.AGI_MOD:
+			mPropertyAdd[(int)CombatPropertyType.AGI] = strength;
+			break;
+		case StatusEffectProperty.DEX_MOD:
+			mPropertyAdd[(int)CombatPropertyType.DEX] = strength;
+			break;
+		case StatusEffectProperty.STR_MOD:
+			mPropertyAdd[(int)CombatPropertyType.STR] = strength;
+			break;
+		case StatusEffectProperty.VIT_MOD:
+			mPropertyAdd[(int)CombatPropertyType.VIT] = strength;
+			break;
+		case StatusEffectProperty.LUCK_MOD:
+			mPropertyAdd[(int)CombatPropertyType.LUCK] = strength;
+			break;
+		case StatusEffectProperty.INT_MOD:
+			mPropertyAdd[(int)CombatPropertyType.INT] = strength;
+			break;
+		case StatusEffectProperty.WIS_MOD:
+			mPropertyAdd[(int)CombatPropertyType.AGI] = strength;
+			break;
+			
+			
+		case StatusEffectProperty.CRIT_CHANCE:
+			mPropertyAdd[(int)CombatPropertyType.CRIT_ACCURACY] = strength;
+			break;
+		case StatusEffectProperty.CRIT_EVASION:
+			mPropertyAdd[(int)CombatPropertyType.CRIT_EVASION] = strength;
+			break;
+		case StatusEffectProperty.CRIT_POWER:
+			mPropertyAdd[(int)CombatPropertyType.CRIT_POWER] = strength;
+			break;
+			
+			
+		case StatusEffectProperty.SPEED:			
+		case StatusEffectProperty.NONE:
+		case StatusEffectProperty.LOSE_TURN:
+		case StatusEffectProperty.HP_REGEN:
+		case StatusEffectProperty.HEALING_REDUCTION:
+		case StatusEffectProperty.FATIGUE_COST:
+			
+		default:
+			Logger.d (this, "skipping status effect property: " + property);
+			break;
+		}
+	}
 }
 
 

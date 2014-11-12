@@ -11,34 +11,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public interface IStatusEffectExecutor
+public interface IStatusEffectRunner : IStatusEffect
 {
-	StatusEffectGroupSO statusEffectGroup {
-		get;
-	}
-
-	/// <summary>
-	/// The Source Type is used to determine which resist to check to see if 
-	/// the effect is resisted
-	/// </summary>
-	/// <value>The type of the source.</value>
-	StatusEffectProperty effectType {
-		get;
-	}
-	
-	/// <summary>
-	/// Gets a value indicating whether this <see cref="IStatusEffect"/> is dispellable. This is ignored if sourceType is NEGATIVE_PHYSICAL
-	/// </summary>
-	/// <value><c>true</c> if is dispellable; otherwise, <c>false</c>.</value>
-	bool isDispellable {
-		get;
-	}
-
-	/// <summary>
-	/// Gets a value indicating whether this <see cref="IStatusEffect"/> is curable. This is ignored if sourceType is POSITIVE
-	/// </summary>
-	/// <value><c>true</c> if is curable; otherwise, <c>false</c>.</value>
-	bool isCurable {
+	BattleEntity sourceEntity {
 		get;
 	}
 

@@ -9,13 +9,18 @@
 //------------------------------------------------------------------------------
 using System;
 
-/// <summary>
-/// DEPRECATED, but keep around so we can modify our other combat stats when we start to really polish this workflow
-/// </summary>
+
+public enum StatusEffectType
+{
+	POSITIVE,
+	NEGATIVE,
+	NULLIFY
+}
+
 public enum StatusEffectProperty
 {
 	NONE,
-
+	
 	// stat effects
 	STR_MOD,
 	VIT_MOD,
@@ -24,33 +29,32 @@ public enum StatusEffectProperty
 	INT_MOD,
 	WIS_MOD,
 	LUCK_MOD,
-
+	
 	// offensive effects
 	CRIT_CHANCE,
-	CRIT_TOTAL,
+	CRIT_POWER,
 	SPELL_FAILURE,
 	SPELL_DMG,
 	HIT_CHANCE,
 	PHYSICAL_DMG,
-
-
+	
+	
 	// defensive effects
 	SPELL_RESIST,
 	HEALING_REDUCTION,
-	CRIT_DEF,
-
+	CRIT_EVASION,
+	
 	// turn / speed effects 
 	SPEED,
 	FATIGUE_COST,
 	LOSE_TURN ,
-
+	
 	HP_REGEN
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
 }
-
 

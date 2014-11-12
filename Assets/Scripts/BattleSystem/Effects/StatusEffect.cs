@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class StatusEffect
+public class StatusEffect : IStatusEffect
 {
 	public StatusEffect(StatusEffectParams p, BattleEntity source) {
 		m_SourceEntity = source;

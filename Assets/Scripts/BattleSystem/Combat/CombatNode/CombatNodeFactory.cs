@@ -45,5 +45,14 @@ public class CombatNodeFactory
 		}
 		return mCachedCharacterNode;
 	}
+
+	public ICombatNode CreateStatusEffectNodes() {
+		// map status effects to buff properties
+		ConfigurableCombatNode configNode = new ConfigurableCombatNode();
+		foreach(StatusEffectClient.StatusEffectSummary summary in mEntity.statusEffectClient.Summaries) {
+			configNode.LoadStatusEffectProperty(summary.property, summary.netValue);
+		}
+		return configNode;
+	}
 }
 

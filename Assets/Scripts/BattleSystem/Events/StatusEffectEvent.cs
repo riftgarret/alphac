@@ -17,12 +17,23 @@ public class StatusEffectEvent : IBattleEvent
 		REMOVED,
 		EXPIRED,
 	}
-	
-	public StatusEffectEvent (BattleEntity srcEntity, IStatusEffectExecutor statusEffect, StatusEventType statusEventType) 
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="StatusEffectEvent"/> class.
+	/// </summary>
+	/// <param name="srcEntity">Source entity.</param>
+	/// <param name="statusEffectProperty">Status effect property.</param>
+	/// <param name="statusEventType">Status event type.</param>
+	/// <param name="statusType">Status type.</param>
+	public StatusEffectEvent (BattleEntity srcEntity, 
+	                          StatusEffectProperty statusEffectProperty, 
+	                          StatusEventType statusEventType,
+	                          StatusEffectType statusType) 
 	{
 		this.SrcEntity = srcEntity;
-		this.statusEffect = statusEffect;
+		this.statusEffectProperty = statusEffectProperty;
 		this.statusEventType = statusEventType;
+		this.statusType = statusType;
 	}
 
 	public BattleEntity SrcEntity {
@@ -35,7 +46,12 @@ public class StatusEffectEvent : IBattleEvent
 		get;
 	}
 
-	public IStatusEffectExecutor statusEffect {
+	public StatusEffectProperty statusEffectProperty {
+		private set;
+		get;
+	}
+
+	public StatusEffectType statusType {
 		private set;
 		get;
 	}
@@ -48,7 +64,7 @@ public class StatusEffectEvent : IBattleEvent
 
 	public override string ToString ()
 	{
-		return string.Format ("[StatusEffectEvent: srcEntity={0}, statusEventType={1}, statusEffect={2}, eventType={3}]", SrcEntity, statusEventType, statusEffect, EventType);
+		return string.Format ("[StatusEffectEvent: srcEntity={0}, statusEventType={1}, statusEffect={2}, eventType={3}]", SrcEntity, statusEventType, statusEffectProperty, EventType);
 	}
 	
 }

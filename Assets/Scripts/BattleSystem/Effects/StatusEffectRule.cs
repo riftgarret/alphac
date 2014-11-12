@@ -25,7 +25,7 @@ public class StatusEffectRule
 	/// Gets the effect.
 	/// </summary>
 	/// <value>The effect.</value>
-	public IStatusEffectExecutor effect {
+	public IStatusEffectRunner effect {
 			get;
 			private set;
 	}
